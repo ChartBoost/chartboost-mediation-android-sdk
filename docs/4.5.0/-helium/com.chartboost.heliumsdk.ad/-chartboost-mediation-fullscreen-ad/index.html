@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ChartboostMediationFullscreenAd</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>Helium</span>
+            </a>
+    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":Helium:dokkaHtml/release">androidJvm</button>
+        </div>
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="Helium::com.chartboost.heliumsdk.ad/ChartboostMediationFullscreenAd///PointingToDeclaration//2034298084">
+  <div class="breadcrumbs"><a href="../../../index.html">Helium</a><span class="delimiter">/</span><a href="../index.html">com.chartboost.heliumsdk.ad</a><span class="delimiter">/</span><span class="current">ChartboostMediationFullscreenAd</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Chartboost</span><wbr></wbr><span>Mediation</span><wbr></wbr><span>Fullscreen</span><wbr></wbr><span><span>Ad</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">ChartboostMediationFullscreenAd</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">var </span>cachedAd<span class="token operator">: </span><span data-unresolved-link="com.chartboost.heliumsdk.domain/CachedAd///PointingToDeclaration/">CachedAd</span><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>listener<span class="token operator">: </span><a href="../-chartboost-mediation-fullscreen-ad-listener/index.html">ChartboostMediationFullscreenAdListener</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>request<span class="token operator">: </span><a href="../-chartboost-mediation-ad-load-request/index.html">ChartboostMediationAdLoadRequest</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>loadId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>winningBidInfo<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>mapOf()<span class="token punctuation">, </span></span><span class="parameter ">adController<span class="token operator">: </span><span data-unresolved-link="com.chartboost.heliumsdk.controllers/AdController///PointingToDeclaration/">AdController</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><p class="paragraph">The Chartboost Mediation fullscreen ad. This class is responsible for showing and invalidating the ad.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="1226799935%2FConstructors%2F2034298084" anchor-label="ChartboostMediationFullscreenAd" id="1226799935%2FConstructors%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-chartboost-mediation-fullscreen-ad.html"><span>Chartboost</span><wbr></wbr><span>Mediation</span><wbr></wbr><span>Fullscreen</span><wbr></wbr><span><span>Ad</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1226799935%2FConstructors%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">cachedAd<span class="token operator">: </span><span data-unresolved-link="com.chartboost.heliumsdk.domain/CachedAd///PointingToDeclaration/">CachedAd</span><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">listener<span class="token operator">: </span><a href="../-chartboost-mediation-fullscreen-ad-listener/index.html">ChartboostMediationFullscreenAdListener</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">request<span class="token operator">: </span><a href="../-chartboost-mediation-ad-load-request/index.html">ChartboostMediationAdLoadRequest</a><span class="token punctuation">, </span></span><span class="parameter ">loadId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">winningBidInfo<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>mapOf()<span class="token punctuation">, </span></span><span class="parameter ">adController<span class="token operator">: </span><span data-unresolved-link="com.chartboost.heliumsdk.controllers/AdController///PointingToDeclaration/">AdController</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-187889520%2FProperties%2F2034298084" anchor-label="cachedAd" id="-187889520%2FProperties%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="cached-ad.html"><span>cached</span><wbr></wbr><span><span>Ad</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-187889520%2FProperties%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="cached-ad.html">cachedAd</a><span class="token operator">: </span><span data-unresolved-link="com.chartboost.heliumsdk.domain/CachedAd///PointingToDeclaration/">CachedAd</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">The <span data-unresolved-link="com.chartboost.heliumsdk.domain/CachedAd///PointingToDeclaration/">CachedAd</span> to show.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1073461626%2FProperties%2F2034298084" anchor-label="customData" id="1073461626%2FProperties%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="custom-data.html"><span>custom</span><wbr></wbr><span><span>Data</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1073461626%2FProperties%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="custom-data.html">customData</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">The custom data for the ad.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1963170911%2FProperties%2F2034298084" anchor-label="listener" id="-1963170911%2FProperties%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="listener.html"><span><span>listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1963170911%2FProperties%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="listener.html">listener</a><span class="token operator">: </span><a href="../-chartboost-mediation-fullscreen-ad-listener/index.html">ChartboostMediationFullscreenAdListener</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">The <a href="../-chartboost-mediation-fullscreen-ad-listener/index.html">ChartboostMediationFullscreenAdListener</a> to notify of ad events.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="209024596%2FProperties%2F2034298084" anchor-label="loadId" id="209024596%2FProperties%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="load-id.html"><span>load</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="209024596%2FProperties%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="load-id.html">loadId</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The identifier for this load call.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1121113354%2FProperties%2F2034298084" anchor-label="request" id="-1121113354%2FProperties%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="request.html"><span><span>request</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1121113354%2FProperties%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="request.html">request</a><span class="token operator">: </span><a href="../-chartboost-mediation-ad-load-request/index.html">ChartboostMediationAdLoadRequest</a></div><div class="brief "><p class="paragraph">The publisher-supplied <a href="../-chartboost-mediation-ad-load-request/index.html">ChartboostMediationAdLoadRequest</a> that was used to load the ad.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1419430298%2FProperties%2F2034298084" anchor-label="winningBidInfo" id="1419430298%2FProperties%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="winning-bid-info.html"><span>winning</span><wbr></wbr><span>Bid</span><wbr></wbr><span><span>Info</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1419430298%2FProperties%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="winning-bid-info.html">winningBidInfo</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">The winning bid info for the ad.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1259939578%2FFunctions%2F2034298084" anchor-label="invalidate" id="1259939578%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="invalidate.html"><span><span>invalidate</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1259939578%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="invalidate.html"><span class="token function">invalidate</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Invalidate the ad. This should be called when the ad is no longer needed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1728905423%2FFunctions%2F2034298084" anchor-label="show" id="1728905423%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="show.html"><span><span>show</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1728905423%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="show.html"><span class="token function">show</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-chartboost-mediation-ad-show-result/index.html">ChartboostMediationAdShowResult</a></div><div class="brief "><p class="paragraph">Show the fullscreen ad.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="120636483%2FFunctions%2F2034298084" anchor-label="showFullscreenAdFromJava" id="120636483%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="show-fullscreen-ad-from-java.html"><span>show</span><wbr></wbr><span>Fullscreen</span><wbr></wbr><span>Ad</span><wbr></wbr><span>From</span><wbr></wbr><span><span>Java</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="120636483%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="show-fullscreen-ad-from-java.html"><span class="token function">showFullscreenAdFromJava</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">listener<span class="token operator">: </span><a href="../-chartboost-mediation-fullscreen-ad-show-listener/index.html">ChartboostMediationFullscreenAdShowListener</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Show the fullscreen ad. This method is designed to be called from Java.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>

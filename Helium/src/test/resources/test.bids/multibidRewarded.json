@@ -1,0 +1,137 @@
+{
+  "id": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e",
+  "seatbid": [
+    {
+      "bid": [
+        {
+          "id": "MEDIATION",
+          "impid": "1",
+          "price": 102,
+          "ext": {
+            "partner_placement": "428939561173260_575107359889812",
+            "line_item_id": "a line item ID"
+          }
+        }
+      ],
+      "seat": "facebook",
+      "helium_bid_id": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e_facebook"
+    },
+    {
+      "bid": [
+        {
+          "id": "MEDIATION",
+          "impid": "1",
+          "price": 45,
+          "ext": {
+            "partner_placement": "TJNonProgRewarded",
+            "line_item_id": "a line item ID"
+          }
+        }
+      ],
+      "seat": "tapjoy",
+      "helium_bid_id": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e_tapjoy"
+    },
+    {
+      "bid": [
+        {
+          "id": "MEDIATION",
+          "impid": "1",
+          "price": 17,
+          "ext": {
+            "partner_placement": "MoatPublishingRewarded",
+            "line_item_id": "a line item ID"
+          }
+        }
+      ],
+      "seat": "chartboost",
+      "helium_bid_id": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e_chartboost"
+    },
+    {
+      "bid": [
+        {
+          "id": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e_bid",
+          "impid": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e",
+          "price": 2.05747,
+          "crid": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e_bid",
+          "ext": {
+            "bidder": {
+              "helium": {
+                "placement_name": "TJAndroidRewarded"
+              },
+              "tapjoy": {
+                "tj_data": "{\"id\":\"49e9fbb46f08ca6fa64fa5758d00f7579ad9145e\",\"ext_data\":\"78e0fae82ba039f2424210ce7beb477767908a2b5bb52252941ddc7cd095ea66b4cecc68d0ce5c284254fc686ee810432ace9b52cbd327c543549590f2d2affd819f6413d9ae854fdfc2e1f8874ed0dc7eed1515d3dd733efae5d259b5865003da6b091435175a3492ff30db05c59d9e3a03d68ff6bc467816aea68245d9c10487985c26b52bec35cabed94a5b8af54c401d98f9d53a91dc564f8544ee1394bb2434ad2bd48e5e291ccfd7a18e769c8620fc53f6f089fffb736eb7454e79e1c86bdd451708dfcca17ed9db36afc7677e3cfed00bf6a904f4a501bd60bb4fd60402f373285a1f249caf80aec3da19df331dd15b06fe4f43abfb6e26ac0cc50c701b8e605e90e4db803ad5a9cb0ed24e92d40522b7add686f7df7621683b2950a21bae5c3d79ca45708d706fda43e260e4193508da04d90d2075bdc759acc044b5b3fe254dbeb0761e17c1f665204c4e8358af887fec6493fbc59ce297fdc1353059cd25b6a37c2984f009cf37e80a3998\"}"
+              }
+            }
+          }
+        }
+      ],
+      "seat": "tapjoy",
+      "helium_bid_id": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e_tapjoy"
+    },
+    {
+      "bid": [
+        {
+          "id": "MEDIATION",
+          "impid": "1",
+          "price": 2,
+          "ext": {
+            "partner_placement": "vz54103115d6d24c33b3",
+            "line_item_id": "a line item ID"
+          }
+        }
+      ],
+      "seat": "adcolony",
+      "helium_bid_id": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e_adcolony"
+    },
+    {
+      "bid": [
+        {
+          "id": "0",
+          "impid": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e",
+          "price": 0.23806364469222643,
+          "adid": "crv225195",
+          "adm": "PGh0bWw+CjxoZWFkPgogICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KICAgICA8dGl0bGU+PC90aXRsZT4KPC9oZWFkPgo8Ym9keSBzdHlsZT0ibWFyZ2luOjA7cGFkZGluZzowOyI+CiAgICAgPHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiIHNyYz0iaHR0cHM6Ly9jZG4ubGZzdG1lZGlhLmNvbS9+Y2RuL0pTLzAyL2luLWFwcC10YWctMS4yLjAuanMiPjwvc2NyaXB0PgogICAgIDxzY3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0Ij4KICAgICAgICAgIExTTV9JbkFwcF9TbG90KHsKICAgICAgICAgICAgICAgYWRfc2l6ZTogJzMyMHg0ODAnLAogICAgICAgICAgICAgICB1cmw6ICdodHRwczovL3dydGItbmoubGZzdG1lZGlhLmNvbS9kaXNwbGF5QWQ/X19hZHM9aXAzNzA0NC1Lb3Y2ZlV3azEzaU9qdWNiN0V2SjB3JmFkdD02MjA4NzA1ODE3NzI1NDMxODM1JnNlcT0yJnBsYz1LLWlIYUVVdFlRNzJFZElEaU5vaEhnMHExUVFhRHM0QnRWcmpROEtBUTBZJl9fZGY9dHJ1ZSZjbGlja1VybD1odHRwcyUzQSUyRiUyRndydGItbmoubGZzdG1lZGlhLmNvbSUyRmNsaWNrJTJGY21wMTUwOTIlMkY2MjA4NzA1ODE3NzI1NDMxODM1JTJGMiUzRl9fYWRzJTNEaXAzNzA0NC1Lb3Y2ZlV3azEzaU9qdWNiN0V2SjB3JTI2YWRrZXklM0RjZmUlMjZfZWFhaWRzaGExJTNEUVNIVm1VM0VSa182Q2F5LUJkbE9EWTY0SjVDTzFxYVhJM3JsaVlCaHc0NENMU2xOeEswOG9tYzdZdHJ3MGlKeiUyNl9lYWFpZCUzREdYdkxPVUpwaEptb1ltdnVtR1AzbndCZklYc080b2N2ZmRzWjk3WWMwdUJQSkZnX0Y3YXpndyUyNl9lYWFpZG1kNSUzRFBhaWFzWTdHbmlDeGo2Y2pzRDVQd1lwem9TMTRLeWRnMkEtc2lYdERndEZuTzJMYThOSWljdyUyNnNsb3QlM0RzbG90MTcwNTcyJTI2X19zdGFtcCUzRDE1ODAxNjI1Mzk5MTclMjZhZCUzRGNydjIyNTE5NSUyNl9jeCUzRCUyNCUyNENYJTI0JTI0JTI2X2N5JTNEJTI0JTI0Q1klMjQlMjQlMjZfY2VsdCUzRCUyNCUyNEVMVC1JRCUyNCUyNCUyNnJlZGlyZWN0VVJMJTNEJwogICAgICAgICAgfSk7CiAgICAgPC9zY3JpcHQ+Cgo8L2JvZHk+CjwvaHRtbD4=",
+          "adomain": [
+            "prettysimplegames.com"
+          ],
+          "bundle": "com.prettysimple.criminalcaseandroid",
+          "iurl": "http://dm.lsjet.com/adpreview/noclickad/crv225195?adkey=e16",
+          "cid": "cmp15092",
+          "crid": "crv225195",
+          "cat": [
+            "IAB9-30"
+          ],
+          "h": 480,
+          "w": 320,
+          "ext": {
+            "bidder": {
+              "imptrackers": [
+                "https://njchartboostrtb.lfstmedia.com/win?bidid=Lz9fX2FkdD02MjA4NzA1ODE3NzI1NDMxODM1Jl9fYWRlPTImX19hZHM9aXAzNzA0NC1Lb3Y2ZlV3azEzaU9qdWNiN0V2SjB3&price=0.24365267135138954&trid=ip35515-1587191469452&auctionid=e47499a057a4f017b7ad1397bbd97bca00273033",
+                "https://njchartboostrtb.lfstmedia.com/notify?bidid=Lz9fX2FkdD02MjA4NzA1ODE3NzI1NDMxODM1Jl9fYWRlPTImX19hZHM9aXAzNzA0NC1Lb3Y2ZlV3azEzaU9qdWNiN0V2SjB3&price=0.24365267135138954&trid=ip35515-1587191469452&auctionid=e47499a057a4f017b7ad1397bbd97bca00273033"
+              ],
+              "crtype": "MRAID playable",
+              "priceType": 2,
+              "adId": "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",
+              "cgn": "rlnKwSlli8kgxBwfeA33OSsQVYoeVID8t0HdNzkG2+AdcIabyapSpUXKSsVa3e93FXOwyIezHe/yevKxmY6nfe4KnaHU5GlJ58mxzf8tLYVbPgXHNuGsWNMeHmU5Mvuinhqa5zhJBKWr6nZL72VOnziPdB0i7shiqEbwr8FUzbRLw97agI4qnCFMQrpSUV/FofDWO8yT7U8Hoa7N1toPzg9VieqhL8/WyVfsIrYq0PGl5TBMV1ONnFYiz9zh/6DOTVEMkFgmXhDpy6SYG7UWX5MhKVt9wsyz7Edu1S5I38VXRZ1RWxrHOJkGQ672i7H8H9l7iM2M6twx1fN+udc2XHr6X+x3TBGp1X9qQH3VK/f/o7NJtZgYLGykgH5XUS14wkIs9GAWHe5tShsHAMDSxYDuv+C1sYaKTW+1V0fbLKDySDRgSq+c+9KLZQWXkpnuu99ONHpBc1U9Bxa5IsiZK1oAnr8Ok4lEzTbiimQSVvEY6YQhcUxs7s1rvZXTPCjPT1krThJhabek19KVswf6HcebQ7wOt4qEIZemlsnAbevrshgSR6bcufST2H0SyoWFIp+XClg3OuBwPQaG5b1EwjE9I/x6XRnb8iviCr4LESV+vDMZxfkh/Unwx/ldz84zL7j0PPWSgMWtk6hHvZEbf9WsnOOj/ZVSNiP4BUK5NkpcRskodp6OjW0UdpzwsOgCh5dTm4C/AhKKp/g8ocKvnD5raxUnGtaBzXo7HlKXG4+lNzUYXVKZPrTGBrannxYhTs6JEZcamRbvhwVFPuGBsZ8Yb0Nm3FdjQA==",
+              "template": "https://t.chartboost.com/base_templates/html/mraid-playable-876effafda.html",
+              "trackingId": "0889ca1b-21be-4e1a-81ab-d15730b8ab40"
+            }
+          }
+        }
+      ],
+      "seat": "chartboost",
+      "helium_bid_id": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e_chartboost"
+    }
+  ],
+  "ext": {
+    "responsetimemillis": {
+      "adcolony": 1,
+      "chartboost": 1,
+      "facebook": 1,
+      "tapjoy": 1
+    },
+    "errors": {
+      "facebook": "HTTPClientError"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+.git
+.github
+.gitmodules
+.gitignore
+.gradle
+.idea
+app
+HeliumCanary
+chartboost-mediation-android-adapter-*
+*/build/kotlin
+*/build/tmp
+*/build/intermediates
+/build/dokka
+/scripts/
