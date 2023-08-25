@@ -1,0 +1,81 @@
+{
+  "user":{
+    "ext":{
+      "impdepth":3,
+      "sessionduration":0,
+      "keywords": {}
+    }
+  },
+  "test":0,
+  "imp":[
+    {
+      "displaymanager":"Helium",
+      "displaymanagerver":"4.0.0",
+      "instl":1,
+      "tagid":"AllNonProRewarded",
+      "secure":1,
+      "video":{
+        "mimes":[
+          "video/mp4"
+        ],
+        "w":0,
+        "h":0,
+        "placement":5,
+        "pos":7,
+        "companiontype":[
+          1,
+          2
+        ],
+        "ext":{
+          "placementtype":"rewarded"
+        }
+      },
+      "banner":{
+        "w":0,
+        "h":0,
+        "pos":7,
+        "topframe":1,
+        "ext":{
+          "placementtype":"rewarded"
+        }
+      }
+    }
+  ],
+  "app":{
+
+  },
+  "device":{
+    "ua":"",
+    "make":"robolectric",
+    "model":"robolectric",
+    "os":"Android",
+    "osv":"33",
+    "h":0,
+    "w":0,
+    "language":"en",
+    "connectiontype":3,
+    "geo":{
+      "utcoffset":-300
+    },
+    "ext":{
+
+    }
+  },
+  "regs":{
+    "coppa":0,
+    "ext":{
+      "gdpr":0
+    }
+  },
+  "ext":{
+    "bidders":{
+      "admob":{
+
+      }
+    },
+    "inactive_bidders":{
+
+    },
+    "helium_sdk_request_id":"rewardedloadid123"
+  }
+}

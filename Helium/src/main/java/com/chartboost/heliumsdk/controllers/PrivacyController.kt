@@ -1,0 +1,125 @@
+/*
+ * Copyright 2022-2023 Chartboost, Inc.
+ * 
+ * Use of this source code is governed by an MIT-style
+ * license that can be found in the LICENSE file.
+ */
+
+package com.chartboost.heliumsdk.controllers
+
+import android.content.Context
+
+/**
+ * @suppress
+ *
+ * This class manages privacy settings for the Helium SDK.
+ */
+class PrivacyController(context: Context) {
+    /**
+     * Internal keys used for reading/writing privacy settings to the SharedPreferences.
+     */
+    companion object {
+        private const val heliumPrivacyIdentifier = "helium_privacy_id"
+        private const val heliumCoppaKey = "helium_coppa"
+        private const val heliumGdprKey = "helium_GDPR"
+        private const val heliumUserConsentKey = "helium_user_consent"
+        private const val heliumCcpaConsentKey = "helium_ccpa_consent"
+    }
+
+    private val sharedPreferences = context.getSharedPreferences(
+        heliumPrivacyIdentifier,
+        Context.MODE_PRIVATE
+    )
+
+    /**
+     * SharedPreferences can only store primitives. We need to keep track of tri-state statuses.
+     */
+    enum class PrivacySetting(val value: Int) {
+        TRUE(1),
+        FALSE(0),
+        UNSET(-1)
+    }
+
+    /**
+     * Privacy string for CCPA.
+     */
+    enum class PrivacyString(val consentString: String) {
+        GRANTED("1YN-"),
+        DENIED("1YY-"),
+    }
+
+    /**
+     * Is this user covered under the COPPA regulations?
+     * It is 0 or 1 for not covered (no problem) or covered (bunch of rules)
+     * If the developer has not specifically set COPPA it should default to 0.
+     */
+    var coppa: Boolean?
+        get() = intToBoolean(sharedPreferences.getInt(heliumCoppaKey, PrivacySetting.FALSE.value))
+        set(value) {
+            val editor = sharedPreferences.edit()
+            editor.putInt(heliumCoppaKey, booleanToInt(value ?: return))
+            editor.apply()
+        }
+
+    /**
+     * Is this user covered under GDPR?
+     * 1 for covered. 0 for not.
+     * If the developer did not specifically set it, do not send the node at all.
+     */
+    var gdpr: Int
+        get() = sharedPreferences.getInt(heliumGdprKey, PrivacySetting.UNSET.value)
+        set(value) {
+            val editor = sharedPreferences.edit()
+            editor.putInt(heliumGdprKey, booleanToInt(value == PrivacySetting.TRUE.value))
+            editor.apply()
+        }
+
+    /**
+     * This represents a user consent when GDPR applies (int 0 or 1).
+     * This is only sent if GDPR is specifically set to 1.
+     * If GDPR is not set, or it is set to 0, do not send the node at all.
+     * TODO: What if user consent is not set?
+     */
+    var userConsent: Boolean?
+        get() = intToBoolean(
+            sharedPreferences.getInt(
+                heliumUserConsentKey,
+                PrivacySetting.FALSE.value
+            )
+        )
+        set(value) {
+            val editor = sharedPreferences.edit()
+            editor.putInt(heliumUserConsentKey, booleanToInt(value ?: return))
+            editor.apply()
+        }
+
+    /**
+     * Handles getting and setting the CCPA consent.
+     * Only get if the CCPA consent exists, else return null.
+     * Only set if CCPA consent is true/false. If null, return.
+     */
+    var ccpaConsent: Boolean?
+        get() = if (sharedPreferences.contains(heliumCcpaConsentKey)) {
+            sharedPreferences.getBoolean(heliumCcpaConsentKey, false)
+        } else null
+        set(value) {
+            val editor = sharedPreferences.edit()
+            editor.putBoolean(heliumCcpaConsentKey, value ?: return)
+            editor.apply()
+        }
+
+    private fun booleanToInt(bool: Boolean): Int {
+        return when (bool) {
+            true -> PrivacySetting.TRUE.value
+            false -> PrivacySetting.FALSE.value
+        }
+    }
+
+    private fun intToBoolean(int: Int): Boolean? {
+        return when (int) {
+            PrivacySetting.TRUE.value -> true
+            PrivacySetting.FALSE.value -> false
+            else -> null
+        }
+    }
+}
