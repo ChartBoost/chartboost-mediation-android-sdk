@@ -153,10 +153,16 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
         }
 
         companion object {
+            @JvmField
             val STANDARD = HeliumBannerSize("STANDARD", 320, 50)
+
+            @JvmField
             val MEDIUM = HeliumBannerSize("MEDIUM", 300, 250)
+
+            @JvmField
             val LEADERBOARD = HeliumBannerSize("LEADERBOARD", 728, 90)
 
+            @JvmStatic
             fun bannerSize(width: Int, height: Int = 0): HeliumBannerSize {
                 return HeliumBannerSize("ADAPTIVE", width, height, true)
             }
