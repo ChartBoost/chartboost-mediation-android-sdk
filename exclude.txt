@@ -12,4 +12,3 @@ chartboost-mediation-android-adapter-*
 */build/intermediates
 /build/dokka
 /scripts/
-*.dex
