@@ -28,13 +28,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Since the `docs` directory is at the root of the repo, we need to move it to a subdirectory.
-      # This way our URL can be `org.github.io/repo/docs/$VERSION/` instead of `org.github.io/repo/$VERSION/`.
-      - name: Create temp directory
-        run: |
-          mkdir -p ./temp-docs/
-          cp -r ./docs/ ./temp-docs/
-
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
@@ -43,7 +36,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './temp-docs'
+          path: './docs'
 
       - name: Deploy to GitHub Pages
         id: deployment
