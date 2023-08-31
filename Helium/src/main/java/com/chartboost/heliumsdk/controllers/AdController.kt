@@ -145,6 +145,7 @@ class AdController(
                     cachedAd.partnerAd = it
                     cachedAd.winningBidInfo = auctionResult.bids.bidInfo
                     cachedAd.ilrdJson = auctionResult.bids.activeBid?.ilrd
+                    cachedAd.loadId = adLoadParams.loadId
                     sendAuctionWinnerRequest(auctionResult.bids, adLoadParams.loadId)
                     return Result.success(cachedAd)
                 }, {
