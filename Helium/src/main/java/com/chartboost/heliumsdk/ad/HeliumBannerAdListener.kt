@@ -7,11 +7,13 @@
 
 package com.chartboost.heliumsdk.ad
 
+import android.view.View
 import com.chartboost.heliumsdk.domain.ChartboostMediationAdException
 
 /**
  * Use to listen to Helium banner ad events.
  */
+@JvmDefaultWithCompatibility
 interface HeliumBannerAdListener {
 
     /**
@@ -38,4 +40,12 @@ interface HeliumBannerAdListener {
      * @param placementName Indicates which placement recorded an impression.
      */
     fun onAdImpressionRecorded(placementName: String)
+
+    /**
+     * Called when an ad View is added to this HeliumBannerAd.
+     *
+     * @param placementName Indicates which placement had a View added.
+     * @param child View being added
+     */
+    fun onAdViewAdded(placementName: String, child: View?) { }
 }

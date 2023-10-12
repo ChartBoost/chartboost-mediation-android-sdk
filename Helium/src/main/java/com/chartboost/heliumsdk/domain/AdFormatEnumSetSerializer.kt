@@ -27,7 +27,6 @@ object AdFormatEnumSetSerializer : KSerializer<AdFormat> {
 
     override fun deserialize(decoder: Decoder): AdFormat {
         return AdFormat.fromString(
-            decoder.decodeSerializableValue(String.serializer())
-        )
+            decoder.decodeSerializableValue(String.serializer()))
     }
 }

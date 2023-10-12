@@ -33,6 +33,7 @@ class AdIdentifier(@field:Ad.AdType @param:Ad.AdType val adType: Int, val placem
             Ad.AdType.INTERSTITIAL -> "interstitial"
             Ad.AdType.REWARDED -> "rewarded"
             Ad.AdType.BANNER -> "banner"
+            Ad.AdType.ADAPTIVE_BANNER -> "adaptive_banner"
             Ad.AdType.REWARDED_INTERSTITIAL -> "rewarded_interstitial"
             else -> "unknown"
         }
@@ -43,6 +44,7 @@ class AdIdentifier(@field:Ad.AdType @param:Ad.AdType val adType: Int, val placem
             Ad.AdType.INTERSTITIAL -> "$placementName (Interstitial)"
             Ad.AdType.REWARDED -> "$placementName (Rewarded)"
             Ad.AdType.BANNER -> "$placementName (Banner)"
+            Ad.AdType.ADAPTIVE_BANNER -> "$placementName (Adaptive Banner)"
             else -> ""
         }
     }

@@ -68,30 +68,4 @@ sealed class MetricsError {
             const val MAX_JSON_SIZE = (3.5 * 1024 * 1024).toInt()
         }
     }
-
-    @Serializable
-    class AdaptiveBannerTooLargeError private constructor(
-        @SerialName("details")
-        val details: JsonObject,
-    ) : MetricsError() {
-        constructor(
-            creativeWidth: Int,
-            creativeHeight: Int,
-            containerWidth: Int,
-            containerHeight: Int,
-            requestedWidth: Int,
-            requestedHeight: Int,
-        ) : this(
-            details = buildJsonObject {
-                put("creative_width", creativeWidth)
-                put("creative_height", creativeHeight)
-
-                put("container_width", containerWidth)
-                put("container_height", containerHeight)
-
-                put("requested_width", requestedWidth)
-                put("requested_height", requestedHeight)
-            }
-        )
-    }
 }

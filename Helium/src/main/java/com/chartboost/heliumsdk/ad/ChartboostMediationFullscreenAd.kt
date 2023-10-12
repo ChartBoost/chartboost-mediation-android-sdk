@@ -141,7 +141,7 @@ class ChartboostMediationFullscreenAd(
 
         @OptIn(InternalSerializationApi::class)
         private fun createPayloadJson(metricsSet: MutableSet<Metrics>): JSONObject {
-            val metricsRequestBody = LogController.buildMetricsDataRequestBody(metricsSet)
+            val metricsRequestBody = MetricsManager.buildMetricsDataRequestBody(metricsSet)
             return HeliumJson.writeJson(
                 metricsRequestBody,
                 MetricsRequestBody.serializer()
@@ -323,6 +323,7 @@ class ChartboostMediationFullscreenAd(
                 if (error == null) {
                     CoroutineScope(Main).launch {
                         listener?.onAdImpressionRecorded(this@ChartboostMediationFullscreenAd)
+                        HeliumSdk.chartboostMediationInternal.fullscreenAdShowingState.notifyFullscreenAdShown()
                     }.also { it.join() }
                 }
             } ?: run {
@@ -350,7 +351,7 @@ class ChartboostMediationFullscreenAd(
             }
         )
 
-        val metricsRequestBody = LogController.buildMetricsDataRequestBody(metricsSet)
+        val metricsRequestBody = MetricsManager.buildMetricsDataRequestBody(metricsSet)
         val payloadJson = HeliumJson.writeJson(
             metricsRequestBody,
             MetricsRequestBody.serializer()

@@ -82,6 +82,13 @@ object AppConfigStorage {
         get() = appConfig.bannerLoadTimeoutSeconds
 
     /**
+     * Delay before checking creative size for BANNER_SIZE event
+     */
+    var bannerSizeEventDelayMs: Long = 1000L
+        private set
+        get() = appConfig.bannerSizeEventDelayMs
+
+    /**
      * Load timeout for partner fullscreen ad requests.
      */
     var fullscreenLoadTimeoutSeconds: Int = 30

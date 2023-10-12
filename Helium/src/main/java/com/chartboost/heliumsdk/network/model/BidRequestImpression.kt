@@ -61,7 +61,8 @@ class BidRequestImpression private constructor(
         size: HeliumBannerAd.HeliumBannerSize?
     ) : this(
         tagId = adIdentifier.placementName,
-        fullscreen = if (adIdentifier.adType == AdType.BANNER) 0 else 1,
+        fullscreen = if (adIdentifier.adType == AdType.BANNER
+            || adIdentifier.adType == AdType.ADAPTIVE_BANNER) 0 else 1,
         video = BidRequestImpressionVideo(size, adIdentifier.adType),
         banner = BidRequestImpressionBanner(size, adIdentifier.adType)
     )
@@ -119,8 +120,8 @@ class BidRequestImpressionVideo private constructor(
     ) : this(
         width = size?.width ?: Environment.displayWidth,
         height = size?.height ?: Environment.displayHeight,
-        placement = if (adType == AdType.BANNER) 2 else 5,
-        position = if (adType == AdType.BANNER) 1 else 7,
+        placement = if (adType == AdType.BANNER || adType == AdType.ADAPTIVE_BANNER) 2 else 5,
+        position = if (adType == AdType.BANNER || adType == AdType.ADAPTIVE_BANNER) 1 else 7,
         companionType = listOf(1, 2),
         ext = BidRequestImpressionExt(adType)
     )
@@ -164,7 +165,7 @@ class BidRequestImpressionBanner private constructor(
     ) : this(
         width = size?.width ?: Environment.displayWidth,
         height = size?.height ?: Environment.displayHeight,
-        position = if (adType == AdType.BANNER) 1 else 7,
+        position = if (adType == AdType.BANNER || adType == AdType.ADAPTIVE_BANNER) 1 else 7,
         ext = BidRequestImpressionExt(adType)
     )
 }
@@ -186,6 +187,7 @@ class BidRequestImpressionExt private constructor(
             AdType.INTERSTITIAL -> "interstitial"
             AdType.REWARDED -> "rewarded"
             AdType.BANNER -> "banner"
+            AdType.ADAPTIVE_BANNER -> "adaptive_banner"
             else -> "unknown"
         }
     )

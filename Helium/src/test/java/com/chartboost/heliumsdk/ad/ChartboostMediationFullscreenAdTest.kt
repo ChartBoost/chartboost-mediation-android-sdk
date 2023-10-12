@@ -8,11 +8,13 @@
 package com.chartboost.heliumsdk.ad
 
 import android.content.Context
+import com.chartboost.heliumsdk.HeliumSdk
 import com.chartboost.heliumsdk.controllers.AdController
 import com.chartboost.heliumsdk.domain.CachedAd
 import com.chartboost.heliumsdk.domain.ChartboostMediationAdException
 import com.chartboost.heliumsdk.domain.ChartboostMediationError
 import com.chartboost.heliumsdk.domain.Keywords
+import com.chartboost.heliumsdk.utils.FullscreenAdShowingState
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,6 +26,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import java.util.*
+import kotlin.reflect.full.companionObjectInstance
 
 class ChartboostMediationFullscreenAdTest {
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -66,9 +69,22 @@ class ChartboostMediationFullscreenAdTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `show success`() = runTest {
+        val mockFullscreenAdShowingState = mockk<FullscreenAdShowingState>()
+        val heliumSdkCompanion = HeliumSdk::class.companionObjectInstance
+
+        val chartboostMediationInternalField = HeliumSdk::class.java.getDeclaredField("chartboostMediationInternal")
+        chartboostMediationInternalField.isAccessible = true
+        val chartboostMediationInternal = chartboostMediationInternalField.get(heliumSdkCompanion)
+
+        val fullscreenAdShowingStateField = chartboostMediationInternal.javaClass.getDeclaredField("fullscreenAdShowingState")
+        fullscreenAdShowingStateField.isAccessible = true
+        fullscreenAdShowingStateField.set(chartboostMediationInternal, mockFullscreenAdShowingState)
+
         val showResult = ChartboostMediationAdShowResult(JSONObject(), null)
 
         coEvery { adController.show(context, cachedAd) } returns showResult
+        coEvery { listener.onAdImpressionRecorded(any()) } just Runs
+        coEvery { mockFullscreenAdShowingState.notifyFullscreenAdShown() } just Runs
 
         val result = fullscreenAd.show(context)
 
@@ -76,6 +92,7 @@ class ChartboostMediationFullscreenAdTest {
         coVerify { adController.show(context, cachedAd) }
 
         verify(exactly = 1) { listener.onAdImpressionRecorded(fullscreenAd) }
+        verify(exactly = 1) { mockFullscreenAdShowingState.notifyFullscreenAdShown() }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

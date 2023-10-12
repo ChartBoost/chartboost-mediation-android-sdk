@@ -8,6 +8,7 @@
 package com.chartboost.heliumsdk.network.model
 
 import com.chartboost.heliumsdk.domain.*
+import com.chartboost.heliumsdk.network.Endpoints
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -20,6 +21,12 @@ import kotlin.math.sign
 class MetricsRequestBody constructor(
     @SerialName("auction_id")
     val auctionId: String? = null,
+
+    @SerialName("placement_type")
+    val placementType: String? = null,
+
+    @SerialName("size")
+    val size: BannerAdDimensions? = null,
 
     @Contextual
     @SerialName("result")
@@ -82,7 +89,7 @@ class MetricsData private constructor(
         lineItemId = metrics.lineItemId,
         partnerPlacement = metrics.partnerPlacement,
         partner = metrics.partner,
-        start = metrics.start,
+        start = resolveStartTime(metrics),
         end = if (didPartnerTimeOut(metrics.chartboostMediationError)) null else metrics.end,
         duration = if (didPartnerTimeOut(metrics.chartboostMediationError) || metrics.duration?.sign != 1) null else metrics.duration,
         isSuccess = metrics.isSuccess,
@@ -97,6 +104,49 @@ class MetricsData private constructor(
      * @suppress
      */
     companion object {
+        /**
+         * The last known start time.
+         */
+        @Volatile
+        private var startLastKnownGood: Long = System.currentTimeMillis()
+
+        /**
+         * Heuristic to determine the start time of a partner. This is not meant to be foolproof.
+         * Once we've completely rewritten metrics, we can stop doing all this.
+         *
+         * @param metrics The metrics object.
+         *
+         * @return The start time of the event, guaranteed to be non-null, so it should always be available.
+         */
+        private fun resolveStartTime(metrics: Metrics): Long {
+            val event = metrics.event
+            val start = metrics.start
+            val end = metrics.end
+
+            // Only do this for initialization since it's known to be a problem.
+            if (event != Endpoints.Sdk.Event.INITIALIZATION) {
+                return start ?: System.currentTimeMillis()
+            }
+
+            return when {
+                // This is a temporary fix for the issue where the start time is occasionally not set (i.e. null).
+                // We store the last known start time and use it as a backup when the start time is null.
+                start != null && (end == null || start <= end) -> {
+                    startLastKnownGood = start
+                    start
+                }
+
+                // If the start time is greater than the end time, then the start time is incorrect.
+                // Use end time as the start time instead. This will skew the duration, but it's better than nothing.
+                start != null && end != null && start > end -> end
+
+                // If the start time is null, then use the last known start time as a backup.
+                // For concurrent requests, this will result in the start time being slightly off, but it's better than nothing.
+                else -> startLastKnownGood.takeIf { it <= (end ?: Long.MAX_VALUE) }
+                    ?: System.currentTimeMillis()
+            }
+        }
+
         private fun didPartnerTimeOut(error: ChartboostMediationError?) =
             error == ChartboostMediationError.CM_INITIALIZATION_FAILURE_TIMEOUT ||
                     error == ChartboostMediationError.CM_PREBID_FAILURE_TIMEOUT ||

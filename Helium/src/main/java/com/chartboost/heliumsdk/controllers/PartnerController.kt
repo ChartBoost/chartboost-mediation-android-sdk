@@ -8,13 +8,39 @@
 package com.chartboost.heliumsdk.controllers
 
 import android.content.Context
-import com.chartboost.heliumsdk.domain.*
-import com.chartboost.heliumsdk.network.Endpoints.Sdk.Event.*
+import android.util.Size
+import com.chartboost.heliumsdk.domain.AdFormat
+import com.chartboost.heliumsdk.domain.AdInteractionListener
+import com.chartboost.heliumsdk.domain.AdapterInfo
+import com.chartboost.heliumsdk.domain.AppConfigStorage
+import com.chartboost.heliumsdk.domain.ChartboostMediationAdException
+import com.chartboost.heliumsdk.domain.ChartboostMediationError
+import com.chartboost.heliumsdk.domain.EventResult
+import com.chartboost.heliumsdk.domain.GdprConsentStatus
+import com.chartboost.heliumsdk.domain.Metrics
+import com.chartboost.heliumsdk.domain.MetricsManager
+import com.chartboost.heliumsdk.domain.PartnerAd
+import com.chartboost.heliumsdk.domain.PartnerAdListener
+import com.chartboost.heliumsdk.domain.PartnerAdLoadRequest
+import com.chartboost.heliumsdk.domain.PartnerAdapter
+import com.chartboost.heliumsdk.domain.PartnerConfiguration
+import com.chartboost.heliumsdk.domain.PreBidRequest
+import com.chartboost.heliumsdk.network.Endpoints.Sdk.Event.EXPIRATION
+import com.chartboost.heliumsdk.network.Endpoints.Sdk.Event.INITIALIZATION
+import com.chartboost.heliumsdk.network.Endpoints.Sdk.Event.LOAD
+import com.chartboost.heliumsdk.network.Endpoints.Sdk.Event.PREBID
+import com.chartboost.heliumsdk.network.Endpoints.Sdk.Event.SHOW
 import com.chartboost.heliumsdk.utils.LogController
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
-import java.util.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
+import java.util.Timer
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.concurrent.schedule
 import kotlin.system.measureTimeMillis
@@ -89,7 +115,7 @@ class PartnerController {
         onPartnerInitializationComplete: (ChartboostMediationError?) -> Unit
     ) {
         if (!requiredDataIsValid(context, adapterClasses)) {
-            LogController.postMetricsDataForFailedEvent(
+            MetricsManager.postMetricsDataForFailedEvent(
                 partner = null,
                 event = INITIALIZATION,
                 auctionIdentifier = null,
@@ -150,7 +176,7 @@ class PartnerController {
             }
 
             Timer().schedule(AppConfigStorage.initializationMetricsPostTimeout * 1000L) {
-                LogController.postMetricsData(
+                MetricsManager.postMetricsData(
                     metricsDataSet,
                     eventResult = AppConfigStorage.parsingError?.let {
                         EventResult.SdkInitializationResult.InitResult2B(it)
@@ -262,7 +288,7 @@ class PartnerController {
     ): Map<String, Map<String, String>> {
         val bidTokens: ConcurrentHashMap<String, Map<String, String>> = ConcurrentHashMap()
         if (!requiredDataIsValid(context, request)) {
-            LogController.postMetricsDataForFailedEvent(
+            MetricsManager.postMetricsDataForFailedEvent(
                 partner = null,
                 event = PREBID,
                 auctionIdentifier = null,
@@ -274,7 +300,7 @@ class PartnerController {
         }
 
         val bidJob = CoroutineScope(Main).launch(CoroutineExceptionHandler { _, error ->
-            LogController.postMetricsDataForFailedEvent(
+            MetricsManager.postMetricsDataForFailedEvent(
                 partner = null,
                 event = PREBID,
                 auctionIdentifier = null,
@@ -326,7 +352,7 @@ class PartnerController {
                 }
             }
 
-            LogController.postMetricsData(metricsDataSet, request.loadId)
+            MetricsManager.postMetricsData(metricsDataSet, request.loadId)
         }
         bidJob.join()
         return bidTokens
@@ -341,22 +367,25 @@ class PartnerController {
      * @param isMediation True if this is a mediation request, false if it's a bidding one.
      * @param request The [PartnerAdLoadRequest] instance containing data necessary for this operation.
      */
-    suspend fun routeLoad(
+    internal suspend fun routeLoad(
         context: Context,
         auctionId: String,
         lineItemId: String?,
         isMediation: Boolean,
         request: PartnerAdLoadRequest,
         loadMetricsSet: MutableSet<Metrics>,
+        placementType: String?
     ): Result<PartnerAd> {
         if (!requiredDataIsValid(context, request.partnerPlacement, request.chartboostPlacement)) {
-            LogController.postMetricsDataForFailedEvent(
+            MetricsManager.postMetricsDataForFailedEvent(
                 partner = request.partnerId,
                 event = LOAD,
                 auctionIdentifier = auctionId,
                 chartboostMediationError = ChartboostMediationError.CM_INVALID_ARGUMENTS,
                 chartboostMediationErrorMessage = ChartboostMediationError.CM_INVALID_ARGUMENTS.message,
-                loadId = request.identifier
+                loadId = request.identifier,
+                placementType = placementType,
+                size = request.size?.takeIf { (placementType == "adaptive_banner") }
             )
             return Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_INVALID_ARGUMENTS))
         }
@@ -364,14 +393,16 @@ class PartnerController {
         var result: Result<PartnerAd> =
             Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_UNKNOWN_ERROR))
         val job = CoroutineScope(Main).launch(CoroutineExceptionHandler { _, error ->
-            LogController.postMetricsDataForFailedEvent(
+            MetricsManager.postMetricsDataForFailedEvent(
                 partner = request.partnerId,
                 event = LOAD,
                 auctionIdentifier = auctionId,
                 chartboostMediationError = (error as? ChartboostMediationAdException)?.chartboostMediationError
                     ?: ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION,
                 chartboostMediationErrorMessage = error.message,
-                loadId = request.identifier
+                loadId = request.identifier,
+                placementType = placementType,
+                size = request.size?.takeIf { (placementType == "adaptive_banner") }
             )
             result =
                 Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION))
@@ -390,6 +421,14 @@ class PartnerController {
                         metrics.lineItemId = lineItemId
                         metrics.networkType = Metrics.NetworkType.getType(isMediation)
                         metrics.partnerPlacement = request.partnerPlacement
+                        metrics.placementType = placementType
+                        if (placementType == "adaptive_banner"
+                            && request.size != null) {
+                            metrics.size = Size(
+                                request.size.width,
+                                request.size.height
+                            )
+                        }
 
                         measureTimeMillis {
                             withContext(Main) {
@@ -424,26 +463,30 @@ class PartnerController {
                             metrics.duration = it
                         }
                     } ?: run {
-                        LogController.postMetricsDataForFailedEvent(
+                        MetricsManager.postMetricsDataForFailedEvent(
                             partner = request.partnerId,
                             event = LOAD,
                             auctionIdentifier = auctionId,
                             chartboostMediationError = ChartboostMediationError.CM_LOAD_FAILURE_ADAPTER_NOT_FOUND,
                             chartboostMediationErrorMessage = ChartboostMediationError.CM_LOAD_FAILURE_ADAPTER_NOT_FOUND.message,
-                            loadId = request.identifier
+                            loadId = request.identifier,
+                            placementType = placementType,
+                            size = request.size?.takeIf { (placementType == "adaptive_banner") }
                         )
 
                         result =
                             Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_ADAPTER_NOT_FOUND))
                     }
                 } ?: run {
-                    LogController.postMetricsDataForFailedEvent(
+                    MetricsManager.postMetricsDataForFailedEvent(
                         partner = request.partnerId,
                         event = LOAD,
                         auctionIdentifier = auctionId,
                         chartboostMediationError = ChartboostMediationError.CM_LOAD_FAILURE_TIMEOUT,
                         chartboostMediationErrorMessage = ChartboostMediationError.CM_LOAD_FAILURE_TIMEOUT.message,
-                        loadId = request.identifier
+                        loadId = request.identifier,
+                        placementType = placementType,
+                        size = request.size?.takeIf { (placementType == "adaptive_banner") }
                     )
 
                     result =
@@ -477,7 +520,7 @@ class PartnerController {
         )
 
         if (!requiredDataIsValid(context) || partnerAd == null) {
-            LogController.postMetricsDataForFailedEvent(
+            MetricsManager.postMetricsDataForFailedEvent(
                 partner = null,
                 event = SHOW,
                 auctionIdentifier = auctionIdentifier,
@@ -495,7 +538,7 @@ class PartnerController {
         }
 
         val partnerShowJob = CoroutineScope(Main).launch(CoroutineExceptionHandler { _, error ->
-            LogController.postMetricsDataForFailedEvent(
+            MetricsManager.postMetricsDataForFailedEvent(
                 partner = partnerAd.request.partnerId,
                 event = SHOW,
                 auctionIdentifier = auctionIdentifier,
@@ -548,7 +591,7 @@ class PartnerController {
                 metrics = metricsDataSet
             )
 
-            LogController.postMetricsData(metricsDataSet, loadId)
+            MetricsManager.postMetricsData(metricsDataSet, loadId)
         }
         partnerShowJob.join()
         return internalAdShowResult
@@ -720,7 +763,7 @@ class PartnerController {
      */
     private fun getLoadTimeoutMs(format: AdFormat): Long {
         return when (format) {
-            AdFormat.BANNER -> AppConfigStorage.bannerLoadTimeoutSeconds * 1000L
+            AdFormat.BANNER, AdFormat.ADAPTIVE_BANNER -> AppConfigStorage.bannerLoadTimeoutSeconds * 1000L
             AdFormat.INTERSTITIAL, AdFormat.REWARDED, AdFormat.REWARDED_INTERSTITIAL -> AppConfigStorage.fullscreenLoadTimeoutSeconds * 1000L
             else -> {
                 LogController.e("Unknown ad format: $format. Using default timeout.")
@@ -761,7 +804,7 @@ class PartnerController {
             override fun onPartnerAdExpired(partnerAd: PartnerAd) {
                 adInteractionListener.onExpired(partnerAd)
 
-                LogController.postMetricsData(
+                MetricsManager.postMetricsData(
                     setOf(Metrics(
                         partnerAd.request.partnerId, EXPIRATION
                     ).apply {

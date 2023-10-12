@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Companion</title>
+    <link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../../index.html">
+                    <span>Helium</span>
+            </a>
+    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":Helium:dokkaHtml/release">androidJvm</button>
+        </div>
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="Helium::com.chartboost.heliumsdk/HeliumSdk.Companion///PointingToDeclaration//2034298084">
+  <div class="breadcrumbs"><a href="../../../../index.html">Helium</a><span class="delimiter">/</span><a href="../../index.html">com.chartboost.heliumsdk</a><span class="delimiter">/</span><a href="../index.html">HeliumSdk</a><span class="delimiter">/</span><span class="current">Companion</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Companion</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">Companion</a></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="1884377388%2FProperties%2F2034298084" anchor-label="adapterInfo" id="1884377388%2FProperties%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="adapter-info.html"><span>adapter</span><wbr></wbr><span><span>Info</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1884377388%2FProperties%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">val </span><a href="adapter-info.html">adapterInfo</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="com.chartboost.heliumsdk.domain/AdapterInfo///PointingToDeclaration/">AdapterInfo</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Gets the adapter info from the PartnerController instance.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1477699162%2FProperties%2F2034298084" anchor-label="context" id="1477699162%2FProperties%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="context.html"><span><span>context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1477699162%2FProperties%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">val </span><a href="context.html">context</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns the activity context if available. Otherwise, returns the application context if initialized.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1948523221%2FFunctions%2F2034298084" anchor-label="getAppId" id="-1948523221%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-app-id.html"><span>get</span><wbr></wbr><span>App</span><wbr></wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1948523221%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-app-id.html"><span class="token function">getAppId</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1683869628%2FFunctions%2F2034298084" anchor-label="getAppSignature" id="1683869628%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-app-signature.html"><span>get</span><wbr></wbr><span>App</span><wbr></wbr><span><span>Signature</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1683869628%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-app-signature.html"><span class="token function">getAppSignature</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-592615084%2FFunctions%2F2034298084" anchor-label="getGameEngineName" id="-592615084%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-game-engine-name.html"><span>get</span><wbr></wbr><span>Game</span><wbr></wbr><span>Engine</span><wbr></wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-592615084%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-game-engine-name.html"><span class="token function">getGameEngineName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Gets the Game Engine name.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="450583779%2FFunctions%2F2034298084" anchor-label="getGameEngineVersion" id="450583779%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-game-engine-version.html"><span>get</span><wbr></wbr><span>Game</span><wbr></wbr><span>Engine</span><wbr></wbr><span><span>Version</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="450583779%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-game-engine-version.html"><span class="token function">getGameEngineVersion</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Gets the Game Engine version.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1835391298%2FFunctions%2F2034298084" anchor-label="getTestMode" id="-1835391298%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-test-mode.html"><span>get</span><wbr></wbr><span>Test</span><wbr></wbr><span><span>Mode</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1835391298%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-test-mode.html"><span class="token function">getTestMode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="362154399%2FFunctions%2F2034298084" anchor-label="getUserIdentifier" id="362154399%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-user-identifier.html"><span>get</span><wbr></wbr><span>User</span><wbr></wbr><span><span>Identifier</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="362154399%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-user-identifier.html"><span class="token function">getUserIdentifier</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Gets the user identifier previously set.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2083006353%2FFunctions%2F2034298084" anchor-label="getVersion" id="-2083006353%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-version.html"><span>get</span><wbr></wbr><span><span>Version</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2083006353%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-version.html"><span class="token function">getVersion</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1481435643%2FFunctions%2F2034298084" anchor-label="isDiscardOversizedAdsEnabled" id="-1481435643%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-discard-oversized-ads-enabled.html"><span>is</span><wbr></wbr><span>Discard</span><wbr></wbr><span>Oversized</span><wbr></wbr><span>Ads</span><wbr></wbr><span><span>Enabled</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1481435643%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="is-discard-oversized-ads-enabled.html"><span class="token function">isDiscardOversizedAdsEnabled</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Indicates if oversized banner ads will be dropped.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2144888208%2FFunctions%2F2034298084" anchor-label="loadFullscreenAd" id="2144888208%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="load-fullscreen-ad.html"><span>load</span><wbr></wbr><span>Fullscreen</span><wbr></wbr><span><span>Ad</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2144888208%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="load-fullscreen-ad.html"><span class="token function">loadFullscreenAd</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">request<span class="token operator">: </span><a href="../../../com.chartboost.heliumsdk.ad/-chartboost-mediation-ad-load-request/index.html">ChartboostMediationAdLoadRequest</a><span class="token punctuation">, </span></span><span class="parameter ">listener<span class="token operator">: </span><a href="../../../com.chartboost.heliumsdk.ad/-chartboost-mediation-fullscreen-ad-listener/index.html">ChartboostMediationFullscreenAdListener</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.chartboost.heliumsdk.ad/-chartboost-mediation-fullscreen-ad-load-result/index.html">ChartboostMediationFullscreenAdLoadResult</a></div><div class="brief "><p class="paragraph">Load a fullscreen ad.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="247261061%2FFunctions%2F2034298084" anchor-label="loadFullscreenAdFromJava" id="247261061%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="load-fullscreen-ad-from-java.html"><span>load</span><wbr></wbr><span>Fullscreen</span><wbr></wbr><span>Ad</span><wbr></wbr><span>From</span><wbr></wbr><span><span>Java</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="247261061%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="load-fullscreen-ad-from-java.html"><span class="token function">loadFullscreenAdFromJava</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">request<span class="token operator">: </span><a href="../../../com.chartboost.heliumsdk.ad/-chartboost-mediation-ad-load-request/index.html">ChartboostMediationAdLoadRequest</a><span class="token punctuation">, </span></span><span class="parameter ">listener<span class="token operator">: </span><a href="../../../com.chartboost.heliumsdk.ad/-chartboost-mediation-fullscreen-ad-listener/index.html">ChartboostMediationFullscreenAdListener</a><span class="token punctuation">, </span></span><span class="parameter ">adLoadListener<span class="token operator">: </span><a href="../../../com.chartboost.heliumsdk.ad/-chartboost-mediation-fullscreen-ad-load-listener/index.html">ChartboostMediationFullscreenAdLoadListener</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Load a fullscreen ad. This method is designed to be called from Java.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="831506831%2FFunctions%2F2034298084" anchor-label="setCCPAConsent" id="831506831%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-c-c-p-a-consent.html"><span>set</span><wbr></wbr><span><span>CCPAConsent</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="831506831%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="set-c-c-p-a-consent.html"><span class="token function">setCCPAConsent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">hasGivenCcpaConsent<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Indicates that the CCPA-applicable user has granted consent to the collection of Personally Identifiable Information. For more information about CCPA:</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1520925826%2FFunctions%2F2034298084" anchor-label="setDebugMode" id="1520925826%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-debug-mode.html"><span>set</span><wbr></wbr><span>Debug</span><wbr></wbr><span><span>Mode</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1520925826%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="set-debug-mode.html"><span class="token function">setDebugMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">debugMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1563727148%2FFunctions%2F2034298084" anchor-label="setGameEngine" id="1563727148%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-game-engine.html"><span>set</span><wbr></wbr><span>Game</span><wbr></wbr><span><span>Engine</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1563727148%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="set-game-engine.html"><span class="token function">setGameEngine</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">version<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Specifies to the Helium SDK the Game Engine environment.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-65483444%2FFunctions%2F2034298084" anchor-label="setShouldDiscardOversizedAds" id="-65483444%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-should-discard-oversized-ads.html"><span>set</span><wbr></wbr><span>Should</span><wbr></wbr><span>Discard</span><wbr></wbr><span>Oversized</span><wbr></wbr><span><span>Ads</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-65483444%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="set-should-discard-oversized-ads.html"><span class="token function">setShouldDiscardOversizedAds</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">shouldDrop<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Specifies if oversized banner ads should be discarded.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="249507006%2FFunctions%2F2034298084" anchor-label="setSubjectToCoppa" id="249507006%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-subject-to-coppa.html"><span>set</span><wbr></wbr><span>Subject</span><wbr></wbr><span>To</span><wbr></wbr><span><span>Coppa</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="249507006%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="set-subject-to-coppa.html"><span class="token function">setSubjectToCoppa</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isSubject<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Indicates that the user is subject to COPPA (Children's Online Privacy Protection Act). For more information about COPPA:</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1562193614%2FFunctions%2F2034298084" anchor-label="setSubjectToGDPR" id="-1562193614%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-subject-to-g-d-p-r.html"><span>set</span><wbr></wbr><span>Subject</span><wbr></wbr><span>To</span><wbr></wbr><span><span>GDPR</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1562193614%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="set-subject-to-g-d-p-r.html"><span class="token function">setSubjectToGDPR</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isSubjectToGdpr<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Indicates that the user is subject to GDPR (General Data Protection Regulation). For more information about GDPR:</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="932721399%2FFunctions%2F2034298084" anchor-label="setTestMode" id="932721399%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-test-mode.html"><span>set</span><wbr></wbr><span>Test</span><wbr></wbr><span><span>Mode</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="932721399%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="set-test-mode.html"><span class="token function">setTestMode</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mode<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1699652748%2FFunctions%2F2034298084" anchor-label="setUserHasGivenConsent" id="1699652748%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-user-has-given-consent.html"><span>set</span><wbr></wbr><span>User</span><wbr></wbr><span>Has</span><wbr></wbr><span>Given</span><wbr></wbr><span><span>Consent</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1699652748%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="set-user-has-given-consent.html"><span class="token function">setUserHasGivenConsent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">hasGivenGdprConsent<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Indicates that the GDPR-applicable user has granted consent to the collection of Personally Identifiable Information. For more information about GDPR:</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1248571342%2FFunctions%2F2034298084" anchor-label="setUserIdentifier" id="-1248571342%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-user-identifier.html"><span>set</span><wbr></wbr><span>User</span><wbr></wbr><span><span>Identifier</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1248571342%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="set-user-identifier.html"><span class="token function">setUserIdentifier</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">userIdentifier<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Set the user identifier used for rewarded callbacks.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="804511216%2FFunctions%2F2034298084" anchor-label="start" id="804511216%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="start.html"><span><span>start</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="804511216%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="start.html"><span class="token function">start</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">appId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">appSignature<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">options<span class="token operator">: </span><a href="../../-helium-initialization-options/index.html">HeliumInitializationOptions</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">heliumSdkListener<span class="token operator">: </span><a href="../-helium-sdk-listener/index.html">HeliumSdk.HeliumSdkListener</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Starts the Helium SDK. Call this before using any other SDK components. This method can only be run once</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1498074393%2FFunctions%2F2034298084" anchor-label="subscribeIlrd" id="1498074393%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="subscribe-ilrd.html"><span>subscribe</span><wbr></wbr><span><span>Ilrd</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1498074393%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="subscribe-ilrd.html"><span class="token function">subscribeIlrd</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">observer<span class="token operator">: </span><a href="../../-helium-ilrd-observer/index.html">HeliumIlrdObserver</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Subscribe to impression level revenue data.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1556061097%2FFunctions%2F2034298084" anchor-label="subscribeInitializationResults" id="-1556061097%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="subscribe-initialization-results.html"><span>subscribe</span><wbr></wbr><span>Initialization</span><wbr></wbr><span><span>Results</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1556061097%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="subscribe-initialization-results.html"><span class="token function">subscribeInitializationResults</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">observer<span class="token operator">: </span><a href="../../-partner-initialization-results-observer/index.html">PartnerInitializationResultsObserver</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Subscribe to partner initialization results.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-281725280%2FFunctions%2F2034298084" anchor-label="unsubscribeIlrd" id="-281725280%2FFunctions%2F2034298084" data-filterable-set=":Helium:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":Helium:dokkaHtml/release" data-filterable-set=":Helium:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unsubscribe-ilrd.html"><span>unsubscribe</span><wbr></wbr><span><span>Ilrd</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-281725280%2FFunctions%2F2034298084"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":Helium:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html"><span class="token annotation builtin">JvmStatic</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="unsubscribe-ilrd.html"><span class="token function">unsubscribeIlrd</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">observer<span class="token operator">: </span><a href="../../-helium-ilrd-observer/index.html">HeliumIlrdObserver</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Unsubscribe to impression level revenue data.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>

@@ -157,7 +157,13 @@ data class BidInfo(
     val burl: String = "",
 
     @SerialName(EXT_KEY)
-    val ext: BidInfoExt? = null
+    val ext: BidInfoExt? = null,
+
+    @SerialName(WIDTH_KEY)
+    val adaptiveBannerWidth: Int? = null,
+
+    @SerialName(HEIGHT_KEY)
+    val adaptiveBannerHeight: Int? = null,
 ) : Comparable<BidInfo> {
 
     override fun compareTo(other: BidInfo) = price.compareTo(other.price)
@@ -171,6 +177,8 @@ data class BidInfo(
         private const val BURL_KEY = "burl"
         private const val NURL_KEY = "nurl"
         private const val LURL_KEY = "lurl"
+        private const val WIDTH_KEY = "w"
+        private const val HEIGHT_KEY = "h"
     }
 }
 

@@ -12,6 +12,7 @@ import android.content.Context
 import android.content.res.Resources.Theme
 import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Size
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -23,7 +24,10 @@ import com.chartboost.heliumsdk.ad.HeliumBannerAd.HeliumBannerSize.Companion.ban
 import com.chartboost.heliumsdk.controllers.banners.BannerController
 import com.chartboost.heliumsdk.controllers.banners.VisibilityTracker
 import com.chartboost.heliumsdk.domain.Ad
+import com.chartboost.heliumsdk.domain.AdFormat
+import com.chartboost.heliumsdk.domain.AppConfigStorage
 import com.chartboost.heliumsdk.domain.Keywords
+import com.chartboost.heliumsdk.utils.Dips
 import com.chartboost.heliumsdk.utils.LogController
 import java.lang.ref.WeakReference
 import kotlin.math.floor
@@ -77,8 +81,8 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
                 LogController.e("Error creating HeliumBannerAd, make sure the attributes declared in the XML are correct")
             } else {
                 this.size = attrSize.toBannerSize(
-                    attributesFromLayout.flexibleWidth,
-                    attributesFromLayout.flexibleHeight
+                    Dips.pixelsToIntDips(attributesFromLayout.flexibleWidth, context),
+                    Dips.pixelsToIntDips(attributesFromLayout.flexibleHeight, context)
                 )
                 this.placementName = attrPlacementName
             }
@@ -140,7 +144,12 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
             floor((parentHeight - siblingsMaxHeight - paddingTop - paddingBottom) / density).toInt()
     }
 
-    class HeliumBannerSize private constructor(
+    override fun onViewAdded(child: View?) {
+        super.onViewAdded(child)
+        heliumBannerAdListener?.onAdViewAdded(placementName, child)
+    }
+
+    data class HeliumBannerSize private constructor(
         val name: String,
         val width: Int,
         val height: Int,
@@ -166,6 +175,27 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
             fun bannerSize(width: Int, height: Int = 0): HeliumBannerSize {
                 return HeliumBannerSize("ADAPTIVE", width, height, true)
             }
+
+            // Converted functions
+            fun adaptive2x1(width: Int) = bannerSize(width, (width / 2.0).toInt())
+
+            fun adaptive4x1(width: Int) = bannerSize(width, (width / 4.0).toInt())
+
+            fun adaptive6x1(width: Int) = bannerSize(width, (width / 6.0).toInt())
+
+            fun adaptive8x1(width: Int) = bannerSize(width, (width / 8.0).toInt())
+
+            fun adaptive10x1(width: Int) = bannerSize(width, (width / 10.0).toInt())
+
+            fun adaptive1x2(width: Int) = bannerSize(width, (width * 2.0).toInt())
+
+            fun adaptive1x3(width: Int) = bannerSize(width, (width * 3.0).toInt())
+
+            fun adaptive1x4(width: Int) = bannerSize(width, (width * 4.0).toInt())
+
+            fun adaptive9x16(width: Int) = bannerSize(width, ((width * 16.0) / 9.0).toInt())
+
+            fun adaptive1x1(width: Int) = bannerSize(width, width)
         }
     }
 
@@ -183,23 +213,31 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
     }
 
     override fun getAdType(): Int {
-        return Ad.AdType.BANNER
+        return AdFormat.toAdType(
+            AppConfigStorage.placementsToAdFormats?.get(placementName)
+        )
     }
 
     fun load(placementName: String? = null, size: HeliumBannerSize? = null) {
-        // TODO - This is a stub to unblock Unity
-        load()
-    }
+        if (placementName != this.placementName || this.size != size) {
+            this.placementName = placementName ?: this.placementName
+            this.size = size ?: this.size
 
-    override fun load() {
-        heliumBannerAdListener?.let {
-            bannerController.load()
-        } ?: run {
-            LogController.e("Listener is not set in the HeliumBannerAd.")
+            bannerController.renewCachedAd()
+        } else {
+            load()
         }
     }
 
+    override fun load() {
+        bannerController.load()
+    }
+
     fun getSize() = this.size
+
+    fun getCreativeSizeDips(): Size {
+        return bannerController.getCreativeSizeDips(size)
+    }
 
     fun clearAd() {
         bannerController.clearAd()

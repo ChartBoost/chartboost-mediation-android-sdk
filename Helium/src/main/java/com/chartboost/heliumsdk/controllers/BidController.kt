@@ -42,14 +42,14 @@ class BidController(
                 "Loading bid for ${activeBid.partnerName} with placement name " +
                         "${activeBid.partnerPlacementName} on Chartboost placement ${activeBid.adIdentifier}"
             )
-
             val partnerAdResult = partnerController.routeLoad(
                 context = context,
                 auctionId = bids.auctionId,
                 lineItemId = activeBid.lineItemId,
                 isMediation = activeBid.isMediation,
-                request = constructAdLoadRequest(activeBid, bannerSize, adInteractionListener),
+                request = constructAdLoadRequest(activeBid, activeBid.size, adInteractionListener),
                 loadMetricsSet = loadMetricsSet,
+                placementType = activeBid.adIdentifier.placementType
             )
 
             if (!partnerAdResult.isSuccess) {
@@ -63,8 +63,8 @@ class BidController(
                 val requestedWidth = bannerSize.width
                 val requestedHeight = bannerSize.height
 
-                val reportedWidth = details?.get("banner_width")?.toInt() ?: -1
-                val reportedHeight = details?.get("banner_height")?.toInt() ?: -1
+                val reportedWidth = details?.get("banner_width_dips")?.toInt() ?: -1
+                val reportedHeight = details?.get("banner_height_dips")?.toInt() ?: -1
 
                 if ((reportedWidth > 0 && reportedWidth > requestedWidth)
                     || (reportedHeight > 0 && reportedHeight > requestedHeight)
@@ -114,7 +114,8 @@ class BidController(
             adm = getAdMarkup(bid),
             identifier = bid.loadRequestId,
             partnerSettings = bid.partnerSettings,
-            adInteractionListener = adInteractionListener
+            adInteractionListener = adInteractionListener,
+            isAdaptiveBanner = adTypeToAdFormat(bid.adIdentifier.adType) == AdFormat.ADAPTIVE_BANNER
         )
     }
 

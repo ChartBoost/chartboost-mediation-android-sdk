@@ -10,6 +10,7 @@ package com.chartboost.heliumsdk.network
 import com.chartboost.heliumsdk.domain.*
 import com.chartboost.heliumsdk.network.ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY
 import com.chartboost.heliumsdk.network.ChartboostMediationNetworking.MEDIATION_LOAD_ID_HEADER_KEY
+import com.chartboost.heliumsdk.network.ChartboostMediationNetworking.SESSION_ID_HEADER_KEY
 import com.chartboost.heliumsdk.network.model.*
 import com.chartboost.heliumsdk.network.model.ChartboostMediationHeaderMap.ChartboostMediationAppConfigHeaderMap
 import kotlinx.serialization.json.JsonElement
@@ -38,6 +39,7 @@ interface ChartboostMediationApi {
     @POST
     suspend fun trackPartnerImpression(
         @Url url: String,
+        @Header(SESSION_ID_HEADER_KEY) sessionId: String,
         @Header(APP_SET_ID_HEADER_KEY) appSetId: String,
         @Header(MEDIATION_LOAD_ID_HEADER_KEY) loadId: String,
         @Body body: ImpressionRequestBody

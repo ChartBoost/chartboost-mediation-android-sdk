@@ -7,6 +7,7 @@
 
 package com.chartboost.heliumsdk.domain
 
+import android.util.Size
 import com.chartboost.heliumsdk.network.Endpoints.Sdk
 import com.chartboost.heliumsdk.utils.getMaxJsonPayload
 import com.google.android.gms.common.util.VisibleForTesting
@@ -55,6 +56,16 @@ class Metrics(val partner: String?, val event: Sdk.Event) {
      * The current auction ID, if any.
      */
     var auctionId: String? = null
+
+    /**
+     * The placement type, if any.
+     */
+    var placementType: String? = null
+
+    /**
+     * The placement size, if any.
+     */
+    var size: Size? = null
 
     /**
      * The network type (i.e. "bidding" or "mediation").

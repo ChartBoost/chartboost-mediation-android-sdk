@@ -27,6 +27,7 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression succ
         }
 
     val response = ChartboostMediationNetworking.trackPartnerImpression(
+        ChartboostMediationNetworkingTest.SESSION_ID,
         APP_SET_ID,
         ChartboostMediationNetworkingTest.AUCTION_ID,
         LOAD_ID
@@ -42,8 +43,7 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression succ
     val actualUrl = request.requestUrl.toString()
 
     Assert.assertEquals(expectedUrl, actualUrl)
-    // partner impressions should not contain a helium session id header
-    Assert.assertNotEquals(
+    Assert.assertEquals(
         ChartboostMediationNetworkingTest.SESSION_ID,
         request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString()
     )
@@ -62,6 +62,7 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression fail
         }
 
     val response = ChartboostMediationNetworking.trackPartnerImpression(
+        ChartboostMediationNetworkingTest.SESSION_ID,
         APP_SET_ID,
         ChartboostMediationNetworkingTest.AUCTION_ID,
         LOAD_ID
@@ -78,7 +79,7 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression fail
 
     Assert.assertEquals(expectedUrl, actualUrl)
     // partner impressions should not contain a helium session id header
-    Assert.assertNotEquals(
+    Assert.assertEquals(
         ChartboostMediationNetworkingTest.SESSION_ID,
         request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString()
     )
