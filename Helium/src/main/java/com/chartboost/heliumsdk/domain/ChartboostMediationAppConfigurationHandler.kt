@@ -13,7 +13,7 @@ import com.chartboost.heliumsdk.controllers.PartnerController
 import com.chartboost.heliumsdk.domain.EventResult.SdkInitializationResult.InitResult1B
 import com.chartboost.heliumsdk.network.Endpoints
 import com.chartboost.heliumsdk.utils.LogController
-import com.chartboost.heliumsdk.utils.LogController.postMetricsDataForFailedEvent
+import com.chartboost.heliumsdk.domain.MetricsManager.postMetricsDataForFailedEvent
 import kotlin.coroutines.suspendCoroutine
 
 /**

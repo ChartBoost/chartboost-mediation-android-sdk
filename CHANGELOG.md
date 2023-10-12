@@ -2,6 +2,14 @@ Android Change Log
 ==================
 Check for the latest Chartboost Mediation SDK at the Chartboost Mediation website.
 
+### Version 4.6.0 *(2023-10-12)*
+Improvements:
+- Introduced Banner APIs that support both Fixed and Adaptive Banner Ad Types. See [`HeliumBannerSize`](https://chartboost.github.io/chartboost-mediation-android-sdk/4.6.0/-helium/com.chartboost.heliumsdk.ad/-helium-banner-ad/-helium-banner-size/index.html?query=class%20HeliumBannerSize) for options.
+- Added `onAdViewAdded(placementName: String, child: View?)` to `HeliumBannerAdListener`.
+
+Bug Fixes:
+- Ensure `start` appears on all partner metrics, even on timeout.
+
 ### Version 4.5.0 *(2023-08-31)*
 Improvements:
 - TCFv2 String is now read from `SharedPreferences` and passed in the auction request. Publishers do not need to take any additional steps.

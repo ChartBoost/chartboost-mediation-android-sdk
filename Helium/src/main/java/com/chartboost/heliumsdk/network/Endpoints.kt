@@ -101,12 +101,12 @@ object Endpoints {
             EXPIRATION(Version.V1),
             HELIUM_IMPRESSION(Version.V1),
             INITIALIZATION(Version.V1),
-            LOAD(Version.V1),
+            LOAD(Version.V2),
             PARTNER_IMPRESSION(Version.V1),
             PREBID(Version.V1),
             REWARD(Version.V2),
             SHOW(Version.V1),
-            WINNER(Version.V2);
+            WINNER(Version.V3);
 
             /**
              * Creates a String URL for the particular [Event] enum.

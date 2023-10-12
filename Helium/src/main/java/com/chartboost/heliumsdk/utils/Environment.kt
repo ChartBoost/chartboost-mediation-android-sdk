@@ -575,16 +575,17 @@ object Environment {
      */
     val tcString: String?
         get() {
-            return HeliumSdk.context?.let { context ->
-                // Get the default shared preferences
-                val sharedPreferences = context.getSharedPreferences(
-                    "${context.packageName}_preferences",
-                    Context.MODE_PRIVATE
-                )
-                sharedPreferences.getString(TC_STRING, null)
-            } ?: run {
+            val context = HeliumSdk.context
+
+            if (context == null) {
                 LogController.w("null TC String because context is null")
-                null
+                return null
             }
+
+            val sharedPreferences = context.getSharedPreferences(
+                "${context.packageName}_preferences",
+                Context.MODE_PRIVATE
+            )
+            return sharedPreferences.getString(TC_STRING, null)
         }
 }

@@ -47,7 +47,7 @@ repositories {
 }
  
 dependencies {
-   implementation 'com.chartboost:chartboost-mediation-sdk:4.5.0'
+   implementation 'com.chartboost:chartboost-mediation-sdk:4.6.0'
 }
 ```
 

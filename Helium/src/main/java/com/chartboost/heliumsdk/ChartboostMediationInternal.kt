@@ -21,7 +21,7 @@ import java.lang.ref.WeakReference
 /**
  * Holds all the internal logic for Chartboost Mediation.
  */
-internal class ChartboostMediationInternal {
+internal class ChartboostMediationInternal(internal val partnerController: PartnerController = PartnerController()) {
 
     internal var adController: AdController? = null
     internal var appContext: Context? = null
@@ -37,15 +37,23 @@ internal class ChartboostMediationInternal {
 
     internal val fullscreenAdShowingState = FullscreenAdShowingState()
     internal val ilrd = Ilrd()
-    internal val partnerController = PartnerController()
     internal val partnerInitializationResults = PartnerInitializationResults()
 
-    private var gdprApplies: Boolean? = null
-    private var gdprConsentStatus = GdprConsentStatus.GDPR_CONSENT_UNKNOWN
+
     private var initializationStatus = HeliumSdk.ChartboostMediationInitializationStatus.IDLE
 
     /**
-     * Store the pre-init value of COPPA until the SDK is initialized.
+     * Stores the pre-init value of GDPR applies until the SDK is initialized.
+     */
+    private var gdprApplies: Boolean? = null
+
+    /**
+     * Stores the pre-init value of GDPR consent status until the SDK is initialized.
+     */
+    private var gdprConsentStatus: GdprConsentStatus? = null
+
+    /**
+     * Stores the pre-init value of COPPA until the SDK is initialized.
      */
     private var isSubjectToCoppa: Boolean? = null
 
@@ -108,9 +116,9 @@ internal class ChartboostMediationInternal {
             }
 
             Environment.startSession(context)
-            runGdprConsentTask()
-            runCcpaConsentTask()
-            runSubjectToCoppaTask()
+            runGdprConsentTask(context, localPrivacyController)
+            runCcpaConsentTask(context, localPrivacyController)
+            runSubjectToCoppaTask(context, localPrivacyController)
             initializationStatus = HeliumSdk.ChartboostMediationInitializationStatus.INITIALIZED
             Result.success(Unit)
         }
@@ -131,24 +139,34 @@ internal class ChartboostMediationInternal {
      *
      * @param hasGivenGdprConsent True if the user has granted consent, false otherwise.
      */
-    fun setUserHasGivenConsent(hasGivenGdprConsent: Boolean) {
+    internal fun setUserHasGivenConsent(hasGivenGdprConsent: Boolean) {
         gdprConsentStatus =
             if (hasGivenGdprConsent) GdprConsentStatus.GDPR_CONSENT_GRANTED else GdprConsentStatus.GDPR_CONSENT_DENIED
         checkAndRun(::runGdprConsentTask)
     }
 
-    private fun runGdprConsentTask() {
-        gdprApplies?.let { isSubjectToGdpr ->
-            privacyController?.gdpr = if (isSubjectToGdpr) 1 else 0
-            when (gdprConsentStatus) {
-                GdprConsentStatus.GDPR_CONSENT_GRANTED -> privacyController?.userConsent = true
-                GdprConsentStatus.GDPR_CONSENT_DENIED -> privacyController?.userConsent = false
-                else -> {} // do nothing
-            }
-            appContext?.let { context ->
-                partnerController.setGdpr(context, isSubjectToGdpr, gdprConsentStatus)
-            }
+    private fun runGdprConsentTask(context: Context, privacyController: PrivacyController) {
+        val privacyControllerGdprApplies = privacyController.gdpr
+        val localGdprApplies = gdprApplies ?: when (privacyControllerGdprApplies) {
+            PrivacyController.PrivacySetting.TRUE.value -> true
+            PrivacyController.PrivacySetting.FALSE.value -> false
+            // If unset or null, don't continue setting GDPR consent
+            else -> return
         }
+        val localGdprConsentStatus = gdprConsentStatus ?: when (privacyController.userConsent) {
+            true -> GdprConsentStatus.GDPR_CONSENT_GRANTED
+            false -> GdprConsentStatus.GDPR_CONSENT_DENIED
+            else -> GdprConsentStatus.GDPR_CONSENT_UNKNOWN
+        }
+
+        privacyController.gdpr =
+            if (localGdprApplies) PrivacyController.PrivacySetting.TRUE.value else PrivacyController.PrivacySetting.FALSE.value
+        when (localGdprConsentStatus) {
+            GdprConsentStatus.GDPR_CONSENT_GRANTED -> privacyController.userConsent = true
+            GdprConsentStatus.GDPR_CONSENT_DENIED -> privacyController.userConsent = false
+            else -> {} // do nothing
+        }
+        partnerController.setGdpr(context, localGdprApplies, localGdprConsentStatus)
     }
 
     /**
@@ -161,19 +179,17 @@ internal class ChartboostMediationInternal {
         checkAndRun(::runCcpaConsentTask)
     }
 
-    private fun runCcpaConsentTask() {
-        ccpaConsentGranted?.let { ccpaConsentGranted ->
-            privacyController?.ccpaConsent = ccpaConsentGranted
-            appContext?.let { context ->
-                partnerController.setCcpaConsent(
-                    context, ccpaConsentGranted,
-                    if (ccpaConsentGranted) {
-                        PrivacyController.PrivacyString.GRANTED.consentString
-                    } else {
-                        PrivacyController.PrivacyString.DENIED.consentString
-                    }
-                )
-            }
+    private fun runCcpaConsentTask(context: Context, privacyController: PrivacyController) {
+        (ccpaConsentGranted ?: privacyController.ccpaConsent)?.let { ccpaConsentGranted ->
+            privacyController.ccpaConsent = ccpaConsentGranted
+            partnerController.setCcpaConsent(
+                context, ccpaConsentGranted,
+                if (ccpaConsentGranted) {
+                    PrivacyController.PrivacyString.GRANTED.consentString
+                } else {
+                    PrivacyController.PrivacyString.DENIED.consentString
+                }
+            )
         }
     }
 
@@ -187,12 +203,10 @@ internal class ChartboostMediationInternal {
         checkAndRun(::runSubjectToCoppaTask)
     }
 
-    private fun runSubjectToCoppaTask() {
-        isSubjectToCoppa?.let { isSubject ->
-            privacyController?.coppa = isSubject
-            appContext?.let { context ->
-                partnerController.setUserSubjectToCoppa(context, isSubject)
-            }
+    private fun runSubjectToCoppaTask(context: Context, privacyController: PrivacyController) {
+        (isSubjectToCoppa ?: privacyController.coppa)?.let { isSubject ->
+            privacyController.coppa = isSubject
+            partnerController.setUserSubjectToCoppa(context, isSubject)
         }
     }
 
@@ -200,13 +214,13 @@ internal class ChartboostMediationInternal {
      * Checks context and privacy controller to see if they are null. If either is, do nothing.
      * Otherwise, run the function passed in.
      */
-    private fun checkAndRun(function: () -> Unit) {
+    private fun checkAndRun(function: (context: Context, privacyController: PrivacyController) -> Unit) {
         val context = appContext
         val privacyController = privacyController
         if (context == null || privacyController == null) {
             LogController.d("Delaying $function until SDK initialized.")
             return
         }
-        function()
+        function(context, privacyController)
     }
 }

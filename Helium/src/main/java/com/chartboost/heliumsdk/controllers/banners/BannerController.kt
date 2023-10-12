@@ -10,6 +10,7 @@ package com.chartboost.heliumsdk.controllers.banners
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.util.Size
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -17,13 +18,11 @@ import android.widget.FrameLayout
 import com.chartboost.heliumsdk.HeliumSdk
 import com.chartboost.heliumsdk.Ilrd
 import com.chartboost.heliumsdk.ad.HeliumBannerAd
-import com.chartboost.heliumsdk.ad.HeliumBannerAd.HeliumBannerSize.Companion.LEADERBOARD
-import com.chartboost.heliumsdk.ad.HeliumBannerAd.HeliumBannerSize.Companion.MEDIUM
 import com.chartboost.heliumsdk.ad.HeliumBannerAd.HeliumBannerSize.Companion.STANDARD
 import com.chartboost.heliumsdk.domain.*
 import com.chartboost.heliumsdk.network.ChartboostMediationNetworking
 import com.chartboost.heliumsdk.network.Endpoints
-import com.chartboost.heliumsdk.network.model.AdSize
+import com.chartboost.heliumsdk.network.model.BannerAdDimensions
 import com.chartboost.heliumsdk.network.model.BannerSizeBody
 import com.chartboost.heliumsdk.utils.*
 import kotlinx.coroutines.*
@@ -58,7 +57,7 @@ class BannerController(
      * How long to wait before verifying the ad size.
      */
     private val timeToVerifyAdSizeJobMillis
-        get() = 1000L
+        get() = AppConfigStorage.bannerSizeEventDelayMs
 
     /**
      * The penalty time if we fail too many loads in a row.
@@ -164,6 +163,13 @@ class BannerController(
         heliumBannerAdRef.get()?.let {
             return it.placementName
         } ?: return ""
+    }
+
+    internal fun renewCachedAd() {
+        // all jobs are also cancelled by pauseRefresh()
+        pauseRefresh()
+        isPublisherTriggeredLoad = true
+        getNextAd(forceRefresh = true)
     }
 
     /**
@@ -291,6 +297,28 @@ class BannerController(
         heliumBannerAdRef.clear()
     }
 
+    internal fun getCreativeSizeDips(bannerSize: HeliumBannerAd.HeliumBannerSize?): Size {
+        var adapterProvidedSize: Size? = null
+
+        try {
+            if (bannerSize?.isAdaptive == true) {
+                adapterProvidedSize = currentlyShowingAd?.partnerAd?.details?.let {
+                    Size(
+                        it["banner_width_dips"]?.toInt() ?: bannerSize.width,
+                        it["banner_height_dips"]?.toInt() ?: bannerSize.height
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            LogController.e("Encountered a problem getting the creative size: ${e.message}")
+        }
+
+        return adapterProvidedSize ?: Size(
+            bannerSize?.width ?: STANDARD.width,
+            bannerSize?.height ?: STANDARD.height
+        )
+    }
+
     private fun resetState() {
         isPublisherTriggeredLoad = false
         isShowingAd = false
@@ -308,8 +336,8 @@ class BannerController(
     /**
      * Gets the next ad.
      */
-    private fun getNextAd() {
-        if (nextAd != null || fetchAdJob != null) {
+    private fun getNextAd(forceRefresh: Boolean = false) {
+        if (!forceRefresh && (nextAd != null || fetchAdJob != null)) {
             LogController.i("Already loading an ad.")
             return
         }
@@ -335,7 +363,7 @@ class BannerController(
                 val loadMetrics = mutableSetOf<Metrics>()
                 val loadResult = HeliumSdk.chartboostMediationInternal.adController?.load(
                     heliumBannerAd.context,
-                    AdLoadParams(adIdentifier = AdIdentifier(Ad.AdType.BANNER, heliumBannerAd.placementName),
+                    AdLoadParams(adIdentifier = AdIdentifier(heliumBannerAd.getAdType(), heliumBannerAd.placementName),
                         keywords = heliumBannerAd.keywords,
                         loadId = loadId,
                         bannerSize = heliumBannerAd.getSize(),
@@ -374,6 +402,10 @@ class BannerController(
                 }
                 loadResult?.fold({
                     if (it.partnerAd?.inlineView != null) {
+                        if (forceRefresh) {
+                            // if we're forcing a refresh, set the time shown to equal 1 greater than the refresh time threshold
+                            shownDurationMillis = 1L + refreshTimeMillis
+                        }
                         handleLoadSuccess(it, loadId)
                     } else {
                         handleLoadFailure(
@@ -396,6 +428,8 @@ class BannerController(
                 }
             }
         } ?: LogController.e("The Helium SDK Banner reference is missing on getNextAd()")
+
+        checkAndResumeRefresh()
     }
 
     private fun handleLoadSuccess(cachedAd: CachedAd, loadId: String) {
@@ -510,14 +544,15 @@ class BannerController(
         val bannerSize = heliumBannerAd.getSize()
         val density: Double = heliumBannerAd.context.resources.displayMetrics.density.toDouble()
         val layoutParams = when {
-            LEADERBOARD == bannerSize -> {
+            bannerSize?.isAdaptive == true -> {
                 FrameLayout.LayoutParams(
-                    (LEADERBOARD.width * density).toInt(), (LEADERBOARD.height * density).toInt()
+                    (getCreativeSizeDips(bannerSize).width * density).toInt(),
+                    (getCreativeSizeDips(bannerSize).height * density).toInt()
                 )
             }
-            MEDIUM == bannerSize -> {
+            bannerSize != null -> {
                 FrameLayout.LayoutParams(
-                    (MEDIUM.width * density).toInt(), (MEDIUM.height * density).toInt()
+                    (bannerSize.width * density).toInt(), (bannerSize.height * density).toInt()
                 )
             }
             else -> {
@@ -602,13 +637,18 @@ class BannerController(
                             loadId = nextAd.loadId,
                             BannerSizeBody(
                                 auctionId = nextAd.auctionId,
-                                lineItemId = nextAd.winningBidInfo["line_item_id"] ?: "",
-                                placementName = nextAd.partnerAd?.request?.chartboostPlacement ?: "",
-                                partnerName = nextAd.winningBidInfo["partner_id"] ?: "",
-                                partnerPlacement = nextAd.partnerAd?.request?.partnerPlacement ?: "",
-                                creativeSize = AdSize(width = creativeWidth, height = creativeHeight),
-                                containerSize = AdSize(width = containerWidth, height = containerHeight),
-                                requestSize = AdSize(width = requestedWidth, height = requestedHeight),
+                                creativeSize = BannerAdDimensions(
+                                    width = creativeWidth,
+                                    height = creativeHeight
+                                ),
+                                containerSize = BannerAdDimensions(
+                                    width = containerWidth,
+                                    height = containerHeight
+                                ),
+                                requestSize = BannerAdDimensions(
+                                    width = requestedWidth,
+                                    height = requestedHeight
+                                ),
                             )
                         )
                     }
@@ -676,6 +716,6 @@ class BannerController(
         metrics.end = System.currentTimeMillis()
         metrics.isSuccess = true
         showMetricsDataSet.add(metrics)
-        LogController.postMetricsData(showMetricsDataSet, loadId)
+        MetricsManager.postMetricsData(showMetricsDataSet, loadId)
     }
 }

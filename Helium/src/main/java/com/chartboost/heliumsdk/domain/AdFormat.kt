@@ -11,6 +11,7 @@ enum class AdFormat(val key: String) {
     INTERSTITIAL("interstitial"),
     REWARDED("rewarded"),
     BANNER("banner"),
+    ADAPTIVE_BANNER("adaptive_banner"),
     REWARDED_INTERSTITIAL("rewarded_interstitial"),
     UNKNOWN("unknown");
 
@@ -27,6 +28,7 @@ enum class AdFormat(val key: String) {
                 INTERSTITIAL -> Ad.AdType.INTERSTITIAL
                 REWARDED -> Ad.AdType.REWARDED
                 BANNER -> Ad.AdType.BANNER
+                ADAPTIVE_BANNER -> Ad.AdType.ADAPTIVE_BANNER
                 REWARDED_INTERSTITIAL -> Ad.AdType.REWARDED_INTERSTITIAL
                 else -> Ad.AdType.UNKNOWN
             }
@@ -37,6 +39,7 @@ enum class AdFormat(val key: String) {
                 Ad.AdType.INTERSTITIAL -> INTERSTITIAL
                 Ad.AdType.REWARDED -> REWARDED
                 Ad.AdType.BANNER -> BANNER
+                Ad.AdType.ADAPTIVE_BANNER -> BANNER
                 Ad.AdType.REWARDED_INTERSTITIAL -> REWARDED_INTERSTITIAL
                 else -> UNKNOWN
             }

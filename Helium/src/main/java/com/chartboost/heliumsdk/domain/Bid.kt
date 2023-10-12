@@ -15,13 +15,13 @@ import kotlinx.serialization.json.*
  *
  * This class holds bid-related data.
  *
- * @property size The size of the banner ad.
+ * @property requestedSize The requested size of the banner ad.
  * @property adIdentifier The current [AdIdentifier] instance.
  * @property bidResponse The seatbid JSON response.
  * @property loadRequestId The unique request identifier for this load call.
  */
 class Bid(
-    val size: HeliumBannerSize?,
+    private val requestedSize: HeliumBannerSize?,
     val adIdentifier: AdIdentifier,
     private val bidResponse: BidResponse,
     val loadRequestId: String
@@ -34,12 +34,23 @@ class Bid(
     val isMediation: Boolean = bidResponse.isMediation
     val partnerSettings: MutableMap<String, String> = bidResponse.partnerSettings
     val bidInfo = bidResponse.bidInfo
+    val size: HeliumBannerSize?
 
     var lineItemId: String? = bidResponse.lineItemId
     var ilrd: JsonObject? = bidResponse.bidInfoArray.firstOrNull()?.ext?.ilrd?.jsonObject
     var adRevenue = bidResponse.adRevenue
     var cpmPrice = bidResponse.cpmPrice
     var adm = bidResponse.bidInfoArray.firstOrNull()?.adm
+
+    init {
+        val adaptiveBannerWidth = bidResponse.bidInfoArray.firstOrNull()?.adaptiveBannerWidth
+        val adaptiveBannerHeight = bidResponse.bidInfoArray.firstOrNull()?.adaptiveBannerHeight
+        size = if (requestedSize?.isAdaptive == true
+            && adaptiveBannerWidth != null
+            && adaptiveBannerHeight != null) {
+            HeliumBannerSize.bannerSize(adaptiveBannerWidth, adaptiveBannerHeight)
+        } else requestedSize
+    }
 
     override fun compareTo(other: Bid): Int {
         return price.compareTo(other.price)

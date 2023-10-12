@@ -10,6 +10,7 @@ package com.chartboost.heliumsdk.controllers
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.util.Size
 import com.chartboost.heliumsdk.Ilrd
 import com.chartboost.heliumsdk.ad.ChartboostMediationAdShowResult
 import com.chartboost.heliumsdk.domain.*
@@ -23,7 +24,6 @@ import com.chartboost.heliumsdk.network.model.MetricsRequestBody
 import com.chartboost.heliumsdk.utils.Environment
 import com.chartboost.heliumsdk.utils.HeliumJson
 import com.chartboost.heliumsdk.utils.LogController
-import com.chartboost.heliumsdk.utils.LogController.postMetricsData
 import com.chartboost.heliumsdk.utils.toJSONObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -54,6 +54,7 @@ class AdController(
         internal fun adTypeToAdFormat(adType: Int): AdFormat {
             return when (adType) {
                 Ad.AdType.BANNER -> AdFormat.BANNER
+                Ad.AdType.ADAPTIVE_BANNER -> AdFormat.BANNER
                 Ad.AdType.INTERSTITIAL -> AdFormat.INTERSTITIAL
                 Ad.AdType.REWARDED -> AdFormat.REWARDED
                 Ad.AdType.REWARDED_INTERSTITIAL -> AdFormat.REWARDED_INTERSTITIAL
@@ -78,6 +79,12 @@ class AdController(
         if (millisUntilNextLoadIsAllowed > 0 && AppConfigStorage.getEnableRateLimiting()) {
             LogController.w("${adLoadParams.adIdentifier.placementName} has been rate limited. Please try again in ${millisUntilNextLoadIsAllowed / 1000}.${millisUntilNextLoadIsAllowed % 1000} seconds")
             return Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_RATE_LIMITED))
+        }
+
+        // height must be at least 50dp and no more than 1800dp. 0dp is the exception to this.
+        adLoadParams.bannerSize?.height?.takeIf { (it < 50 && it != 0) || it > 1800 }?.let { height ->
+            LogController.w("Banner height must be at least 50 and no more than 1800. Banner height is ${height}.")
+            return Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_INVALID_BANNER_SIZE))
         }
 
         if (AppConfigStorage.shouldNotifyLoads) {
@@ -127,7 +134,7 @@ class AdController(
                     ),
                     loadMetricsSet = metricsSet
                 )
-                postMetricsData(
+                MetricsManager.postMetricsData(
                     metricsSet,
                     loadId = adLoadParams.loadId,
                     eventResult = if (partnerAdResult.isSuccess) {
@@ -159,12 +166,16 @@ class AdController(
                     LogController.e(result.error.message)
                 }
 
-                LogController.postMetricsDataForFailedEvent(
+                MetricsManager.postMetricsDataForFailedEvent(
                     partner = null,
                     event = Endpoints.Sdk.Event.LOAD,
                     auctionIdentifier = result.headers?.get(AUCTION_ID_HEADERY_KEY) ?: "",
                     chartboostMediationError = result.error,
                     chartboostMediationErrorMessage = result.error.message,
+                    placementType = adLoadParams.adIdentifier.placementType,
+                    size = if (adLoadParams.bannerSize?.isAdaptive == true) {
+                        Size(adLoadParams.bannerSize.width, adLoadParams.bannerSize.height)
+                    } else null,
                     loadId = adLoadParams.loadId,
                     eventResult = EventResult.AdLoadResult.AdLoadUnspecifiedFailure(
                         MetricsError.SimpleError(result.error)
@@ -193,12 +204,16 @@ class AdController(
                     malformedJson
                 )
 
-                LogController.postMetricsDataForFailedEvent(
+                MetricsManager.postMetricsDataForFailedEvent(
                     partner = null,
                     event = Endpoints.Sdk.Event.LOAD,
                     auctionIdentifier = result.headers[AUCTION_ID_HEADERY_KEY],
                     chartboostMediationError = cmError,
                     chartboostMediationErrorMessage = cmError.message,
+                    placementType = adLoadParams.adIdentifier.placementType,
+                    size = if (adLoadParams.bannerSize?.isAdaptive == true) {
+                        Size(adLoadParams.bannerSize.width, adLoadParams.bannerSize.height)
+                    } else null,
                     loadId = adLoadParams.loadId,
                     eventResult = EventResult.AdLoadResult.AdLoadJsonFailure(jsonParseError)
                 )
@@ -216,6 +231,7 @@ class AdController(
                 adInteractionListener.onImpressionTracked(partnerAd)
                 CoroutineScope(IO).launch {
                     ChartboostMediationNetworking.trackPartnerImpression(
+                        Environment.sessionId ?: "",
                         Environment.appSetId ?: "",
                         bids.auctionId,
                         cachedAd.loadId
@@ -292,7 +308,7 @@ class AdController(
             cachedAd.loadId
         )
         val showSucceeded = internalShowResult.metrics.first().isSuccess
-        val metricsRequestBody = LogController.buildMetricsDataRequestBody(internalShowResult.metrics)
+        val metricsRequestBody = MetricsManager.buildMetricsDataRequestBody(internalShowResult.metrics)
         val payloadJson = HeliumJson.writeJson(
             metricsRequestBody,
             MetricsRequestBody.serializer()
@@ -360,6 +376,7 @@ class AdController(
             Ad.AdType.INTERSTITIAL -> interstitialImpressionDepth
             Ad.AdType.REWARDED -> rewardedImpressionDepth
             Ad.AdType.BANNER -> bannerImpressionDepth
+            Ad.AdType.ADAPTIVE_BANNER -> bannerImpressionDepth
             Ad.AdType.REWARDED_INTERSTITIAL -> rewardedInterstitialImpressionDepth
             else -> bannerImpressionDepth
         }

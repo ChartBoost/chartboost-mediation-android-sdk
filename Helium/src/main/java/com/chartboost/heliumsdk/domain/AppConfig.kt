@@ -39,6 +39,9 @@ data class AppConfig(
     @SerialName("banner_load_timeout")
     val bannerLoadTimeoutSeconds: Int = 15,
 
+    @SerialName("banner_size_event_delay_ms")
+    val bannerSizeEventDelayMs: Long = 1000L,
+
     @Serializable(with = Endpoints.Sdk.Event.EventEnumSetSerializer::class)
     @SerialName("metrics_events")
     val metricsEvents: EnumSet<Endpoints.Sdk.Event> = EnumSet.allOf(Endpoints.Sdk.Event::class.java),

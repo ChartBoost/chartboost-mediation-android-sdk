@@ -100,6 +100,7 @@ internal object ChartboostMediationNetworking {
     }
 
     suspend fun trackPartnerImpression(
+        sessionId: String,
         appSetId: String,
         auctionID: String?,
         loadId: String
@@ -108,6 +109,7 @@ internal object ChartboostMediationNetworking {
             ImpressionRequestBody(auctionID).let {
                 api.trackPartnerImpression(
                     url = Event.PARTNER_IMPRESSION.endpoint,
+                    sessionId = sessionId,
                     appSetId = appSetId,
                     loadId = loadId,
                     body = it

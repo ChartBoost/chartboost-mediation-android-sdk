@@ -94,14 +94,5 @@ sealed interface EventResult {
                 return metricsError
             }
         }
-
-        class AdaptiveBannerTooLargeFailure(
-            val metricsError: MetricsError.AdaptiveBannerTooLargeError
-        ) : AdLoadResult() {
-
-            override fun getMetricsError(): MetricsError? {
-                return metricsError
-            }
-        }
     }
 }

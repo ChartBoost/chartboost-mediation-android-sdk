@@ -54,5 +54,10 @@ data class PartnerAdLoadRequest(
     /**
      * Forwards events from the partner ad to this listener after an ad is loaded.
      */
-    val adInteractionListener: AdInteractionListener
+    val adInteractionListener: AdInteractionListener,
+
+    /**
+     * Forwards events from the partner ad to this listener after an ad is loaded.
+     */
+    val isAdaptiveBanner: Boolean = false
 )

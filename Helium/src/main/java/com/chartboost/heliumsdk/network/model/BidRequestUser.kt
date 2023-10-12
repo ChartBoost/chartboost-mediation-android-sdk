@@ -47,7 +47,7 @@ class BidRequestUserExt private constructor(
      * The consent status. Only included in the payload when '1'
      */
     @SerialName("consent")
-    val consent: Int? = null,
+    val consent: String? = null,
 
     /**
      * The impression depth
@@ -78,7 +78,7 @@ class BidRequestUserExt private constructor(
         impressionDepth: Int,
         keywords: Keywords
     ) : this(
-        consent = if (consentGiven == true) 1 else null,
+        consent = if (consentGiven == true) "1" else null,
         impressionDepth = impressionDepth,
         // this is necessary to make sure we do not include { "keywords": null } in the bid request
         keywords = keywords

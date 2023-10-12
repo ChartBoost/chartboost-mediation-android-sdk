@@ -27,7 +27,8 @@ class Ad(ad: HeliumAd) {
         AdType.INTERSTITIAL,
         AdType.REWARDED,
         AdType.BANNER,
-        AdType.REWARDED_INTERSTITIAL
+        AdType.REWARDED_INTERSTITIAL,
+        AdType.ADAPTIVE_BANNER
     )
     @Retention(AnnotationRetention.SOURCE)
     annotation class AdType {
@@ -37,6 +38,7 @@ class Ad(ad: HeliumAd) {
             const val REWARDED = 1
             const val BANNER = 2
             const val REWARDED_INTERSTITIAL = 3
+            const val ADAPTIVE_BANNER = 4
         }
     }
 
