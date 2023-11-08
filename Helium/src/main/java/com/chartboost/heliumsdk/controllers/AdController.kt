@@ -54,7 +54,7 @@ class AdController(
         internal fun adTypeToAdFormat(adType: Int): AdFormat {
             return when (adType) {
                 Ad.AdType.BANNER -> AdFormat.BANNER
-                Ad.AdType.ADAPTIVE_BANNER -> AdFormat.BANNER
+                Ad.AdType.ADAPTIVE_BANNER -> AdFormat.ADAPTIVE_BANNER
                 Ad.AdType.INTERSTITIAL -> AdFormat.INTERSTITIAL
                 Ad.AdType.REWARDED -> AdFormat.REWARDED
                 Ad.AdType.REWARDED_INTERSTITIAL -> AdFormat.REWARDED_INTERSTITIAL

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
+ * Copyright 2023 Chartboost, Inc.
  * 
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -60,13 +60,16 @@ android {
 dependencies {
     "testImplementation"("androidx.test:core:1.5.0") {
         exclude(group = "com.google.guava", module = "guava")
+        exclude(group = "org.bouncycastle", module = "bcprov-jdk18on")
     }
     "testImplementation"("androidx.test:core-ktx:1.5.0") {
         exclude(group = "com.google.guava", module = "guava")
+        exclude(group = "org.bouncycastle", module = "bcprov-jdk18on")
     }
     "testImplementation"("com.google.guava:guava:32.1.2-jre")
     "testImplementation"("junit:junit:4.13.2")
-    "testImplementation"("org.json:json:20230227")
+    "testImplementation"("org.bouncycastle:bcprov-jdk18on:1.74")
+    "testImplementation"("org.json:json:20231013")
     "testImplementation"("org.powermock:powermock-api-mockito2:2.0.9")
     "testImplementation"("org.powermock:powermock-module-junit4-rule-agent:2.0.9")
     "testImplementation"("org.powermock:powermock-module-junit4-rule:2.0.9")
@@ -102,6 +105,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
     implementation("com.squareup.okio:okio:3.4.0")
-    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0") {
+        exclude(group = "com.squareup.okio", module = "okio")
+    }
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
 }

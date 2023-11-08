@@ -16,6 +16,7 @@ import android.util.Size
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.annotation.VisibleForTesting
 import com.chartboost.heliumsdk.R
 import com.chartboost.heliumsdk.ad.HeliumBannerAd.HeliumBannerSize.Companion.LEADERBOARD
 import com.chartboost.heliumsdk.ad.HeliumBannerAd.HeliumBannerSize.Companion.MEDIUM
@@ -38,8 +39,10 @@ private const val EMPTY_PLACEMENT = ""
 @SuppressLint("ViewConstructor")
 class HeliumBannerAd : FrameLayout, HeliumAd {
 
-    private var availableWidthDips: Int = 0
-    private var availableHeightDips: Int = 0
+    var availableWidthDips: Int = 0
+        private set
+    var availableHeightDips: Int = 0
+        private set
 
     override val keywords: Keywords = Keywords()
     override var placementName: String = ""
@@ -54,7 +57,8 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
             return field
         }
 
-    private val bannerController = BannerController(WeakReference(this))
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    val bannerController = BannerController(WeakReference(this))
 
     /**
      * This sets whether or not the winning bid information is sent to the listeners. If this
