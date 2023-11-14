@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- *
+ * Copyright 2023 Chartboost, Inc.
+ * 
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -10,6 +10,7 @@ package com.chartboost.heliumsdk.network
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import com.chartboost.heliumsdk.PartnerConsents
 import com.chartboost.heliumsdk.ad.HeliumBannerAd
 import com.chartboost.heliumsdk.controllers.PartnerController
 import com.chartboost.heliumsdk.controllers.PrivacyController
@@ -207,6 +208,7 @@ class ChartboostMediationNetworkingTest {
         val mockedContext = mockk<Context>()
         val mockedSharedPreferences = mockk<SharedPreferences>()
         val mockedEditor = mockk<SharedPreferences.Editor>()
+        val mockedPartnerConsents = mockk<PartnerConsents>()
         every { mockedContext.getSharedPreferences(any(), any()) } returns mockedSharedPreferences
         every { mockedSharedPreferences.getString(any(), any()) } returns ""
         every { mockedSharedPreferences.getInt(any(), any()) } returns -1
@@ -214,8 +216,9 @@ class ChartboostMediationNetworkingTest {
         every { mockedSharedPreferences.edit() } returns mockedEditor
         every { mockedEditor.putInt(any(), any()) } returns mockedEditor
         every { mockedEditor.apply() } just Runs
+        every { mockedPartnerConsents.addPartnerConsentsObserver(any()) } just Runs
 
-        return PrivacyController(mockedContext).apply {
+        return PrivacyController(mockedContext, mockedPartnerConsents).apply {
             coppa = false
             gdpr = -1
             ccpaConsent = null

@@ -1,3 +1,10 @@
+/*
+ * Copyright 2023 Chartboost, Inc.
+ * 
+ * Use of this source code is governed by an MIT-style
+ * license that can be found in the LICENSE file.
+ */
+
 include(
     ":Helium",
     ":HeliumCanary",
@@ -5,6 +12,7 @@ include(
     ":AdMobAdapter",
     ":AmazonPublisherServicesAdapter",
     ":AppLovinAdapter",
+    ":BidMachineAdapter",
     ":ChartboostAdapter",
     ":DigitalTurbineExchangeAdapter",
     ":GoogleBiddingAdapter",
@@ -36,6 +44,9 @@ project(":AppLovinAdapter").projectDir = File(
 )
 project(":AmazonPublisherServicesAdapter").projectDir = File(
     "${commonNamedRepoPrefix}amazon-publisher-services/AmazonPublisherServicesAdapter"
+)
+project(":BidMachineAdapter").projectDir = File(
+    "${commonNamedRepoPrefix}bidmachine/BidMachineAdapter"
 )
 project(":ChartboostAdapter").projectDir = File(
     "${commonNamedRepoPrefix}chartboost/ChartboostAdapter"
@@ -85,3 +96,4 @@ project(":VungleAdapter").projectDir = File(
 project(":YahooAdapter").projectDir = File(
     "${commonNamedRepoPrefix}yahoo/YahooAdapter"
 )
+include(":JavaValidator")

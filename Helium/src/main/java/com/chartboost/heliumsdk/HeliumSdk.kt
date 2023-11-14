@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- *
+ * Copyright 2023 Chartboost, Inc.
+ * 
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -9,7 +9,11 @@ package com.chartboost.heliumsdk
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
-import com.chartboost.heliumsdk.ad.*
+import com.chartboost.heliumsdk.ad.ChartboostMediationAdLoadRequest
+import com.chartboost.heliumsdk.ad.ChartboostMediationFullscreenAd
+import com.chartboost.heliumsdk.ad.ChartboostMediationFullscreenAdListener
+import com.chartboost.heliumsdk.ad.ChartboostMediationFullscreenAdLoadListener
+import com.chartboost.heliumsdk.ad.ChartboostMediationFullscreenAdLoadResult
 import com.chartboost.heliumsdk.domain.AdapterInfo
 import com.chartboost.heliumsdk.domain.ChartboostMediationAdException
 import com.chartboost.heliumsdk.domain.ChartboostMediationError
@@ -43,6 +47,17 @@ class HeliumSdk private constructor(
 
     companion object {
         internal val chartboostMediationInternal = ChartboostMediationInternal()
+
+        /**
+         * Get the PartnerConsents object to be able to set consent on a per-partner basis.
+         * Setting consent here will override the GDPR and CCPA consent for a particular partner.
+         *
+         * @param context The Android context.
+         */
+        @JvmStatic
+        fun getPartnerConsents(context: Context): PartnerConsents{
+            return chartboostMediationInternal.getPartnerConsents(context)
+        }
 
         @JvmStatic
         fun getVersion(): String {

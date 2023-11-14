@@ -8,13 +8,17 @@
 package com.chartboost.heliumsdk.controllers
 
 import android.content.Context
+import com.chartboost.heliumsdk.PartnerConsents
+import com.chartboost.heliumsdk.utils.LogController
+import org.json.JSONException
+import org.json.JSONObject
 
 /**
  * @suppress
  *
  * This class manages privacy settings for the Helium SDK.
  */
-class PrivacyController(context: Context) {
+class PrivacyController(context: Context, private val partnerConsents: PartnerConsents) {
     /**
      * Internal keys used for reading/writing privacy settings to the SharedPreferences.
      */
@@ -24,12 +28,27 @@ class PrivacyController(context: Context) {
         private const val heliumGdprKey = "helium_GDPR"
         private const val heliumUserConsentKey = "helium_user_consent"
         private const val heliumCcpaConsentKey = "helium_ccpa_consent"
+        private const val HELIUM_PARTNER_CONSENTS_MAP_KEY = "helium_partner_consents_map"
+    }
+
+    init {
+        partnerConsents.addPartnerConsentsObserver(object :
+            PartnerConsents.PartnerConsentsObserver {
+            override fun onPartnerConsentsUpdated() {
+                savePartnerConsentsToDisk()
+            }
+        })
     }
 
     private val sharedPreferences = context.getSharedPreferences(
         heliumPrivacyIdentifier,
         Context.MODE_PRIVATE
     )
+
+    /**
+     * Whether or not the disk fetch for PrivacyConsents has happened.
+     */
+    private var hasUpdatedFromDisk = false
 
     /**
      * SharedPreferences can only store primitives. We need to keep track of tri-state statuses.
@@ -107,6 +126,45 @@ class PrivacyController(context: Context) {
             editor.putBoolean(heliumCcpaConsentKey, value ?: return)
             editor.apply()
         }
+
+    /**
+     * Serializes partner consents to shared preferences.
+     */
+    private fun savePartnerConsentsToDisk() {
+        val editor = sharedPreferences.edit()
+        editor.putString(
+            HELIUM_PARTNER_CONSENTS_MAP_KEY,
+            JSONObject(partnerConsents.getPartnerIdToConsentGivenMapCopy()).toString()
+        )
+        editor.apply()
+    }
+
+    /**
+     * Reads a serialized form of partner consents from shared preferences. This can only happen once.
+     */
+    internal fun updatePartnerConsentsFromDisk() {
+        if (hasUpdatedFromDisk) {
+            return
+        }
+        hasUpdatedFromDisk = true
+        val partnerConsentsMapString =
+            sharedPreferences.getString(HELIUM_PARTNER_CONSENTS_MAP_KEY, "")
+        if (partnerConsentsMapString.isNullOrEmpty()) {
+            LogController.d("No partner consents map saved.")
+            return
+        }
+        try {
+            val jsonObject = JSONObject(partnerConsentsMapString)
+            val consentMap: MutableMap<String, Boolean> = mutableMapOf()
+            jsonObject.keys().forEach {
+                consentMap[it] = jsonObject.getBoolean(it)
+            }
+            partnerConsents.mergePartnerConsentsFromDisk(consentMap)
+            savePartnerConsentsToDisk()
+        } catch (e: JSONException) {
+            LogController.d("Unable to recreate partner consents map.")
+        }
+    }
 
     private fun booleanToInt(bool: Boolean): Int {
         return when (bool) {
