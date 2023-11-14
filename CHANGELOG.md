@@ -2,6 +2,10 @@ Android Change Log
 ==================
 Check for the latest Chartboost Mediation SDK at the Chartboost Mediation website.
 
+### Version 4.7.0 *(2023-11-14)*
+Improvements:
+- Added an API to set consent on a per-partner basis.
+
 ### Version 4.6.0 *(2023-10-12)*
 Improvements:
 - Introduced Banner APIs that support both Fixed and Adaptive Banner Ad Types. See [`HeliumBannerSize`](https://chartboost.github.io/chartboost-mediation-android-sdk/4.6.0/-helium/com.chartboost.heliumsdk.ad/-helium-banner-ad/-helium-banner-size/index.html?query=class%20HeliumBannerSize) for options.

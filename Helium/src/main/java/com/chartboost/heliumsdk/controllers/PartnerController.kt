@@ -1,6 +1,6 @@
 /*
  * Copyright 2022-2023 Chartboost, Inc.
- *
+ * 
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -9,6 +9,7 @@ package com.chartboost.heliumsdk.controllers
 
 import android.content.Context
 import android.util.Size
+import com.chartboost.heliumsdk.PartnerConsents
 import com.chartboost.heliumsdk.domain.AdFormat
 import com.chartboost.heliumsdk.domain.AdInteractionListener
 import com.chartboost.heliumsdk.domain.AdapterInfo
@@ -131,6 +132,7 @@ class PartnerController {
             )
 
             onPartnerInitializationComplete(ChartboostMediationError.CM_INVALID_ARGUMENTS)
+            return
         }
 
         var initCompletionReported = false
@@ -165,6 +167,8 @@ class PartnerController {
                 metrics.start = System.currentTimeMillis()
                 metrics.end = System.currentTimeMillis()
                 metrics.duration = metrics.end?.minus(metrics.start ?: 0) ?: 0
+                metrics.partnerSdkVersion = adapters[partnerId]?.partnerSdkVersion ?: ""
+                metrics.partnerAdapterVersion = adapters[partnerId]?.adapterVersion ?: ""
                 metrics.chartboostMediationError =
                     ChartboostMediationError.CM_INITIALIZATION_SKIPPED
                 metrics.chartboostMediationErrorMessage =
@@ -229,11 +233,17 @@ class PartnerController {
      * @param context The current [Context].
      * @param applies True if the user is subject to GDPR, false if the user is not subject to GDPR.
      * @param status The user's [GdprConsentStatus] consent status.
+     * @param partnerConsents Per-partner consents.
      */
-    fun setGdpr(context: Context, applies: Boolean?, status: GdprConsentStatus) {
+    fun setGdpr(context: Context, applies: Boolean?, status: GdprConsentStatus, partnerConsents: PartnerConsents) {
+        val partnerIdToConsentMap = partnerConsents.getPartnerIdToConsentGivenMapCopy()
         adapters.forEach { (_, adapter) ->
             try {
-                adapter.setGdpr(context, applies, status)
+                when(partnerIdToConsentMap[adapter.partnerId]) {
+                    true -> adapter.setGdpr(context, applies, GdprConsentStatus.GDPR_CONSENT_GRANTED)
+                    false -> adapter.setGdpr(context, applies, GdprConsentStatus.GDPR_CONSENT_DENIED)
+                    null -> adapter.setGdpr(context, applies, status)
+                }
             } catch (ignored: Exception) {
                 LogController.e("Failed to route setGdpr to adapter ${adapter.partnerDisplayName}.")
             }
@@ -247,11 +257,30 @@ class PartnerController {
      * @param context The context to use for the call.
      * @param hasGrantedCcpaConsent Whether or not CCPA consent has been granted
      * @param privacyString The CCPA privacy string.
+     * @param partnerConsents Per-partner consents.
      */
-    fun setCcpaConsent(context: Context, hasGrantedCcpaConsent: Boolean, privacyString: String) {
+    fun setCcpaConsent(context: Context, hasGrantedCcpaConsent: Boolean?, privacyString: String, partnerConsents: PartnerConsents) {
+        val partnerIdToConsentMap = partnerConsents.getPartnerIdToConsentGivenMapCopy()
         adapters.forEach { (_, adapter) ->
             try {
-                adapter.setCcpaConsent(context, hasGrantedCcpaConsent, privacyString)
+                if (partnerIdToConsentMap.containsKey(adapter.partnerId)) {
+                    if (partnerIdToConsentMap[adapter.partnerId] == true) {
+                        adapter.setCcpaConsent(
+                            context,
+                            true,
+                            PrivacyController.PrivacyString.GRANTED.consentString
+                        )
+                    } else {
+                        adapter.setCcpaConsent(
+                            context,
+                            false,
+                            PrivacyController.PrivacyString.DENIED.consentString
+                        )
+                    }
+                } else if (hasGrantedCcpaConsent != null) {
+                    adapter.setCcpaConsent(context, hasGrantedCcpaConsent, privacyString)
+                }
+                // if CCPA has not been set on a per-partner basis or globally, do nothing.
             } catch (ignored: Exception) {
                 LogController.e("Failed to route setCcpaPrivacyString to adapter ${adapter.partnerDisplayName}")
             }

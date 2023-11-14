@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- *
+ * Copyright 2023 Chartboost, Inc.
+ * 
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -53,8 +53,8 @@ class ChartboostMediationInternalTest {
         every { mockedPrivacyController.ccpaConsent = any() } just Runs
         every { mockedPrivacyController.coppa } returns false
         every { mockedPrivacyController.coppa = any() } just Runs
-        every { mockedPartnerController.setGdpr(any(), any(), any()) } just Runs
-        every { mockedPartnerController.setCcpaConsent(any(), any(), any()) } just Runs
+        every { mockedPartnerController.setGdpr(any(), any(), any(), any()) } just Runs
+        every { mockedPartnerController.setCcpaConsent(any(), any(), any(), any()) } just Runs
         every { mockedPartnerController.setUserSubjectToCoppa(any(), any()) } just Runs
     }
 
@@ -66,7 +66,7 @@ class ChartboostMediationInternalTest {
         verify { mockedPrivacyController.userConsent = false }
         verify {
             mockedPartnerController.setGdpr(
-                mockedContext, false, GdprConsentStatus.GDPR_CONSENT_DENIED
+                mockedContext, false, GdprConsentStatus.GDPR_CONSENT_DENIED, subject.partnerConsents
             )
         }
     }
@@ -79,7 +79,7 @@ class ChartboostMediationInternalTest {
         verify { mockedPrivacyController.userConsent = false }
         verify {
             mockedPartnerController.setGdpr(
-                mockedContext, true, GdprConsentStatus.GDPR_CONSENT_DENIED
+                mockedContext, true, GdprConsentStatus.GDPR_CONSENT_DENIED, subject.partnerConsents
             )
         }
     }
@@ -93,7 +93,7 @@ class ChartboostMediationInternalTest {
         verify { mockedPrivacyController.userConsent = true }
         verify {
             mockedPartnerController.setGdpr(
-                mockedContext, true, GdprConsentStatus.GDPR_CONSENT_GRANTED
+                mockedContext, true, GdprConsentStatus.GDPR_CONSENT_GRANTED, subject.partnerConsents
             )
         }
     }
@@ -103,7 +103,7 @@ class ChartboostMediationInternalTest {
         subject.setCcpaConsent(false)
 
         verify { mockedPrivacyController.ccpaConsent = false }
-        verify { mockedPartnerController.setCcpaConsent(mockedContext, false, "1YY-") }
+        verify { mockedPartnerController.setCcpaConsent(mockedContext, false, "1YY-", subject.partnerConsents) }
     }
 
     @Test
@@ -111,7 +111,7 @@ class ChartboostMediationInternalTest {
         subject.setCcpaConsent(true)
 
         verify { mockedPrivacyController.ccpaConsent = true }
-        verify { mockedPartnerController.setCcpaConsent(mockedContext, true, "1YN-") }
+        verify { mockedPartnerController.setCcpaConsent(mockedContext, true, "1YN-", subject.partnerConsents) }
     }
 
     @Test
