@@ -15,6 +15,7 @@ import com.chartboost.heliumsdk.network.Endpoints.BASE_DOMAIN
 import com.chartboost.heliumsdk.network.Endpoints.Sdk.Event
 import com.chartboost.heliumsdk.network.model.*
 import com.chartboost.heliumsdk.network.model.ChartboostMediationHeaderMap.*
+import com.chartboost.heliumsdk.utils.Environment
 import com.chartboost.heliumsdk.utils.HeliumJson
 import com.chartboost.heliumsdk.utils.LogController
 import com.chartboost.heliumsdk.utils.MacroHelper
@@ -88,11 +89,13 @@ internal object ChartboostMediationNetworking {
         auctionID: String?,
         loadId: String
     ): ChartboostMediationNetworkingResult<Unit?> {
+        val appSetId = Environment.fetchAppSetId()
+
         return safeApiCall {
             ImpressionRequestBody(auctionID).let {
                 api.trackChartboostImpression(
                     url = Event.HELIUM_IMPRESSION.endpoint,
-                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId),
+                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
                     body = it
                 )
             }
@@ -122,11 +125,13 @@ internal object ChartboostMediationNetworking {
         auctionId: String,
         loadId: String
     ): ChartboostMediationNetworkingResult<Unit?> {
+        val appSetId = Environment.fetchAppSetId()
+
         return safeApiCall {
             SimpleTrackingRequestBody(auctionId).let {
                 api.trackClick(
                     url = Event.CLICK.endpoint,
-                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId),
+                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
                     body = it
                 )
             }
@@ -137,11 +142,13 @@ internal object ChartboostMediationNetworking {
         auctionId: String,
         loadId: String
     ): ChartboostMediationNetworkingResult<Unit?> {
+        val appSetId = Environment.fetchAppSetId()
+
         return safeApiCall {
             SimpleTrackingRequestBody(auctionId).let {
                 api.trackReward(
                     url = Event.REWARD.endpoint,
-                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId),
+                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
                     body = it
                 )
             }
@@ -154,11 +161,13 @@ internal object ChartboostMediationNetworking {
         loadId: String,
         status: String
     ): ChartboostMediationNetworkingResult<Unit?> {
+        val appSetId = Environment.fetchAppSetId()
+
         return safeApiCall {
             AdLoadNotificationRequestBody(placementName, adType, loadId, status).let {
                 api.trackAdLoad(
                     url = Event.ADLOAD.endpoint,
-                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId),
+                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
                     body = it
                 )
             }
@@ -170,10 +179,12 @@ internal object ChartboostMediationNetworking {
         loadId: String?,
         metricsRequestBody: MetricsRequestBody,
     ): ChartboostMediationNetworkingResult<Unit?> {
+        val appSetId = Environment.fetchAppSetId()
+
         return safeApiCall {
             api.trackEvent(
                 url = event.endpoint,
-                headers = ChartboostMediationAdLifecycleHeaderMap(loadId),
+                headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
                 body = metricsRequestBody
             )
         }
@@ -183,10 +194,12 @@ internal object ChartboostMediationNetworking {
         loadId: String?,
         bannerSizeBody: BannerSizeBody
     ): ChartboostMediationNetworkingResult<Unit?> {
+        val appSetId = Environment.fetchAppSetId()
+
         return safeApiCall {
             api.trackAdaptiveBannerSize(
                 url = Event.BANNER_SIZE.endpoint,
-                headers = ChartboostMediationAdLifecycleHeaderMap(loadId),
+                headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
                 body = bannerSizeBody
             )
         }
@@ -196,11 +209,13 @@ internal object ChartboostMediationNetworking {
         bids: Bids,
         loadId: String
     ): ChartboostMediationNetworkingResult<Unit?> {
+        val appSetId = Environment.fetchAppSetId()
+
         return safeApiCall {
             AuctionWinnerRequestBody(bids).let {
                 api.logAuctionWinner(
                     url = Event.WINNER.endpoint,
-                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId),
+                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
                     body = it
                 )
             }
@@ -272,12 +287,15 @@ internal object ChartboostMediationNetworking {
             bidTokens = bidTokens,
         )
 
+        val appSetId = Environment.fetchAppSetId()
+
         return safeApiCall {
             api.makeBidRequest(
                 url = Endpoints.Rtb.AUCTIONS.endpoint,
                 headers = ChartboostBidRequestMediationHeaderMap(
                     rateLimitHeaderValue,
-                    adLoadParams.loadId
+                    adLoadParams.loadId,
+                    appSetId
                 ),
                 body = bidRequestBody
             )
@@ -286,12 +304,13 @@ internal object ChartboostMediationNetworking {
 
     suspend fun getAppConfig(
         appId: String,
-        initHash: String
+        initHash: String,
+        appSetId: String,
     ): ChartboostMediationNetworkingResult<AppConfig?> {
         return safeApiCall<AppConfig> {
             api.getConfig(
                 url = "${Endpoints.Sdk.SDK_INIT.endpoint}/$appId",
-                headers = ChartboostMediationAppConfigHeaderMap(initHash)
+                headers = ChartboostMediationAppConfigHeaderMap(initHash, appSetId)
             )
         }
     }

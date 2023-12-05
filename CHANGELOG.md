@@ -2,6 +2,11 @@ Android Change Log
 ==================
 Check for the latest Chartboost Mediation SDK at the Chartboost Mediation website.
 
+### Version 4.7.1 *(2023-12-05)*
+Bug Fixes:
+- Removed the `repackageclass` annotation in proguard-rules.pro as to not affect publisher builds.
+- Initialization will now wait for app set ID retrieval to return a value.
+
 ### Version 4.7.0 *(2023-11-14)*
 Improvements:
 - Added an API to set consent on a per-partner basis.

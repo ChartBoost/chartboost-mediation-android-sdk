@@ -21,7 +21,6 @@
 #-renamesourcefileattribute SourceFile
 -printmapping build/outputs/mapping/release/mapping.txt
 
--repackageclasses 'com.chartboost.heliumsdk.impl'
 -renamesourcefileattribute SourceFile
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,EnclosingMethod
 
@@ -42,6 +41,7 @@
 -keep public class com.chartboost.heliumsdk.Ilrd { *; }
 -keep public interface com.chartboost.heliumsdk.HeliumIlrdObserver { *; }
 -keep public class com.chartboost.heliumsdk.HeliumImpressionData { *; }
+-keep public class com.chartboost.heliumsdk.PartnerConsents { *; }
 
 -keep public class com.chartboost.heliumsdk.domain.Keywords { *; }
 

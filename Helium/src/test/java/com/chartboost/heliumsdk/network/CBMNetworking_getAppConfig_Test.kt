@@ -10,6 +10,7 @@ package com.chartboost.heliumsdk.network
 import com.chartboost.heliumsdk.domain.AppConfig
 import com.chartboost.heliumsdk.network.model.ChartboostMediationNetworkingResult
 import com.chartboost.heliumsdk.network.testutils.NetworkTestJsonObjects
+import com.chartboost.heliumsdk.utils.Environment
 import com.chartboost.heliumsdk.utils.HeliumJson
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
@@ -28,7 +29,8 @@ fun ChartboostMediationNetworkingTest.`verify result for sdk_init success with n
         }
 
     launch {
-        val response = ChartboostMediationNetworking.getAppConfig(ChartboostMediationNetworkingTest.APP_ID, ChartboostMediationNetworkingTest.INIT_HASH_OLD)
+        val appSetId = Environment.fetchAppSetId()
+        val response = ChartboostMediationNetworking.getAppConfig(ChartboostMediationNetworkingTest.APP_ID, ChartboostMediationNetworkingTest.INIT_HASH_OLD, appSetId)
 
         val request = mockWebServer.takeRequest(1, TimeUnit.SECONDS)
 
@@ -73,7 +75,8 @@ fun ChartboostMediationNetworkingTest.`verify result for sdk_init success with n
         }
 
     launch {
-        val response = ChartboostMediationNetworking.getAppConfig(ChartboostMediationNetworkingTest.APP_ID, ChartboostMediationNetworkingTest.INIT_HASH_OLD)
+        val appSetId = Environment.fetchAppSetId()
+        val response = ChartboostMediationNetworking.getAppConfig(ChartboostMediationNetworkingTest.APP_ID, ChartboostMediationNetworkingTest.INIT_HASH_OLD, appSetId)
 
         val request = mockWebServer.takeRequest(1, TimeUnit.SECONDS)
 
@@ -115,7 +118,8 @@ fun ChartboostMediationNetworkingTest.`verify result for sdk_init failure due to
         }
 
     launch {
-        val response = ChartboostMediationNetworking.getAppConfig(ChartboostMediationNetworkingTest.APP_ID, ChartboostMediationNetworkingTest.INIT_HASH_OLD)
+        val appSetId = Environment.fetchAppSetId()
+        val response = ChartboostMediationNetworking.getAppConfig(ChartboostMediationNetworkingTest.APP_ID, ChartboostMediationNetworkingTest.INIT_HASH_OLD, appSetId)
 
         val request = mockWebServer.takeRequest(1, TimeUnit.SECONDS)
 
@@ -146,7 +150,8 @@ fun ChartboostMediationNetworkingTest.`verify result for sdk_init failure due to
         }
 
     launch {
-        val response = ChartboostMediationNetworking.getAppConfig(ChartboostMediationNetworkingTest.APP_ID, ChartboostMediationNetworkingTest.INIT_HASH_OLD)
+        val appSetId = Environment.fetchAppSetId()
+        val response = ChartboostMediationNetworking.getAppConfig(ChartboostMediationNetworkingTest.APP_ID, ChartboostMediationNetworkingTest.INIT_HASH_OLD, appSetId)
 
         val request = mockWebServer.takeRequest(1, TimeUnit.SECONDS)
 

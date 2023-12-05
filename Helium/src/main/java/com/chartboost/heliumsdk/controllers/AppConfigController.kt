@@ -108,10 +108,10 @@ class AppConfigController(
      */
     private suspend fun getServerConfig(sharedPreferences: SharedPreferences): Boolean {
         return withContext(IO) {
-            Environment.updateAppSetId(appContext)
+            val appSetId = Environment.fetchAppSetId()
 
             when (val result =
-                ChartboostMediationNetworking.getAppConfig(HeliumSdk.getAppId() ?: "", initHash)) {
+                ChartboostMediationNetworking.getAppConfig(HeliumSdk.getAppId() ?: "", initHash, appSetId)) {
                 is ChartboostMediationNetworkingResult.Success -> {
                     if (result.body != null) {
                         result.headers[INIT_HASH_HEADER_KEY]?.let {

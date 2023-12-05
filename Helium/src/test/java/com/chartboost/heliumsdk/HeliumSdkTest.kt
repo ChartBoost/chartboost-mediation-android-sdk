@@ -22,6 +22,10 @@ import com.chartboost.heliumsdk.utils.Environment
 import com.chartboost.heliumsdk.utils.LogController
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -91,9 +95,9 @@ class HeliumSdkTest {
         ShadowLooper.runUiThreadTasks()
     }
 
-    @Ignore("Ignoring until has been HB-6196 addressed")
     @Test
-    fun `start when Helium SDK is initialized twice should trigger an error`() {
+    @Ignore
+    fun `start when Helium SDK is initialized twice should trigger an error when in progress`() = runBlocking {
         // Create a mocked HeliumSdkListener and a slot to check for errors.
         val mockInitListener = mockk<HeliumSdk.HeliumSdkListener>()
         val listError = mutableListOf<Error>()
@@ -114,7 +118,10 @@ class HeliumSdkTest {
         justRun { mockInitListener.didInitialize(capture(listError)) }
 
         // Start the HeliumSDK
-        HeliumSdk.start(context, "app_id", "app_signature", null, mockInitListener)
+        withContext(IO) {
+            HeliumSdk.start(context, "app_id", "app_signature", null, mockInitListener)
+            delay(1000L)
+        }
 
         // Verify that no error has been captured and there are no errors.
         shadowOf(Looper.getMainLooper()).idle()
@@ -122,7 +129,10 @@ class HeliumSdkTest {
         verify(exactly = 0) { mockInitListener.didInitialize(any()) }
 
         // Start the Helium SDK again
-        HeliumSdk.start(context, "app_id", "app_signature", null, mockInitListener)
+        withContext(IO) {
+            HeliumSdk.start(context, "app_id", "app_signature", null, mockInitListener)
+            delay(1000L)
+        }
 
         // Verify that our error has been captured and the mock delegate is triggered.
         // This is needed so that we can capture the Error.

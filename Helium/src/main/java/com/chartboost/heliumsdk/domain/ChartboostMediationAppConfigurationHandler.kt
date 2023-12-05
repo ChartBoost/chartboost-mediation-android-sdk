@@ -11,10 +11,10 @@ import android.content.Context
 import com.chartboost.heliumsdk.HeliumInitializationOptions
 import com.chartboost.heliumsdk.controllers.PartnerController
 import com.chartboost.heliumsdk.domain.EventResult.SdkInitializationResult.InitResult1B
+import com.chartboost.heliumsdk.domain.MetricsManager.postMetricsDataForFailedEvent
 import com.chartboost.heliumsdk.network.Endpoints
 import com.chartboost.heliumsdk.utils.LogController
-import com.chartboost.heliumsdk.domain.MetricsManager.postMetricsDataForFailedEvent
-import kotlin.coroutines.suspendCoroutine
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 /**
  * @suppress
@@ -99,14 +99,16 @@ class ChartboostMediationAppConfigurationHandler(
         partnerConfigMap: MutableMap<String, PartnerConfiguration>,
         skippedPartnerIds: Set<String>
     ): ChartboostMediationError? {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             partnerController.setUpAdapters(
                 context,
                 partnerConfigMap,
                 AppConfigStorage.adapterClassPaths,
                 skippedPartnerIds,
                 onPartnerInitializationComplete = { error ->
-                    continuation.resumeWith(Result.success(error))
+                    if (continuation.isActive) {
+                        continuation.resumeWith(Result.success(error))
+                    }
                 }
             )
         }

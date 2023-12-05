@@ -16,11 +16,13 @@ import com.chartboost.heliumsdk.utils.Environment
  */
 sealed class ChartboostMediationHeaderMap : HashMap<String, String?>() {
 
-    data class ChartboostMediationAdLifecycleHeaderMap(val loadId: String?) :
-    ChartboostMediationHeaderMap() {
+    data class ChartboostMediationAdLifecycleHeaderMap(
+        val loadId: String?,
+        val appSetId: String,
+    ) : ChartboostMediationHeaderMap() {
         init {
             mapOf<String, String>().let {
-                put(ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY, (Environment.appSetId ?: ""))
+                put(ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY, appSetId)
                 put(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY, Environment.sessionId)
                 loadId?.let { put(ChartboostMediationNetworking.MEDIATION_LOAD_ID_HEADER_KEY, it) }
             }
@@ -28,12 +30,12 @@ sealed class ChartboostMediationHeaderMap : HashMap<String, String?>() {
     }
 
     data class ChartboostMediationAppConfigHeaderMap(
-        val initHash: String
-    ) :
-        ChartboostMediationHeaderMap() {
+        val initHash: String,
+        val appSetId: String,
+    ) : ChartboostMediationHeaderMap() {
         init {
             mapOf(
-                ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY to (Environment.appSetId ?: ""),
+                ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY to appSetId,
                 ChartboostMediationNetworking.SESSION_ID_HEADER_KEY to Environment.sessionId,
                 ChartboostMediationNetworking.SDK_VERSION_HEADER_KEY to HeliumSdk.getVersion(),
                 ChartboostMediationNetworking.DEVICE_OS_HEADER_KEY to Environment.operatingSystem,
@@ -45,13 +47,13 @@ sealed class ChartboostMediationHeaderMap : HashMap<String, String?>() {
 
     data class ChartboostBidRequestMediationHeaderMap(
         val rateLimit: String,
-        val loadId: String
-    ) :
-        ChartboostMediationHeaderMap() {
+        val loadId: String,
+        val appSetId: String,
+    ) : ChartboostMediationHeaderMap() {
         init {
             mapOf(
                 "X-Helium-SessionID" to Environment.sessionId,
-                ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY to (Environment.appSetId ?: ""),
+                ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY to appSetId,
                 ChartboostMediationNetworking.MEDIATION_LOAD_ID_HEADER_KEY to loadId,
                 ChartboostMediationNetworking.RATE_LIMIT_HEADER_KEY to rateLimit
             ).let { putAll(it) }
