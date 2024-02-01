@@ -21,11 +21,13 @@ import androidx.core.app.ActivityCompat
 import com.chartboost.heliumsdk.HeliumSdk
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.google.android.gms.appset.AppSet
+import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -34,6 +36,8 @@ import java.time.ZoneId
 import java.util.Calendar
 import java.util.Locale
 import java.util.UUID
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlin.math.sqrt
 
 /**
@@ -279,23 +283,37 @@ object Environment {
     val operatingSystemVersion: String
         get() = Build.VERSION.RELEASE
 
+    private var _appSetId: String? = null
+    private var _appSetIdScope: Int? = null
     private val appSetIdMutex = Mutex()
 
-    var appSetId: String? = null
+    /**
+     * Returns the AppSet ID. Note that this does not return the most up-to-date AppSet ID. To get
+     * the most up-to-date AppSet ID, call fetchAppSetId() instead.
+     */
+    val appSetId: String
         get() {
-            HeliumSdk.context?.let { context ->
-                CoroutineScope(IO).launch {
-                    appSetIdMutex.withLock {
-                        updateAppSetId(context)
-                    }
+            CoroutineScope(IO).launch {
+                HeliumSdk.context?.let {
+                    updateAppSetIdAndScope(it)
                 }
             }
-            return field
+            return _appSetId ?: ""
         }
-        private set
 
-    var appSetIdScope: Int? = null
-        private set
+    /**
+     * Returns the AppSet ID scope. Note that this does not return the most up-to-date AppSet ID scope.
+     * To get the most up-to-date AppSet ID scope, call fetchAppSetIdScope() instead.
+     */
+    val appSetIdScope: Int
+        get() {
+            CoroutineScope(IO).launch {
+                HeliumSdk.context?.let {
+                    updateAppSetIdAndScope(it)
+                }
+            }
+            return _appSetIdScope ?: 0 // 0 is not one of the valid scopes so we know there are problems if we get this
+        }
 
     /**
      * Returns the device's connection type.
@@ -456,7 +474,7 @@ object Environment {
         }
         CoroutineScope(IO).launch {
             appSetIdMutex.withLock {
-                updateAppSetId(context)
+                updateAppSetIdAndScope(context)
             }
         }
     }
@@ -477,18 +495,78 @@ object Environment {
         return UUID.randomUUID().toString()
     }
 
-    internal suspend fun updateAppSetId(context: Context) {
+    /**
+     * Fetches and updates the AppSet ID and scope. It's recommended to call this function
+     * if you care about having the most up-to-date AppSet ID. Else, you can use
+     * the appSetId property, which will automatically update its backing property
+     * as well but will not return the most up-to-date value.
+     */
+    internal suspend fun fetchAppSetId(): String {
+        if (_appSetId == null) {
+            withContext(IO) {
+                appSetIdMutex.withLock {
+                    if (_appSetId == null) { // Double-check locking
+                        HeliumSdk.context?.let {
+                            updateAppSetIdAndScope(it)
+                        }
+                    }
+                }
+            }
+        }
+        return _appSetId ?: ""
+    }
+
+    /**
+     * Fetches and updates the AppSet ID scope. It's recommended to call this function
+     * if you care about having the most up-to-date AppSet ID scope. Else, you can use
+     * the appSetIdScope property, which will automatically update its backing property
+     * as well but will not return the most up-to-date value.
+     *
+     * Currently not used because calls to fetchAppSetId() automatically update the scope so we
+     * don't need to call this separately. However, this might change in the future.
+     */
+    internal suspend fun fetchAppSetIdScope(): Int {
+        if (_appSetIdScope == null) {
+            withContext(IO) {
+                appSetIdMutex.withLock {
+                    if (_appSetIdScope == null) { // Double-check locking
+                        HeliumSdk.context?.let {
+                            updateAppSetIdAndScope(it)
+                        }
+                    }
+                }
+            }
+        }
+        return _appSetIdScope ?: 0
+    }
+
+    private suspend fun updateAppSetIdAndScope(context: Context) {
         return withContext(IO) {
             try {
-                val client = AppSet.getClient(context.applicationContext)
-                val task = client.appSetIdInfo
+                val task = AppSet.getClient(context.applicationContext).appSetIdInfo.await()
 
-                task.addOnSuccessListener {
-                    appSetIdScope = it.scope
-                    appSetId = it.id
-                }
+                _appSetIdScope = task.scope
+                _appSetId = task.id
             } catch (error: Exception) {
                 LogController.e("Exception raised while retrieving AppSet ID: ${error.message}")
+            }
+        }
+    }
+
+    private suspend fun <T> Task<T>.await(): T {
+        return suspendCancellableCoroutine { continuation ->
+            fun resumeOnce(result: Result<T>) {
+                if (continuation.isActive) {
+                    result.onSuccess { continuation.resume(it) }
+                    result.onFailure { continuation.resumeWithException(it) }
+                }
+            }
+
+            addOnSuccessListener { result ->
+                resumeOnce(Result.success(result))
+            }
+            addOnFailureListener { exception ->
+                resumeOnce(Result.failure(exception))
             }
         }
     }
