@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -14,7 +14,10 @@ import kotlin.math.roundToInt
  * @suppress
  */
 object Dips {
-    fun pixelsToIntDips(length: Int, context: Context): Int {
+    fun pixelsToIntDips(
+        length: Int,
+        context: Context,
+    ): Int {
         getDensity(context).let {
             return if (it != 0f) {
                 (length / it).roundToInt()
@@ -24,7 +27,10 @@ object Dips {
         }
     }
 
-    fun dipsToPixelsInt(length: Int, context: Context): Int {
+    fun dipsToPixelsInt(
+        length: Int,
+        context: Context,
+    ): Int {
         return (length * getDensity(context)).roundToInt()
     }
 

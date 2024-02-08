@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -29,7 +29,7 @@ class Ad(ad: HeliumAd) {
         AdType.REWARDED,
         AdType.BANNER,
         AdType.REWARDED_INTERSTITIAL,
-        AdType.ADAPTIVE_BANNER
+        AdType.ADAPTIVE_BANNER,
     )
     @Retention(AnnotationRetention.SOURCE)
     annotation class AdType {
@@ -50,7 +50,7 @@ class Ad(ad: HeliumAd) {
         State.LOADED,
         State.SHOW_REQUESTED,
         State.SHOWING,
-        State.FAILED
+        State.FAILED,
     )
     @Retention(AnnotationRetention.SOURCE)
     annotation class State {

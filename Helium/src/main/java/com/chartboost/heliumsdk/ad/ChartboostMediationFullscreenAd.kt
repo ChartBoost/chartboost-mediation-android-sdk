@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -58,30 +58,32 @@ class ChartboostMediationFullscreenAd(
             request: ChartboostMediationAdLoadRequest,
             adController: AdController?,
             listener: ChartboostMediationFullscreenAdListener,
-        ): ChartboostMediationFullscreenAdLoadResult = withContext(Main) {
-            val loadId = generateLoadId()
-            val ad = createChartboostMediationFullscreenAd(loadId, request, adController, listener)
-            val adFormat = getAdFormat(request) ?: return@withContext createAdLoadResult(
-                null,
-                loadId,
-                createPayloadJson(mutableSetOf()),
-                ChartboostMediationError.CM_LOAD_FAILURE_UNSUPPORTED_AD_FORMAT
-            )
-            val adLoadParams = createAdLoadParams(ad, request, loadId, adFormat)
-            val (metricsSet, loadResult) = performAdLoad(context, adLoadParams, adController)
-            val payloadJson = createPayloadJson(metricsSet)
-            val error = getError(loadResult)
+        ): ChartboostMediationFullscreenAdLoadResult =
+            withContext(Main) {
+                val loadId = generateLoadId()
+                val ad = createChartboostMediationFullscreenAd(loadId, request, adController, listener)
+                val adFormat =
+                    getAdFormat(request) ?: return@withContext createAdLoadResult(
+                        null,
+                        loadId,
+                        createPayloadJson(mutableSetOf()),
+                        ChartboostMediationError.CM_LOAD_FAILURE_UNSUPPORTED_AD_FORMAT,
+                    )
+                val adLoadParams = createAdLoadParams(ad, request, loadId, adFormat)
+                val (metricsSet, loadResult) = performAdLoad(context, adLoadParams, adController)
+                val payloadJson = createPayloadJson(metricsSet)
+                val error = getError(loadResult)
 
-            if (error != null) {
-                e("Failed to load fullscreen ad with error: $error")
-                return@withContext createAdLoadResult(null, loadId, payloadJson, error)
+                if (error != null) {
+                    e("Failed to load fullscreen ad with error: $error")
+                    return@withContext createAdLoadResult(null, loadId, payloadJson, error)
+                }
+
+                val cachedAd = getCachedAd(loadResult)
+
+                ad.updateAdDetails(cachedAd, loadId, listener, request)
+                createAdLoadResult(ad, loadId, payloadJson, null)
             }
-
-            val cachedAd = getCachedAd(loadResult)
-
-            ad.updateAdDetails(cachedAd, loadId, listener, request)
-            createAdLoadResult(ad, loadId, payloadJson, null)
-        }
 
         private fun generateLoadId(): String {
             return "${Environment.sessionId}${System.currentTimeMillis()}"
@@ -98,7 +100,7 @@ class ChartboostMediationFullscreenAd(
                 listener = listener,
                 request = request,
                 loadId = loadId,
-                adController = adController
+                adController = adController,
             )
         }
 
@@ -117,7 +119,7 @@ class ChartboostMediationFullscreenAd(
                 keywords = request.keywords,
                 loadId = loadId,
                 bannerSize = null,
-                adInteractionListener = createAdInteractionListener(ad)
+                adInteractionListener = createAdInteractionListener(ad),
             )
         }
 
@@ -125,42 +127,51 @@ class ChartboostMediationFullscreenAd(
             context: Context,
             adLoadParams: AdLoadParams,
             adController: AdController?,
-        ): Pair<MutableSet<Metrics>, Result<CachedAd>?> = run {
-            val metricsSet = mutableSetOf<Metrics>()
-            var loadResult: Result<CachedAd>? = null
+        ): Pair<MutableSet<Metrics>, Result<CachedAd>?> =
+            run {
+                val metricsSet = mutableSetOf<Metrics>()
+                var loadResult: Result<CachedAd>? = null
 
-            CoroutineScope(Main).launch(CoroutineExceptionHandler { _, error ->
-                loadResult = Result.failure(error)
-            }) {
-                loadResult = adController?.load(context, adLoadParams, metricsSet)
-                    ?: Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_CHARTBOOST_MEDIATION_NOT_INITIALIZED))
-            }.also { it.join() }
+                CoroutineScope(Main).launch(
+                    CoroutineExceptionHandler { _, error ->
+                        loadResult = Result.failure(error)
+                    },
+                ) {
+                    loadResult = adController?.load(context, adLoadParams, metricsSet)
+                        ?: Result.failure(
+                            ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_CHARTBOOST_MEDIATION_NOT_INITIALIZED),
+                        )
+                }.also { it.join() }
 
-            return Pair(metricsSet, loadResult)
-        }
+                return Pair(metricsSet, loadResult)
+            }
 
         @OptIn(InternalSerializationApi::class)
         private fun createPayloadJson(metricsSet: MutableSet<Metrics>): JSONObject {
             val metricsRequestBody = MetricsManager.buildMetricsDataRequestBody(metricsSet)
             return HeliumJson.writeJson(
                 metricsRequestBody,
-                MetricsRequestBody.serializer()
+                MetricsRequestBody.serializer(),
             ).jsonObject.toJSONObject()
         }
 
         private fun getError(loadResult: Result<CachedAd>?): ChartboostMediationError? {
             return when (loadResult) {
                 null -> ChartboostMediationError.CM_LOAD_FAILURE_CHARTBOOST_MEDIATION_NOT_INITIALIZED
-                else -> loadResult.fold({ null }, { throwable ->
-                    if (throwable is ChartboostMediationAdException) throwable.chartboostMediationError
-                    else ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION
-                })
+                else ->
+                    loadResult.fold({ null }, { throwable ->
+                        if (throwable is ChartboostMediationAdException) {
+                            throwable.chartboostMediationError
+                        } else {
+                            ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION
+                        }
+                    })
             }
         }
 
         private fun getCachedAd(loadResult: Result<CachedAd>?): CachedAd {
             return loadResult?.getOrNull() ?: throw ChartboostMediationAdException(
-                ChartboostMediationError.CM_LOAD_FAILURE_CHARTBOOST_MEDIATION_NOT_INITIALIZED
+                ChartboostMediationError.CM_LOAD_FAILURE_CHARTBOOST_MEDIATION_NOT_INITIALIZED,
             )
         }
 
@@ -173,7 +184,7 @@ class ChartboostMediationFullscreenAd(
             ad = ad,
             loadId = loadId,
             metrics = payloadJson,
-            error = error
+            error = error,
         )
 
         private fun createAdInteractionListener(ad: ChartboostMediationFullscreenAd) =
@@ -233,14 +244,15 @@ class ChartboostMediationFullscreenAd(
      */
     var customData: String? = null
         set(value) {
-            field = if (value != null && value.length > CUSTOM_DATA_MAX_CHAR) {
-                LogController.w("Failed to set custom data. It is longer than the maximum limit of $CUSTOM_DATA_MAX_CHAR characters.")
-                null
-            } else {
-                value?.also { newValue ->
-                    cachedAd?.customData = newValue
+            field =
+                if (value != null && value.length > CUSTOM_DATA_MAX_CHAR) {
+                    LogController.w("Failed to set custom data. It is longer than the maximum limit of $CUSTOM_DATA_MAX_CHAR characters.")
+                    null
+                } else {
+                    value?.also { newValue ->
+                        cachedAd?.customData = newValue
+                    }
                 }
-            }
         }
 
     private var showRequest: Job? = null
@@ -278,9 +290,9 @@ class ChartboostMediationFullscreenAd(
                 invalidate()
 
                 return createFailureShowResult(
-                    ChartboostMediationError.CM_SHOW_FAILURE_AD_NOT_READY
+                    ChartboostMediationError.CM_SHOW_FAILURE_AD_NOT_READY,
                 )
-            }
+            },
         )
     }
 
@@ -311,51 +323,60 @@ class ChartboostMediationFullscreenAd(
     ): ChartboostMediationAdShowResult {
         var showResult = createFailureShowResult(ChartboostMediationError.CM_SHOW_FAILURE_UNKNOWN)
 
-        showRequest = CoroutineScope(Main).launch(CoroutineExceptionHandler { _, error ->
-            showResult = createFailureShowResult(
-                if (error is ChartboostMediationAdException) error.chartboostMediationError
-                else ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION
-            )
-            invalidate()
-        }) {
-            showingAd.customData = customData ?: ""
-            showResult = adController?.show(context, showingAd)?.apply {
-                if (error == null) {
-                    CoroutineScope(Main).launch {
-                        listener?.onAdImpressionRecorded(this@ChartboostMediationFullscreenAd)
-                        HeliumSdk.chartboostMediationInternal.fullscreenAdShowingState.notifyFullscreenAdShown()
-                    }.also { it.join() }
+        showRequest =
+            CoroutineScope(Main).launch(
+                CoroutineExceptionHandler { _, error ->
+                    showResult =
+                        createFailureShowResult(
+                            if (error is ChartboostMediationAdException) {
+                                error.chartboostMediationError
+                            } else {
+                                ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION
+                            },
+                        )
+                    invalidate()
+                },
+            ) {
+                showingAd.customData = customData ?: ""
+                showResult = adController?.show(context, showingAd)?.apply {
+                    if (error == null) {
+                        CoroutineScope(Main).launch {
+                            listener?.onAdImpressionRecorded(this@ChartboostMediationFullscreenAd)
+                            HeliumSdk.chartboostMediationInternal.fullscreenAdShowingState.notifyFullscreenAdShown()
+                        }.also { it.join() }
+                    }
+                } ?: run {
+                    invalidate()
+                    createFailureShowResult(ChartboostMediationError.CM_SHOW_FAILURE_NOT_INITIALIZED)
                 }
-            } ?: run {
-                invalidate()
-                createFailureShowResult(ChartboostMediationError.CM_SHOW_FAILURE_NOT_INITIALIZED)
-            }
-        }.also { it.join() }
+            }.also { it.join() }
 
         return showResult
     }
 
     @OptIn(InternalSerializationApi::class)
     private fun createFailureShowResult(error: ChartboostMediationError?): ChartboostMediationAdShowResult {
-        val metricsSet = setOf(
-            Metrics(
-                event = Endpoints.Sdk.Event.SHOW,
-                partner = null
-            ).apply {
-                start = System.currentTimeMillis()
-                end = System.currentTimeMillis()
-                duration = 0
-                isSuccess = false
-                chartboostMediationError = error
-                chartboostMediationErrorMessage = error?.message
-            }
-        )
+        val metricsSet =
+            setOf(
+                Metrics(
+                    event = Endpoints.Sdk.Event.SHOW,
+                    partner = null,
+                ).apply {
+                    start = System.currentTimeMillis()
+                    end = System.currentTimeMillis()
+                    duration = 0
+                    isSuccess = false
+                    chartboostMediationError = error
+                    chartboostMediationErrorMessage = error?.message
+                },
+            )
 
         val metricsRequestBody = MetricsManager.buildMetricsDataRequestBody(metricsSet)
-        val payloadJson = HeliumJson.writeJson(
-            metricsRequestBody,
-            MetricsRequestBody.serializer()
-        ).jsonObject.toJSONObject()
+        val payloadJson =
+            HeliumJson.writeJson(
+                metricsRequestBody,
+                MetricsRequestBody.serializer(),
+            ).jsonObject.toJSONObject()
 
         return ChartboostMediationAdShowResult(payloadJson, error)
     }

@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -24,17 +24,16 @@ class BidRequestRegs private constructor(
      */
     @SerialName("coppa")
     val coppa: Int,
-
     @SerialName("ext")
-    val ext: BidRequestRegsExt
+    val ext: BidRequestRegsExt,
 ) {
     constructor(
         isCoppa: Boolean?,
         gdpr: Int,
-        ccpaConsent: Boolean?
+        ccpaConsent: Boolean?,
     ) : this(
         coppa = if (isCoppa == true) 1 else 0,
-        ext = BidRequestRegsExt(gdpr = gdpr, ccpaConsent = ccpaConsent)
+        ext = BidRequestRegsExt(gdpr = gdpr, ccpaConsent = ccpaConsent),
     )
 }
 
@@ -48,22 +47,22 @@ class BidRequestRegsExt private constructor(
      */
     @SerialName("gdpr")
     val gdpr: Int,
-
     /**
      * Flag to determine whether or not CCPA applies to this user
      */
     @SerialName("us_privacy")
-    val usPrivacy: String?
+    val usPrivacy: String?,
 ) {
     constructor(
         gdpr: Int,
-        ccpaConsent: Boolean?
+        ccpaConsent: Boolean?,
     ) : this(
         gdpr = if (gdpr == TRUE.value) TRUE.value else FALSE.value,
-        usPrivacy = when (ccpaConsent) {
-            true -> GRANTED.consentString
-            false -> DENIED.consentString
-            null -> null
-        }
+        usPrivacy =
+            when (ccpaConsent) {
+                true -> GRANTED.consentString
+                false -> DENIED.consentString
+                null -> null
+            },
     )
 }

@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -17,7 +17,6 @@ import org.junit.Before
 import org.junit.Test
 
 open class HeliumKeywordsTest {
-
     private lateinit var heliumInterstitialAd: HeliumInterstitialAd
     private lateinit var heliumRewardedAd: HeliumRewardedAd
     private lateinit var heliumBannerAd: HeliumBannerAd
@@ -46,14 +45,14 @@ open class HeliumKeywordsTest {
         // Create Helium Ad Objects
         heliumInterstitialAd = HeliumInterstitialAd(mockedContext, "sample", mockedi12AdListener)
         heliumRewardedAd = HeliumRewardedAd(mockedContext, "sample", mockedRewardedAdListener)
-        heliumBannerAd = HeliumBannerAd(
-            mockedContext,
-            "sample",
-            HeliumBannerAd.HeliumBannerSize.MEDIUM,
-            mockedBannerAdListener
-        )
+        heliumBannerAd =
+            HeliumBannerAd(
+                mockedContext,
+                "sample",
+                HeliumBannerAd.HeliumBannerSize.MEDIUM,
+                mockedBannerAdListener,
+            )
     }
-
 
     @Test
     fun keywords_withDifferentAdFormats_shouldCreateDifferentKeywordClasses() {

@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -19,7 +19,7 @@ import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.lang.ref.WeakReference
 
- @Deprecated("Use ChartboostMediationFullscreenAd for the most comprehensive fullscreen ad experience.")
+@Deprecated("Use ChartboostMediationFullscreenAd for the most comprehensive fullscreen ad experience.")
 abstract class HeliumFullscreenAd(context: Context, override val placementName: String) : HeliumAd {
     protected var listener: HeliumFullscreenAdListener? = null
     protected var cachedAd: CachedAd? = null
@@ -50,61 +50,71 @@ abstract class HeliumFullscreenAd(context: Context, override val placementName: 
                     placementName,
                     previousLoadedAd.loadId,
                     previousLoadedAd.winningBidInfo,
-                    null
+                    null,
                 )
             }
             return
         }
         val loadId = Environment.sessionId + System.currentTimeMillis()
         inflightRequest =
-            CoroutineScope(Dispatchers.Main).launch(CoroutineExceptionHandler { _, error ->
-                inflightRequest = null
-                CoroutineScope(Dispatchers.Main).launch {
-                    listener?.onAdCached(
-                        placementName,
-                        loadId,
-                        mapOf(),
-                        if (error is ChartboostMediationAdException) error else ChartboostMediationAdException(
-                            ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION
+            CoroutineScope(Dispatchers.Main).launch(
+                CoroutineExceptionHandler { _, error ->
+                    inflightRequest = null
+                    CoroutineScope(Dispatchers.Main).launch {
+                        listener?.onAdCached(
+                            placementName,
+                            loadId,
+                            mapOf(),
+                            if (error is ChartboostMediationAdException) {
+                                error
+                            } else {
+                                ChartboostMediationAdException(
+                                    ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION,
+                                )
+                            },
                         )
+                    }
+                },
+            ) {
+                val loadResult =
+                    HeliumSdk.chartboostMediationInternal.adController?.load(
+                        context,
+                        AdLoadParams(
+                            adIdentifier = AdIdentifier(getAdType(), placementName),
+                            keywords = keywords,
+                            loadId = loadId,
+                            bannerSize = null,
+                            adInteractionListener =
+                                object : AdInteractionListener {
+                                    override fun onImpressionTracked(partnerAd: PartnerAd) {
+                                        // We ignore the partner impression
+                                    }
+
+                                    override fun onClicked(partnerAd: PartnerAd) {
+                                        listener?.onAdClicked(partnerAd.request.chartboostPlacement)
+                                    }
+
+                                    override fun onRewarded(partnerAd: PartnerAd) {
+                                        listener?.onAdRewarded(partnerAd.request.chartboostPlacement)
+                                    }
+
+                                    override fun onDismissed(
+                                        partnerAd: PartnerAd,
+                                        error: ChartboostMediationAdException?,
+                                    ) {
+                                        fullscreenAdShowingState?.notifyFullscreenAdClosed()
+                                        listener?.onAdClosed(placementName, error)
+                                    }
+
+                                    override fun onExpired(partnerAd: PartnerAd) {
+                                        cachedAd = null
+                                    }
+                                },
+                        ),
+                        // This is a placeholder set of load metrics that's effected by the new fullscreen load API talking to AdController.
+                        // This is an internal change and has no visible effect for publishers.
+                        mutableSetOf(),
                     )
-                }
-            }) {
-                val loadResult = HeliumSdk.chartboostMediationInternal.adController?.load(
-                    context,
-                    AdLoadParams(adIdentifier = AdIdentifier(getAdType(), placementName),
-                        keywords = keywords,
-                        loadId = loadId,
-                        bannerSize = null,
-                        adInteractionListener = object : AdInteractionListener {
-                            override fun onImpressionTracked(partnerAd: PartnerAd) {
-                                // We ignore the partner impression
-                            }
-
-                            override fun onClicked(partnerAd: PartnerAd) {
-                                listener?.onAdClicked(partnerAd.request.chartboostPlacement)
-                            }
-
-                            override fun onRewarded(partnerAd: PartnerAd) {
-                                listener?.onAdRewarded(partnerAd.request.chartboostPlacement)
-                            }
-
-                            override fun onDismissed(
-                                partnerAd: PartnerAd,
-                                error: ChartboostMediationAdException?
-                            ) {
-                                fullscreenAdShowingState?.notifyFullscreenAdClosed()
-                                listener?.onAdClosed(placementName, error)
-                            }
-
-                            override fun onExpired(partnerAd: PartnerAd) {
-                                cachedAd = null
-                            }
-                        }),
-                    // This is a placeholder set of load metrics that's effected by the new fullscreen load API talking to AdController.
-                    // This is an internal change and has no visible effect for publishers.
-                    mutableSetOf()
-                )
                 if (!isActive) {
                     inflightRequest = null
                     return@launch
@@ -123,9 +133,13 @@ abstract class HeliumFullscreenAd(context: Context, override val placementName: 
                             placementName,
                             loadId,
                             mapOf(),
-                            if (it is ChartboostMediationAdException) it else ChartboostMediationAdException(
-                                ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION
-                            )
+                            if (it is ChartboostMediationAdException) {
+                                it
+                            } else {
+                                ChartboostMediationAdException(
+                                    ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION,
+                                )
+                            },
                         )
                     }
                 }) ?: run {
@@ -136,7 +150,7 @@ abstract class HeliumFullscreenAd(context: Context, override val placementName: 
                             placementName,
                             loadId,
                             mapOf(),
-                            ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_CHARTBOOST_MEDIATION_NOT_INITIALIZED)
+                            ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_CHARTBOOST_MEDIATION_NOT_INITIALIZED),
                         )
                     }
                 }
@@ -148,50 +162,58 @@ abstract class HeliumFullscreenAd(context: Context, override val placementName: 
      */
     fun show() {
         val context = weakActivity.get() ?: appContext
-        val showingAd = cachedAd ?: run {
-            CoroutineScope(Dispatchers.Main).launch {
-                listener?.onAdShown(
-                    placementName,
-                    ChartboostMediationAdException(ChartboostMediationError.CM_SHOW_FAILURE_AD_NOT_READY)
-                )
-            }
-            return
-        }
-        cachedAd = null
-        CoroutineScope(Dispatchers.Main).launch(CoroutineExceptionHandler { _, error ->
-            CoroutineScope(Dispatchers.Main).launch {
-                listener?.onAdShown(
-                    placementName,
-                    if (error is ChartboostMediationAdException) error else ChartboostMediationAdException(
-                        ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION
+        val showingAd =
+            cachedAd ?: run {
+                CoroutineScope(Dispatchers.Main).launch {
+                    listener?.onAdShown(
+                        placementName,
+                        ChartboostMediationAdException(ChartboostMediationError.CM_SHOW_FAILURE_AD_NOT_READY),
                     )
-                )
+                }
+                return
             }
-        }) {
-            val showResult = HeliumSdk.chartboostMediationInternal.adController?.show(context, showingAd)
-                ?: ChartboostMediationAdShowResult(
-                    JSONObject().apply {
-                        Metrics(
-                            partner = null,
-                            event = Event.SHOW,
-                        ).apply {
-                            start = System.currentTimeMillis()
-                            end = System.currentTimeMillis()
-                            duration = 0
-                            isSuccess = false
-                            chartboostMediationError = CM_SHOW_FAILURE_NOT_INITIALIZED
-                            chartboostMediationErrorMessage =
-                                CM_SHOW_FAILURE_NOT_INITIALIZED.message
-                        }
-                    },
-                    CM_SHOW_FAILURE_NOT_INITIALIZED
-                )
+        cachedAd = null
+        CoroutineScope(Dispatchers.Main).launch(
+            CoroutineExceptionHandler { _, error ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    listener?.onAdShown(
+                        placementName,
+                        if (error is ChartboostMediationAdException) {
+                            error
+                        } else {
+                            ChartboostMediationAdException(
+                                ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION,
+                            )
+                        },
+                    )
+                }
+            },
+        ) {
+            val showResult =
+                HeliumSdk.chartboostMediationInternal.adController?.show(context, showingAd)
+                    ?: ChartboostMediationAdShowResult(
+                        JSONObject().apply {
+                            Metrics(
+                                partner = null,
+                                event = Event.SHOW,
+                            ).apply {
+                                start = System.currentTimeMillis()
+                                end = System.currentTimeMillis()
+                                duration = 0
+                                isSuccess = false
+                                chartboostMediationError = CM_SHOW_FAILURE_NOT_INITIALIZED
+                                chartboostMediationErrorMessage =
+                                    CM_SHOW_FAILURE_NOT_INITIALIZED.message
+                            }
+                        },
+                        CM_SHOW_FAILURE_NOT_INITIALIZED,
+                    )
 
             showResult.error?.let { error ->
                 CoroutineScope(Dispatchers.Main).launch {
                     listener?.onAdShown(
                         placementName,
-                        ChartboostMediationAdException(error)
+                        ChartboostMediationAdException(error),
                     )
                 }
             } ?: run {

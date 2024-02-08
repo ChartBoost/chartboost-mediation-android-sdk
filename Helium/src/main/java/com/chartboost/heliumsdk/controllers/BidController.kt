@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -40,20 +40,23 @@ class BidController(
         while (activeBid != null) {
             LogController.d(
                 "Loading bid for ${activeBid.partnerName} with placement name " +
-                        "${activeBid.partnerPlacementName} on Chartboost placement ${activeBid.adIdentifier}"
+                    "${activeBid.partnerPlacementName} on Chartboost placement ${activeBid.adIdentifier}",
             )
-            val partnerAdResult = partnerController.routeLoad(
-                context = context,
-                auctionId = bids.auctionId,
-                lineItemId = activeBid.lineItemId,
-                isMediation = activeBid.isMediation,
-                request = constructAdLoadRequest(activeBid, activeBid.size, adInteractionListener),
-                loadMetricsSet = loadMetricsSet,
-                placementType = activeBid.adIdentifier.placementType
-            )
+            val partnerAdResult =
+                partnerController.routeLoad(
+                    context = context,
+                    auctionId = bids.auctionId,
+                    lineItemId = activeBid.lineItemId,
+                    isMediation = activeBid.isMediation,
+                    request = constructAdLoadRequest(activeBid, activeBid.size, adInteractionListener),
+                    loadMetricsSet = loadMetricsSet,
+                    placementType = activeBid.adIdentifier.placementType,
+                )
 
             if (!partnerAdResult.isSuccess) {
-                LogController.d("Loading bid FAILED for Chartboost placement ${bids.adIdentifier} with error: ${partnerAdResult.exceptionOrNull()}")
+                LogController.d(
+                    "Loading bid FAILED for Chartboost placement ${bids.adIdentifier} with error: ${partnerAdResult.exceptionOrNull()}",
+                )
 
                 bids.incrementActiveBid()
                 activeBid = bids.activeBid
@@ -66,15 +69,15 @@ class BidController(
                 val reportedWidth = details?.get("banner_width_dips")?.toInt() ?: -1
                 val reportedHeight = details?.get("banner_height_dips")?.toInt() ?: -1
 
-                if ((reportedWidth > 0 && reportedWidth > requestedWidth)
-                    || (reportedHeight > 0 && reportedHeight > requestedHeight)
+                if ((reportedWidth > 0 && reportedWidth > requestedWidth) ||
+                    (reportedHeight > 0 && reportedHeight > requestedHeight)
                 ) {
                     LogController.d(
                         """
-                            Loading bid FAILED for Chartboost placement ${bids.adIdentifier} due to oversized ad
-                            Requested size: ($requestedWidth, $requestedHeight)
-                            Returned size: ($reportedWidth, $reportedHeight)
-                        """.trimIndent()
+                        Loading bid FAILED for Chartboost placement ${bids.adIdentifier} due to oversized ad
+                        Requested size: ($requestedWidth, $requestedHeight)
+                        Returned size: ($reportedWidth, $reportedHeight)
+                        """.trimIndent(),
                     )
 
                     bids.incrementActiveBid()
@@ -99,23 +102,24 @@ class BidController(
     private fun constructAdLoadRequest(
         bid: Bid,
         bannerSize: HeliumBannerAd.HeliumBannerSize?,
-        adInteractionListener: AdInteractionListener
+        adInteractionListener: AdInteractionListener,
     ): PartnerAdLoadRequest {
         return PartnerAdLoadRequest(
             // TODO: This is a hack forcing the Reference Adapter to load + show ads. Remove this hack once not needed.
             partnerId = if (shouldForceReference(bid.adIdentifier.placementName)) "reference" else bid.partnerName,
             chartboostPlacement = bid.adIdentifier.placementName,
             partnerPlacement = bid.partnerPlacementName,
-            size = Size(
-                bannerSize?.width ?: HeliumBannerAd.HeliumBannerSize.STANDARD.width,
-                bannerSize?.height ?: HeliumBannerAd.HeliumBannerSize.STANDARD.height
-            ),
+            size =
+                Size(
+                    bannerSize?.width ?: HeliumBannerAd.HeliumBannerSize.STANDARD.width,
+                    bannerSize?.height ?: HeliumBannerAd.HeliumBannerSize.STANDARD.height,
+                ),
             format = adTypeToAdFormat(bid.adIdentifier.adType),
             adm = getAdMarkup(bid),
             identifier = bid.loadRequestId,
             partnerSettings = bid.partnerSettings,
             adInteractionListener = adInteractionListener,
-            isAdaptiveBanner = adTypeToAdFormat(bid.adIdentifier.adType) == AdFormat.ADAPTIVE_BANNER
+            isAdaptiveBanner = adTypeToAdFormat(bid.adIdentifier.adType) == AdFormat.ADAPTIVE_BANNER,
         )
     }
 
@@ -129,7 +133,9 @@ class BidController(
     private fun getAdMarkup(bid: Bid): String {
         return if (!bid.isMediation) {
             bid.adm ?: ""
-        } else ""
+        } else {
+            ""
+        }
     }
 
     /**

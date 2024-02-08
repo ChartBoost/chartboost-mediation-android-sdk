@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -21,23 +21,20 @@ import kotlin.math.sign
 class MetricsRequestBody constructor(
     @SerialName("auction_id")
     val auctionId: String? = null,
-
     @SerialName("placement_type")
     val placementType: String? = null,
-
     @SerialName("size")
     val size: BannerAdDimensions? = null,
-
+    @SerialName("background_duration")
+    val backgroundDurationMs: Long? = null,
     @Contextual
     @SerialName("result")
     val result: String? = null,
-
     @SerialName("metrics")
     val metrics: Set<MetricsData>,
-
     @Contextual
     @SerialName("error")
-    val error: MetricsError? = null
+    val error: MetricsError? = null,
 )
 
 /**
@@ -47,40 +44,28 @@ class MetricsRequestBody constructor(
 class MetricsData private constructor(
     @SerialName("network_type")
     val networkType: String? = null,
-
     @SerialName("line_item_id")
     val lineItemId: String? = null,
-
     @SerialName("partner_placement")
     val partnerPlacement: String? = null,
-
     @SerialName("partner")
     val partner: String? = null,
-
     @SerialName("start")
     val start: Long? = null,
-
     @SerialName("end")
     val end: Long? = null,
-
     @SerialName("duration")
     val duration: Long? = null,
-
     @SerialName("is_success")
     val isSuccess: Boolean,
-
     @SerialName("helium_error")
     val chartboostMediationError: ChartboostMediationError? = null,
-
     @SerialName("helium_error_code")
     val chartboostMediationErrorCode: String? = null,
-
     @SerialName("helium_error_message")
     val chartboostMediationErrorMessage: String? = null,
-
     @SerialName("partner_sdk_version")
     val partnerSdkVersion: String? = null,
-
     @SerialName("partner_adapter_version")
     val partnerAdapterVersion: String? = null,
 ) {
@@ -97,7 +82,7 @@ class MetricsData private constructor(
         chartboostMediationErrorCode = metrics.chartboostMediationError?.code,
         chartboostMediationErrorMessage = metrics.chartboostMediationErrorMessage,
         partnerSdkVersion = metrics.partnerSdkVersion,
-        partnerAdapterVersion = metrics.partnerAdapterVersion
+        partnerAdapterVersion = metrics.partnerAdapterVersion,
     )
 
     /**
@@ -142,16 +127,17 @@ class MetricsData private constructor(
 
                 // If the start time is null, then use the last known start time as a backup.
                 // For concurrent requests, this will result in the start time being slightly off, but it's better than nothing.
-                else -> startLastKnownGood.takeIf { it <= (end ?: Long.MAX_VALUE) }
-                    ?: System.currentTimeMillis()
+                else ->
+                    startLastKnownGood.takeIf { it <= (end ?: Long.MAX_VALUE) }
+                        ?: System.currentTimeMillis()
             }
         }
 
         private fun didPartnerTimeOut(error: ChartboostMediationError?) =
             error == ChartboostMediationError.CM_INITIALIZATION_FAILURE_TIMEOUT ||
-                    error == ChartboostMediationError.CM_PREBID_FAILURE_TIMEOUT ||
-                    error == ChartboostMediationError.CM_LOAD_FAILURE_TIMEOUT ||
-                    error == ChartboostMediationError.CM_SHOW_FAILURE_TIMEOUT ||
-                    error == ChartboostMediationError.CM_INVALIDATE_FAILURE_TIMEOUT
+                error == ChartboostMediationError.CM_PREBID_FAILURE_TIMEOUT ||
+                error == ChartboostMediationError.CM_LOAD_FAILURE_TIMEOUT ||
+                error == ChartboostMediationError.CM_SHOW_FAILURE_TIMEOUT ||
+                error == ChartboostMediationError.CM_INVALIDATE_FAILURE_TIMEOUT
     }
 }

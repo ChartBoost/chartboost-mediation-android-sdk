@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -25,14 +25,18 @@ object AdIdentifierSerializer : KSerializer<AdIdentifier> {
         return AdIdentifier(adType, placementName)
     }
 
-    override fun serialize(encoder: Encoder, value: AdIdentifier) {
+    override fun serialize(
+        encoder: Encoder,
+        value: AdIdentifier,
+    ) {
         encoder.encodeInt(value.adType)
         encoder.encodeString(value.placementName)
     }
 
     override val descriptor: SerialDescriptor
-        get() = buildClassSerialDescriptor(AdIdentifier::class.qualifiedName!!) {
-            element<Int>("placementName")
-            element<String>("adType")
-        }
+        get() =
+            buildClassSerialDescriptor(AdIdentifier::class.qualifiedName!!) {
+                element<Int>("placementName")
+                element<String>("adType")
+            }
 }

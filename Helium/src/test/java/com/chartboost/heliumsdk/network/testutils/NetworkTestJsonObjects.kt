@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -41,7 +41,8 @@ enum class NetworkTestJsonObjects(private val path: String) {
     TRACK_EVENT_INITIALIZATION_SUCCESS_WITH_ERROR_REQUEST("test.events/track_event_initialization_success_with_error_request.json"),
     TRACK_EVENT_INITIALIZATION_FAILURE_REQUEST("test.events/track_event_initialization_failure_request.json"),
 
-    TRACK_AD_LOAD_REQUEST("test.events/track_ad_load.json");
+    TRACK_AD_LOAD_REQUEST("test.events/track_ad_load.json"),
+    ;
 
     val trimmedJsonString
         get() = rawJsonString.trim()
@@ -50,7 +51,8 @@ enum class NetworkTestJsonObjects(private val path: String) {
         get() = MockResponseFileReader(path).content.trim()
 
     val minifiedJsonString
-        get() = HeliumJson.encodeToString(
-            HeliumJson.decodeFromString(JsonElement.serializer(), rawJsonString)
-        )
+        get() =
+            HeliumJson.encodeToString(
+                HeliumJson.decodeFromString(JsonElement.serializer(), rawJsonString),
+            )
 }

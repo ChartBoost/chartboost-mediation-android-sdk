@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -19,7 +19,6 @@ import org.robolectric.shadows.ShadowLooper
 
 @RunWith(RobolectricTestRunner::class)
 open class IlrdTest {
-
     private lateinit var subject: Ilrd
     private lateinit var testJson: JSONObject
     private lateinit var mockObserver: HeliumIlrdObserver

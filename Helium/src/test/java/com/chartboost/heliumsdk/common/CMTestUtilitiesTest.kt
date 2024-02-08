@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -25,7 +25,10 @@ object CMTestUtilitiesTest {
     }
 
     @Throws(Exception::class)
-    fun setFinalStatic(field: Field, newValue: Any?) {
+    fun setFinalStatic(
+        field: Field,
+        newValue: Any?,
+    ) {
         field.isAccessible = true
         val modifiersField: Field = Field::class.java.getDeclaredField("modifiers")
         modifiersField.setAccessible(true)

@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -20,7 +20,7 @@ class MacroHelper(
     private val customData: String?,
     private val adRevenue: Double,
     private val cpmPrice: Double,
-    private val networkName: String
+    private val networkName: String,
 ) {
     companion object {
         private const val SDK_TIMESTAMP_MACRO = "%%SDK_TIMESTAMP%%"
@@ -70,21 +70,27 @@ class MacroHelper(
         }
     }
 
-    fun replaceMacros(data: String, urlEncode: Boolean = true): String {
+    fun replaceMacros(
+        data: String,
+        urlEncode: Boolean = true,
+    ): String {
         // We're using urlEncode to also say whether or not to pass in 'null' for bad doubles
         return data.replace(SDK_TIMESTAMP_MACRO, timestamp.toString())
             .replace(
                 CUSTOM_DATA_MACRO,
-                (if (urlEncode) Uri.encode(customData) else customData) ?: ""
+                (if (urlEncode) Uri.encode(customData) else customData) ?: "",
             ).replace(AD_REVENUE_MACRO, prettyPrintDouble(adRevenue, !urlEncode))
             .replace(CPM_PRICE_MACRO, prettyPrintDouble(cpmPrice, !urlEncode))
             .replace(
                 NETWORK_NAME_MACRO,
-                (if (urlEncode) Uri.encode(networkName) else networkName) ?: ""
+                (if (urlEncode) Uri.encode(networkName) else networkName) ?: "",
             )
     }
 
-    private fun prettyPrintDouble(value: Double, useNullValues: Boolean): String {
+    private fun prettyPrintDouble(
+        value: Double,
+        useNullValues: Boolean,
+    ): String {
         if (value.isNaN() || value.isInfinite()) {
             return if (useNullValues) "null" else ""
         }

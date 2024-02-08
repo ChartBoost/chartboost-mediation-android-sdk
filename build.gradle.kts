@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -36,7 +36,6 @@ buildscript {
         classpath("org.jfrog.buildinfo:build-info-extractor-gradle:4.31.9")
         classpath("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
-
 
     }
 }

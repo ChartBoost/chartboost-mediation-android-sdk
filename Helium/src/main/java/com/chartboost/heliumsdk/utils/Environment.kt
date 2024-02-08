@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -99,11 +99,12 @@ object Environment {
                     val xInches = metrics.widthPixels / metrics.xdpi
                     val diagonalInches =
                         sqrt((xInches * xInches + yInches * yInches).toDouble())
-                    field = if (diagonalInches >= 6.5) {
-                        5 // Tablet
-                    } else {
-                        4 // Phone
-                    }
+                    field =
+                        if (diagonalInches >= 6.5) {
+                            5 // Tablet
+                        } else {
+                            4 // Phone
+                        }
                 }
             }
             return field
@@ -160,12 +161,13 @@ object Environment {
                 // NonGooglePlayAdvertisingClient data object.
                 contentResolver?.let {
                     // Settings.Secure.getInt throws an error exception if value is not found.
-                    val lmt: Int = try {
-                        (Settings.Secure.getInt(it, "limit_ad_tracking"))
-                    } catch (ex: Settings.SettingNotFoundException) {
-                        LogController.e("Exception raised while retrieving lmt ${ex.message}")
-                        return null
-                    }
+                    val lmt: Int =
+                        try {
+                            (Settings.Secure.getInt(it, "limit_ad_tracking"))
+                        } catch (ex: Settings.SettingNotFoundException) {
+                            LogController.e("Exception raised while retrieving lmt ${ex.message}")
+                            return null
+                        }
 
                     // Settings.Secure.getString returns null if not present.
                     Settings.Secure.getString(it, "advertising_id")?.let { id ->
@@ -218,7 +220,7 @@ object Environment {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 packageManager.getPackageInfo(
                                     packageName,
-                                    PackageManager.PackageInfoFlags.of(0)
+                                    PackageManager.PackageInfoFlags.of(0),
                                 )
                             } else {
                                 packageManager.getPackageInfo(packageName, 0)
@@ -363,18 +365,20 @@ object Environment {
             HeliumSdk.context?.let { context ->
                 if (ActivityCompat.checkSelfPermission(
                         context,
-                        Manifest.permission.READ_PHONE_STATE
+                        Manifest.permission.READ_PHONE_STATE,
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
-                    val telephonyManager = context
-                        .getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+                    val telephonyManager =
+                        context
+                            .getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
 
                     telephonyManager?.let {
-                        networkType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            it.dataNetworkType
-                        } else {
-                            it.networkType
-                        }
+                        networkType =
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                it.dataNetworkType
+                            } else {
+                                it.networkType
+                            }
                     }
                 }
             }
@@ -388,7 +392,8 @@ object Environment {
                 TelephonyManager.NETWORK_TYPE_EDGE,
                 TelephonyManager.NETWORK_TYPE_CDMA,
                 TelephonyManager.NETWORK_TYPE_1xRTT,
-                TelephonyManager.NETWORK_TYPE_IDEN -> 4
+                TelephonyManager.NETWORK_TYPE_IDEN,
+                -> 4
                 // 3G
                 TelephonyManager.NETWORK_TYPE_UMTS,
                 TelephonyManager.NETWORK_TYPE_EVDO_0,
@@ -399,7 +404,8 @@ object Environment {
                 TelephonyManager.NETWORK_TYPE_EVDO_B,
                 TelephonyManager.NETWORK_TYPE_EHRPD,
                 TelephonyManager.NETWORK_TYPE_HSPAP,
-                TelephonyManager.NETWORK_TYPE_TD_SCDMA -> 5
+                TelephonyManager.NETWORK_TYPE_TD_SCDMA,
+                -> 5
                 // 4G
                 TelephonyManager.NETWORK_TYPE_LTE -> 6
                 // 5G
@@ -430,21 +436,24 @@ object Environment {
             // later outside of Helium inits. This way we aren't blocking Helium inits.
             // See HB-3871 and HB-3761.
             return HeliumSdk.context?.let { context ->
-                val sharedPreferences = context.getSharedPreferences(
-                    HELIUM_UA_IDENTIFIER_KEY,
-                    Context.MODE_PRIVATE
-                )
+                val sharedPreferences =
+                    context.getSharedPreferences(
+                        HELIUM_UA_IDENTIFIER_KEY,
+                        Context.MODE_PRIVATE,
+                    )
                 sharedPreferences.getString(HELIUM_UA_IDENTIFIER_KEY, "")
             } ?: ""
         }
 
     fun fetchUserAgent() {
-        CoroutineScope(Main).launch(CoroutineExceptionHandler { _, error ->
-            val uaErrorMessage =
-                "The Helium SDK failed to check for the user-agent. This app may result in " +
+        CoroutineScope(Main).launch(
+            CoroutineExceptionHandler { _, error ->
+                val uaErrorMessage =
+                    "The Helium SDK failed to check for the user-agent. This app may result in " +
                         "low fill rates and impressions."
-            LogController.w("$uaErrorMessage.\nError found: $error")
-        }) {
+                LogController.w("$uaErrorMessage.\nError found: $error")
+            },
+        ) {
             HeliumSdk.context?.let { context ->
                 val webView = WebView(context)
                 val userAgent = webView.settings.userAgentString
@@ -452,10 +461,11 @@ object Environment {
 
                 // Only cache the user agent if it's not empty.
                 userAgent?.isNotEmpty()?.let {
-                    val sharedPreferences = context.getSharedPreferences(
-                        HELIUM_UA_IDENTIFIER_KEY,
-                        Context.MODE_PRIVATE
-                    )
+                    val sharedPreferences =
+                        context.getSharedPreferences(
+                            HELIUM_UA_IDENTIFIER_KEY,
+                            Context.MODE_PRIVATE,
+                        )
                     sharedPreferences.edit().putString(HELIUM_UA_IDENTIFIER_KEY, userAgent).apply()
                 }
             }
@@ -592,15 +602,16 @@ object Environment {
                     val mnc = context.resources.configuration.mnc
                     if (mcc != 0 && mnc != Configuration.MNC_ZERO)
                         return "$mcc-$mnc"
-                */
+                 */
                 if (ActivityCompat.checkSelfPermission(
                         context,
-                        Manifest.permission.READ_PHONE_STATE
+                        Manifest.permission.READ_PHONE_STATE,
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
                     // User granted phone state permissions.
-                    val telephonyManager = context
-                        .getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+                    val telephonyManager =
+                        context
+                            .getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
 
                     telephonyManager?.let {
                         // If the telephony manager is not null and the SIM state is ready, then
@@ -639,9 +650,11 @@ object Environment {
                 // Android Devices that don't support the above java APIs.
                 // See https://developer.android.com/reference/java/util/Date#getTimezoneOffset()
                 val calendar = Calendar.getInstance(Locale.getDefault())
-                return (calendar.get(Calendar.ZONE_OFFSET) +
-                        calendar.get(Calendar.DST_OFFSET)) /
-                        (60 * 1000)
+                return (
+                    calendar.get(Calendar.ZONE_OFFSET) +
+                        calendar.get(Calendar.DST_OFFSET)
+                ) /
+                    (60 * 1000)
             }
         }
 
@@ -660,10 +673,11 @@ object Environment {
                 return null
             }
 
-            val sharedPreferences = context.getSharedPreferences(
-                "${context.packageName}_preferences",
-                Context.MODE_PRIVATE
-            )
+            val sharedPreferences =
+                context.getSharedPreferences(
+                    "${context.packageName}_preferences",
+                    Context.MODE_PRIVATE,
+                )
             return sharedPreferences.getString(TC_STRING, null)
         }
 }

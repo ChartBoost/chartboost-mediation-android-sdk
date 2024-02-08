@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -19,23 +19,17 @@ import kotlinx.serialization.json.*
 data class BidResponse(
     @SerialName(ID_KEY)
     val id: String? = null,
-
     @SerialName(BID_ID_KEY)
     val bidId: String? = null,
-
     @SerialName(CURRENCY_KEY)
     val currency: String? = null,
-
     @SerialName(BID_ARRAY_KEY)
     val bidInfoArray: List<BidInfo> = emptyList(),
-
     @SerialName(SEAT_KEY)
     val partnerName: String,
-
     @SerialName(HELIUM_BID_ID_KEY)
-    val heliumBidId: String
+    val heliumBidId: String,
 ) : Comparable<BidResponse> {
-
     val isMediation: Boolean =
         bidInfoArray.firstOrNull()?.id.equals(MEDIATION_KEY, ignoreCase = true)
 
@@ -49,14 +43,15 @@ data class BidResponse(
 
     var ilrd = bidInfoArray.firstOrNull()?.ext?.ilrd
 
-    val partnerSettings: MutableMap<String, String> = mutableMapOf<String, String>().apply {
-        bidInfoArray.firstOrNull()?.ext?.bidderInfo?.jsonObject?.getValue(HELIUM_KEY)?.jsonObject?.let {
-            it.keys.forEach { key ->
-                val value = HeliumJson.decodeFromJsonElement<String>(it.getValue(key))
-                put(key, value)
+    val partnerSettings: MutableMap<String, String> =
+        mutableMapOf<String, String>().apply {
+            bidInfoArray.firstOrNull()?.ext?.bidderInfo?.jsonObject?.getValue(HELIUM_KEY)?.jsonObject?.let {
+                it.keys.forEach { key ->
+                    val value = HeliumJson.decodeFromJsonElement<String>(it.getValue(key))
+                    put(key, value)
+                }
             }
         }
-    }
 
     val bidInfo: HashMap<String, String>
         get() {
@@ -95,9 +90,11 @@ data class BidResponse(
      * @param updatedIlrdJson The new Json blob to add.
      * @param overwriteExisting If the key exists, overwrite the data if there's a conflict
      */
-    fun updateIlrd(updatedIlrdJson: JsonElement, overwriteExisting: Boolean) {
-        ilrd = ilrd?.let{
-
+    fun updateIlrd(
+        updatedIlrdJson: JsonElement,
+        overwriteExisting: Boolean,
+    ) {
+        ilrd = ilrd?.let {
             val oldIlrdMap = (it.jsonObject as Map<String, JsonElement>).toMutableMap()
             val updatedIlrdJsonMap = updatedIlrdJson.jsonObject as Map<String, JsonElement>
 
@@ -111,8 +108,7 @@ data class BidResponse(
         } ?: updatedIlrdJson
     }
 
-    override fun compareTo(other: BidResponse) =
-        bidInfoArray.firstOrNull()?.compareTo(other.bidInfoArray.first()) ?: -1
+    override fun compareTo(other: BidResponse) = bidInfoArray.firstOrNull()?.compareTo(other.bidInfoArray.first()) ?: -1
 
     companion object {
         private const val ID_KEY = "id"
@@ -137,35 +133,25 @@ data class BidResponse(
 data class BidInfo(
     @SerialName(ID_KEY)
     val id: String,
-
     @SerialName(IMP_ID)
     val impressionId: String,
-
     @SerialName(PRICE_KEY)
     val price: Double = 0.0,
-
     @SerialName(LURL_KEY)
     val lurl: String = "",
-
     @SerialName(NURL_KEY)
     val nurl: String = "",
-
     @SerialName(ADM_KEY)
     val adm: String? = null,
-
     @SerialName(BURL_KEY)
     val burl: String = "",
-
     @SerialName(EXT_KEY)
     val ext: BidInfoExt? = null,
-
     @SerialName(WIDTH_KEY)
     val adaptiveBannerWidth: Int? = null,
-
     @SerialName(HEIGHT_KEY)
     val adaptiveBannerHeight: Int? = null,
 ) : Comparable<BidInfo> {
-
     override fun compareTo(other: BidInfo) = price.compareTo(other.price)
 
     companion object {
@@ -189,23 +175,18 @@ data class BidInfo(
 data class BidInfoExt(
     @SerialName(BIDDER_KEY)
     val bidderInfo: JsonElement? = null,
-
     @SerialName(ILRD_KEY)
     val ilrd: JsonElement? = null,
-
     // Needs to be nullable in case it is not present, null check in BidResponse assigns NaN
     @SerialName(CPM_PRICE_KEY)
     val cpmPrice: Double? = null,
-
     // Needs to be nullable in case it is not present, null check in BidResponse assigns NaN
     @SerialName(AD_REVENUE_KEY)
     val adRevenue: Double? = null,
-
     @SerialName(PARTNER_PLACEMENT_KEY)
     val partnerPlacementName: String?,
-
     @SerialName(LINE_ITEM_ID_KEY)
-    val lineItemId: String? = null
+    val lineItemId: String? = null,
 ) {
     companion object {
         private const val BIDDER_KEY = "bidder"

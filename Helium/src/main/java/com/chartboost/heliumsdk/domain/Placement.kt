@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -17,11 +17,9 @@ import kotlinx.serialization.Serializable
 data class Placement(
     @SerialName("auto_refresh_rate")
     val autoRefreshRate: Int = 0,
-
     @SerialName("chartboost_placement")
     val chartboostPlacement: String,
-
     @Serializable(with = AdFormatEnumSetSerializer::class)
     @SerialName("format")
-    val format: AdFormat
+    val format: AdFormat,
 )

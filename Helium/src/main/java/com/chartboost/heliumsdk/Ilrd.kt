@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -46,7 +46,10 @@ class Ilrd {
      * @param heliumPlacement The Helium placement triggering the ILRD callback
      * @param ilrdJson The actual ILRD data
      */
-    internal fun onIlrdReceived(heliumPlacement: String, ilrdJson: JSONObject) {
+    internal fun onIlrdReceived(
+        heliumPlacement: String,
+        ilrdJson: JSONObject,
+    ) {
         handler.post {
             observers.forEach { observer ->
                 observer.onImpression(HeliumImpressionData(heliumPlacement, ilrdJson))

@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -18,7 +18,8 @@ import org.junit.Test
 
 class BidTest {
     companion object {
-        private val SAMPLE_BID = "{" +
+        private val SAMPLE_BID =
+            "{" +
                 "            \"bid\": [" +
                 "                {" +
                 "                    \"id\": \"MEDIATION\"," +
@@ -44,7 +45,8 @@ class BidTest {
                 "            \"helium_bid_id\": \"ab82501b580000bb8ace119907f7a4d6665212c3_fyber_490251\"" +
                 "        }"
 
-        private val BID_WITH_NULL_CPM = "{" +
+        private val BID_WITH_NULL_CPM =
+            "{" +
                 "            \"bid\": [" +
                 "                {" +
                 "                    \"id\": \"MEDIATION\"," +
@@ -77,15 +79,17 @@ class BidTest {
         private const val BOOLEAN_KEY = "boolean_key"
         private const val BOOLEAN_VALUE = true
         private const val NESTED_JSON_OBJ_KEY = "nested_json"
-        private val NESTED_JSON_OBJECT = buildJsonObject {
-            put("nested", "value")
-        }
+        private val NESTED_JSON_OBJECT =
+            buildJsonObject {
+                put("nested", "value")
+            }
         private const val NETWORK_NAME_KEY = "network_name"
         private const val AD_REVENUE_KEY = "ad_revenue"
         private const val CPM_PRICE_VALUE = 123.4
         private const val AD_REVENUE_VALUE = 0.1234
         private const val PARTNER_NAME = "fyber"
     }
+
     private lateinit var subject: Bid
     private lateinit var expectedJsonObject: JsonObject
     private val adIdentifier: AdIdentifier = AdIdentifier(Ad.AdType.INTERSTITIAL, "FNonProAndroidInterstitialTest")
@@ -95,14 +99,15 @@ class BidTest {
         val sampleBidJson = HeliumJson.decodeFromString<BidResponse>(SAMPLE_BID)
         subject = Bid(null, adIdentifier, sampleBidJson, "loadRequestId")
 
-        expectedJsonObject = buildJsonObject {
-            put(NETWORK_NAME_KEY, PARTNER_NAME)
-            put("network_type", "mediation")
-            put("precision", "publisher_defined")
-            put("line_item_name", "FNonProAndroidInterstitialTest")
-            put("network_placement_id", "490251")
-            put("ad_revenue", CPM_PRICE_VALUE)
-        }
+        expectedJsonObject =
+            buildJsonObject {
+                put(NETWORK_NAME_KEY, PARTNER_NAME)
+                put("network_type", "mediation")
+                put("precision", "publisher_defined")
+                put("line_item_name", "FNonProAndroidInterstitialTest")
+                put("network_placement_id", "490251")
+                put("ad_revenue", CPM_PRICE_VALUE)
+            }
     }
 
     @Test
@@ -116,22 +121,24 @@ class BidTest {
 
     @Test
     fun updateIlrd_withGlobalIlrd_shouldAddIlrd() {
-        val globalIlrdJson = buildJsonObject {
-            put(ANOTHER_KEY, ANOTHER_VALUE)
-            put(NUMBER_KEY, NUMBER_VALUE)
-            put(BOOLEAN_KEY, BOOLEAN_VALUE)
-            put(NESTED_JSON_OBJ_KEY, NESTED_JSON_OBJECT)
-        }
-
-        expectedJsonObject = buildJsonObject {
-            (expectedJsonObject as Map<String, JsonElement>).entries.forEach {
-                put(it.key, it.value)
+        val globalIlrdJson =
+            buildJsonObject {
+                put(ANOTHER_KEY, ANOTHER_VALUE)
+                put(NUMBER_KEY, NUMBER_VALUE)
+                put(BOOLEAN_KEY, BOOLEAN_VALUE)
+                put(NESTED_JSON_OBJ_KEY, NESTED_JSON_OBJECT)
             }
-            put(ANOTHER_KEY, ANOTHER_VALUE)
-            put(NUMBER_KEY, NUMBER_VALUE)
-            put(BOOLEAN_KEY, BOOLEAN_VALUE)
-            put(NESTED_JSON_OBJ_KEY, NESTED_JSON_OBJECT)
-        }
+
+        expectedJsonObject =
+            buildJsonObject {
+                (expectedJsonObject as Map<String, JsonElement>).entries.forEach {
+                    put(it.key, it.value)
+                }
+                put(ANOTHER_KEY, ANOTHER_VALUE)
+                put(NUMBER_KEY, NUMBER_VALUE)
+                put(BOOLEAN_KEY, BOOLEAN_VALUE)
+                put(NESTED_JSON_OBJ_KEY, NESTED_JSON_OBJECT)
+            }
 
         subject.updateIlrd(globalIlrdJson, false)
 
@@ -141,26 +148,28 @@ class BidTest {
 
     @Test
     fun updateIlrd_withGlobalIlrd_withOverwriteTrue_shouldOverwriteAllIlrd() {
-        val globalIlrdJson = buildJsonObject {
-            put(ANOTHER_KEY, ANOTHER_VALUE)
-            put(NUMBER_KEY, NUMBER_VALUE)
-            put(BOOLEAN_KEY, BOOLEAN_VALUE)
-            put(NESTED_JSON_OBJ_KEY, NESTED_JSON_OBJECT)
-            put(NETWORK_NAME_KEY, "new_network")
-            put(AD_REVENUE_KEY, 25.1)
-        }
-
-        expectedJsonObject = buildJsonObject {
-            (expectedJsonObject as Map<String, JsonElement>).entries.forEach {
-                put(it.key, it.value)
+        val globalIlrdJson =
+            buildJsonObject {
+                put(ANOTHER_KEY, ANOTHER_VALUE)
+                put(NUMBER_KEY, NUMBER_VALUE)
+                put(BOOLEAN_KEY, BOOLEAN_VALUE)
+                put(NESTED_JSON_OBJ_KEY, NESTED_JSON_OBJECT)
+                put(NETWORK_NAME_KEY, "new_network")
+                put(AD_REVENUE_KEY, 25.1)
             }
-            put(ANOTHER_KEY, ANOTHER_VALUE)
-            put(NUMBER_KEY, NUMBER_VALUE)
-            put(BOOLEAN_KEY, BOOLEAN_VALUE)
-            put(NESTED_JSON_OBJ_KEY, NESTED_JSON_OBJECT)
-            put(NETWORK_NAME_KEY, "new_network")
-            put(AD_REVENUE_KEY, 25.1)
-        }
+
+        expectedJsonObject =
+            buildJsonObject {
+                (expectedJsonObject as Map<String, JsonElement>).entries.forEach {
+                    put(it.key, it.value)
+                }
+                put(ANOTHER_KEY, ANOTHER_VALUE)
+                put(NUMBER_KEY, NUMBER_VALUE)
+                put(BOOLEAN_KEY, BOOLEAN_VALUE)
+                put(NESTED_JSON_OBJ_KEY, NESTED_JSON_OBJECT)
+                put(NETWORK_NAME_KEY, "new_network")
+                put(AD_REVENUE_KEY, 25.1)
+            }
 
         subject.updateIlrd(globalIlrdJson, true)
 
@@ -170,29 +179,30 @@ class BidTest {
 
     @Test
     fun updateIlrd_withGlobalIlrd_withOverwriteFalse_shouldIgnoreDuplicateValues() {
-        val globalIlrdJson = buildJsonObject {
-            put(ANOTHER_KEY, ANOTHER_VALUE)
-            put(NUMBER_KEY, NUMBER_VALUE)
-            put(BOOLEAN_KEY, BOOLEAN_VALUE)
-            put(NESTED_JSON_OBJ_KEY, NESTED_JSON_OBJECT)
-            put(NETWORK_NAME_KEY, "new_network")
-            put(AD_REVENUE_KEY, 25.1)
-        }
-
-        expectedJsonObject = buildJsonObject {
-            (expectedJsonObject as Map<String, JsonElement>).entries.forEach {
-                put(it.key, it.value)
+        val globalIlrdJson =
+            buildJsonObject {
+                put(ANOTHER_KEY, ANOTHER_VALUE)
+                put(NUMBER_KEY, NUMBER_VALUE)
+                put(BOOLEAN_KEY, BOOLEAN_VALUE)
+                put(NESTED_JSON_OBJ_KEY, NESTED_JSON_OBJECT)
+                put(NETWORK_NAME_KEY, "new_network")
+                put(AD_REVENUE_KEY, 25.1)
             }
-            put(ANOTHER_KEY, ANOTHER_VALUE)
-            put(NUMBER_KEY, NUMBER_VALUE)
-            put(BOOLEAN_KEY, BOOLEAN_VALUE)
-            put(NESTED_JSON_OBJ_KEY, NESTED_JSON_OBJECT)
-        }
+
+        expectedJsonObject =
+            buildJsonObject {
+                (expectedJsonObject as Map<String, JsonElement>).entries.forEach {
+                    put(it.key, it.value)
+                }
+                put(ANOTHER_KEY, ANOTHER_VALUE)
+                put(NUMBER_KEY, NUMBER_VALUE)
+                put(BOOLEAN_KEY, BOOLEAN_VALUE)
+                put(NESTED_JSON_OBJ_KEY, NESTED_JSON_OBJECT)
+            }
 
         subject.updateIlrd(globalIlrdJson, false)
 
         val ilrdJson = subject.ilrd!!
-
 
         assertThatJson(ilrdJson).isEqualTo(expectedJsonObject)
     }
@@ -201,12 +211,13 @@ class BidTest {
     fun getBidInfo_withNullCpm_shouldNotIncludeCpm() {
         val bidWithNullCpm = HeliumJson.decodeFromString<BidResponse>(BID_WITH_NULL_CPM)
 
-        subject = Bid(
-            null,
-            adIdentifier,
-            bidWithNullCpm,
-            "loadRequestId",
-        )
+        subject =
+            Bid(
+                null,
+                adIdentifier,
+                bidWithNullCpm,
+                "loadRequestId",
+            )
 
         val bidInfo = subject.bidInfo
 

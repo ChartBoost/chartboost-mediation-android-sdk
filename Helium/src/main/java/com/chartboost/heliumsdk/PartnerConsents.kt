@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Chartboost, Inc.
+ * Copyright 2023-2024 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -28,8 +28,7 @@ class PartnerConsents(private val coroutineScope: CoroutineScope = CoroutineScop
     /**
      * Gets a copy of the partner ID to consent given map.
      */
-    fun getPartnerIdToConsentGivenMapCopy(): Map<String, Boolean> =
-        partnerIdToConsentGivenMap.toMap()
+    fun getPartnerIdToConsentGivenMapCopy(): Map<String, Boolean> = partnerIdToConsentGivenMap.toMap()
 
     /**
      * Adds a single partner's consent. This value is persisted between app launches.
@@ -37,7 +36,10 @@ class PartnerConsents(private val coroutineScope: CoroutineScope = CoroutineScop
      * @param partnerId The partner ID.
      * @param consentGiven True if there is consent for this partner, false otherwise.
      */
-    fun setPartnerConsent(partnerId: String, consentGiven: Boolean) {
+    fun setPartnerConsent(
+        partnerId: String,
+        consentGiven: Boolean,
+    ) {
         partnerIdToConsentGivenMap[partnerId] = consentGiven
         notifyPartnerConsentsUpdated()
     }
@@ -104,9 +106,7 @@ class PartnerConsents(private val coroutineScope: CoroutineScope = CoroutineScop
      * Prioritizes the new publisher consents.
      * This action does not notify anyone of the changes.
      */
-    internal fun mergePartnerConsentsFromDisk(
-        consentsFromDisk: Map<String, Boolean>
-    ) {
+    internal fun mergePartnerConsentsFromDisk(consentsFromDisk: Map<String, Boolean>) {
         val consentsFromPublisher = partnerIdToConsentGivenMap.toMap()
 
         partnerIdToConsentGivenMap.putAll(consentsFromDisk)

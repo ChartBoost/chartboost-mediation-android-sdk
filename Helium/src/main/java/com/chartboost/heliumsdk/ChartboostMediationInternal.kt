@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -19,6 +19,7 @@ import com.chartboost.heliumsdk.domain.ChartboostMediationAppConfigurationHandle
 import com.chartboost.heliumsdk.domain.ChartboostMediationError
 import com.chartboost.heliumsdk.domain.GdprConsentStatus
 import com.chartboost.heliumsdk.domain.LoadRateLimiter
+import com.chartboost.heliumsdk.utils.BackgroundTimeMonitor
 import com.chartboost.heliumsdk.utils.Environment
 import com.chartboost.heliumsdk.utils.FullscreenAdShowingState
 import com.chartboost.heliumsdk.utils.LogController
@@ -30,7 +31,6 @@ import java.lang.ref.WeakReference
  * Holds all the internal logic for Chartboost Mediation.
  */
 internal class ChartboostMediationInternal(internal val partnerController: PartnerController = PartnerController()) {
-
     internal var adController: AdController? = null
     internal var appContext: Context? = null
     internal var appId: String? = null
@@ -74,7 +74,7 @@ internal class ChartboostMediationInternal(internal val partnerController: Partn
         context: Context,
         appId: String,
         appSignature: String,
-        options: HeliumInitializationOptions?
+        options: HeliumInitializationOptions?,
     ): Result<Unit> {
         return withContext(Main) {
             if (initializationStatus == HeliumSdk.ChartboostMediationInitializationStatus.INITIALIZED) {
@@ -86,8 +86,8 @@ internal class ChartboostMediationInternal(internal val partnerController: Partn
             if (initializationStatus == HeliumSdk.ChartboostMediationInitializationStatus.INITIALIZING) {
                 return@withContext Result.failure(
                     ChartboostMediationAdException(
-                        ChartboostMediationError.CM_INITIALIZATION_FAILURE_INITIALIZATION_IN_PROGRESS
-                    )
+                        ChartboostMediationError.CM_INITIALIZATION_FAILURE_INITIALIZATION_IN_PROGRESS,
+                    ),
                 )
             }
             initializationStatus = HeliumSdk.ChartboostMediationInitializationStatus.INITIALIZING
@@ -101,30 +101,35 @@ internal class ChartboostMediationInternal(internal val partnerController: Partn
             val localPrivacyController = privacyController ?: PrivacyController(context, partnerConsents)
             privacyController = localPrivacyController
             val bidController = BidController(partnerController)
-            adController = AdController(
-                bidController = bidController,
-                partnerController = partnerController,
-                privacyController = localPrivacyController,
-                loadRateLimiter = LoadRateLimiter(),
-                ilrd = ilrd
-            )
+            adController =
+                AdController(
+                    bidController = bidController,
+                    partnerController = partnerController,
+                    privacyController = localPrivacyController,
+                    loadRateLimiter = LoadRateLimiter(),
+                    backgroundTimeMonitor = BackgroundTimeMonitor(),
+                    ilrd = ilrd,
+                )
 
-            partnerConsents.addPartnerConsentsObserver(object :
-                PartnerConsents.PartnerConsentsObserver {
-                override fun onPartnerConsentsUpdated() {
-                    runGdprConsentTask(context.applicationContext, localPrivacyController)
-                    runCcpaConsentTask(context.applicationContext, localPrivacyController)
-                }
-            })
+            partnerConsents.addPartnerConsentsObserver(
+                object :
+                    PartnerConsents.PartnerConsentsObserver {
+                    override fun onPartnerConsentsUpdated() {
+                        runGdprConsentTask(context.applicationContext, localPrivacyController)
+                        runCcpaConsentTask(context.applicationContext, localPrivacyController)
+                    }
+                },
+            )
 
             // Grab the app configuration from the server or from local if server is unavailable
             AppConfigController(context.applicationContext).get()
 
             // Handle processing the config and also initialize all partners
-            val error = ChartboostMediationAppConfigurationHandler(
-                context,
-                options
-            ).handleConfigurationChange(partnerController)
+            val error =
+                ChartboostMediationAppConfigurationHandler(
+                    context,
+                    options,
+                ).handleConfigurationChange(partnerController)
 
             if (error != null) {
                 initializationStatus = HeliumSdk.ChartboostMediationInitializationStatus.IDLE
@@ -162,19 +167,24 @@ internal class ChartboostMediationInternal(internal val partnerController: Partn
         checkAndRun(::runGdprConsentTask)
     }
 
-    private fun runGdprConsentTask(context: Context, privacyController: PrivacyController) {
+    private fun runGdprConsentTask(
+        context: Context,
+        privacyController: PrivacyController,
+    ) {
         val privacyControllerGdprApplies = privacyController.gdpr
-        val localGdprApplies = gdprApplies ?: when (privacyControllerGdprApplies) {
-            PrivacyController.PrivacySetting.TRUE.value -> true
-            PrivacyController.PrivacySetting.FALSE.value -> false
-            // If unset or null, don't continue setting GDPR consent
-            else -> return
-        }
-        val localGdprConsentStatus = gdprConsentStatus ?: when (privacyController.userConsent) {
-            true -> GdprConsentStatus.GDPR_CONSENT_GRANTED
-            false -> GdprConsentStatus.GDPR_CONSENT_DENIED
-            else -> GdprConsentStatus.GDPR_CONSENT_UNKNOWN
-        }
+        val localGdprApplies =
+            gdprApplies ?: when (privacyControllerGdprApplies) {
+                PrivacyController.PrivacySetting.TRUE.value -> true
+                PrivacyController.PrivacySetting.FALSE.value -> false
+                // If unset or null, don't continue setting GDPR consent
+                else -> return
+            }
+        val localGdprConsentStatus =
+            gdprConsentStatus ?: when (privacyController.userConsent) {
+                true -> GdprConsentStatus.GDPR_CONSENT_GRANTED
+                false -> GdprConsentStatus.GDPR_CONSENT_DENIED
+                else -> GdprConsentStatus.GDPR_CONSENT_UNKNOWN
+            }
 
         privacyController.gdpr =
             if (localGdprApplies) PrivacyController.PrivacySetting.TRUE.value else PrivacyController.PrivacySetting.FALSE.value
@@ -197,17 +207,21 @@ internal class ChartboostMediationInternal(internal val partnerController: Partn
         checkAndRun(::runCcpaConsentTask)
     }
 
-    private fun runCcpaConsentTask(context: Context, privacyController: PrivacyController) {
+    private fun runCcpaConsentTask(
+        context: Context,
+        privacyController: PrivacyController,
+    ) {
         (ccpaConsentGranted ?: privacyController.ccpaConsent).let { ccpaConsentGranted ->
             privacyController.ccpaConsent = ccpaConsentGranted
             partnerController.setCcpaConsent(
-                context, ccpaConsentGranted,
+                context,
+                ccpaConsentGranted,
                 if (ccpaConsentGranted == true) {
                     PrivacyController.PrivacyString.GRANTED.consentString
                 } else {
                     PrivacyController.PrivacyString.DENIED.consentString
                 },
-                partnerConsents
+                partnerConsents,
             )
         }
     }
@@ -222,7 +236,10 @@ internal class ChartboostMediationInternal(internal val partnerController: Partn
         checkAndRun(::runSubjectToCoppaTask)
     }
 
-    private fun runSubjectToCoppaTask(context: Context, privacyController: PrivacyController) {
+    private fun runSubjectToCoppaTask(
+        context: Context,
+        privacyController: PrivacyController,
+    ) {
         (isSubjectToCoppa ?: privacyController.coppa)?.let { isSubject ->
             privacyController.coppa = isSubject
             partnerController.setUserSubjectToCoppa(context, isSubject)

@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -13,7 +13,8 @@ enum class AdFormat(val key: String) {
     BANNER("banner"),
     ADAPTIVE_BANNER("adaptive_banner"),
     REWARDED_INTERSTITIAL("rewarded_interstitial"),
-    UNKNOWN("unknown");
+    UNKNOWN("unknown"),
+    ;
 
     /**
      * @suppress

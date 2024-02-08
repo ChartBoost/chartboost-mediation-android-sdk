@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -22,7 +22,7 @@ data class RewardedCallbackData(
     @SerialName(REWARDED_CALLBACK_MAX_RETRIES_FIELD_NAME)
     val maxRetries: Int = DEFAULT_MAX_RETRIES,
     @SerialName(REWARDED_CALLBACK_BODY_FIELD_NAME)
-    val body: String
+    val body: String,
 ) {
     companion object {
         const val DEFAULT_MAX_RETRIES = 2

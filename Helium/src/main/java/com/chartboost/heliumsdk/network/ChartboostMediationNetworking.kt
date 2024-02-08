@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -36,7 +36,6 @@ import java.net.UnknownHostException
  * @suppress
  */
 internal object ChartboostMediationNetworking {
-
     const val APP_SET_ID_HEADER_KEY = "x-mediation-idfv"
     const val AUCTION_ID_HEADERY_KEY = "x-mediation-auction-id"
     const val INIT_HASH_HEADER_KEY = "x-helium-sdk-init-hash"
@@ -50,13 +49,15 @@ internal object ChartboostMediationNetworking {
     private const val REWARDED_CALLBACK_DELAY_MS = 1000L
 
     @OptIn(ExperimentalSerializationApi::class)
-    private val jsonConverter = HeliumJson.asConverterFactory(
-        "application/json; charset=utf-8".toMediaType()
-    )
+    private val jsonConverter =
+        HeliumJson.asConverterFactory(
+            "application/json; charset=utf-8".toMediaType(),
+        )
 
-    private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-        setLevel(HttpLoggingInterceptor.Level.BODY)
-    }
+    private val interceptor: HttpLoggingInterceptor =
+        HttpLoggingInterceptor().apply {
+            setLevel(HttpLoggingInterceptor.Level.BODY)
+        }
 
     private val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
@@ -87,7 +88,7 @@ internal object ChartboostMediationNetworking {
 
     suspend fun trackChartboostImpression(
         auctionID: String?,
-        loadId: String
+        loadId: String,
     ): ChartboostMediationNetworkingResult<Unit?> {
         val appSetId = Environment.fetchAppSetId()
 
@@ -96,7 +97,7 @@ internal object ChartboostMediationNetworking {
                 api.trackChartboostImpression(
                     url = Event.HELIUM_IMPRESSION.endpoint,
                     headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
-                    body = it
+                    body = it,
                 )
             }
         }
@@ -106,7 +107,7 @@ internal object ChartboostMediationNetworking {
         sessionId: String,
         appSetId: String,
         auctionID: String?,
-        loadId: String
+        loadId: String,
     ): ChartboostMediationNetworkingResult<Unit?> {
         return safeApiCall {
             ImpressionRequestBody(auctionID).let {
@@ -115,7 +116,7 @@ internal object ChartboostMediationNetworking {
                     sessionId = sessionId,
                     appSetId = appSetId,
                     loadId = loadId,
-                    body = it
+                    body = it,
                 )
             }
         }
@@ -123,7 +124,7 @@ internal object ChartboostMediationNetworking {
 
     suspend fun trackClick(
         auctionId: String,
-        loadId: String
+        loadId: String,
     ): ChartboostMediationNetworkingResult<Unit?> {
         val appSetId = Environment.fetchAppSetId()
 
@@ -132,7 +133,7 @@ internal object ChartboostMediationNetworking {
                 api.trackClick(
                     url = Event.CLICK.endpoint,
                     headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
-                    body = it
+                    body = it,
                 )
             }
         }
@@ -140,7 +141,7 @@ internal object ChartboostMediationNetworking {
 
     suspend fun trackReward(
         auctionId: String,
-        loadId: String
+        loadId: String,
     ): ChartboostMediationNetworkingResult<Unit?> {
         val appSetId = Environment.fetchAppSetId()
 
@@ -149,7 +150,7 @@ internal object ChartboostMediationNetworking {
                 api.trackReward(
                     url = Event.REWARD.endpoint,
                     headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
-                    body = it
+                    body = it,
                 )
             }
         }
@@ -159,7 +160,7 @@ internal object ChartboostMediationNetworking {
         placementName: String,
         adType: String,
         loadId: String,
-        status: String
+        status: String,
     ): ChartboostMediationNetworkingResult<Unit?> {
         val appSetId = Environment.fetchAppSetId()
 
@@ -168,7 +169,7 @@ internal object ChartboostMediationNetworking {
                 api.trackAdLoad(
                     url = Event.ADLOAD.endpoint,
                     headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
-                    body = it
+                    body = it,
                 )
             }
         }
@@ -185,14 +186,14 @@ internal object ChartboostMediationNetworking {
             api.trackEvent(
                 url = event.endpoint,
                 headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
-                body = metricsRequestBody
+                body = metricsRequestBody,
             )
         }
     }
 
     suspend fun trackAdaptiveBannerSize(
         loadId: String?,
-        bannerSizeBody: BannerSizeBody
+        bannerSizeBody: BannerSizeBody,
     ): ChartboostMediationNetworkingResult<Unit?> {
         val appSetId = Environment.fetchAppSetId()
 
@@ -200,14 +201,14 @@ internal object ChartboostMediationNetworking {
             api.trackAdaptiveBannerSize(
                 url = Event.BANNER_SIZE.endpoint,
                 headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
-                body = bannerSizeBody
+                body = bannerSizeBody,
             )
         }
     }
 
     suspend fun logAuctionWinner(
         bids: Bids,
-        loadId: String
+        loadId: String,
     ): ChartboostMediationNetworkingResult<Unit?> {
         val appSetId = Environment.fetchAppSetId()
 
@@ -216,7 +217,7 @@ internal object ChartboostMediationNetworking {
                 api.logAuctionWinner(
                     url = Event.WINNER.endpoint,
                     headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
-                    body = it
+                    body = it,
                 )
             }
         }
@@ -225,17 +226,18 @@ internal object ChartboostMediationNetworking {
     suspend fun makeRewardedCallbackRequest(
         activeBid: Bid,
         customData: String,
-        rewardedCallbackData: RewardedCallbackData
+        rewardedCallbackData: RewardedCallbackData,
     ): ChartboostMediationNetworkingResult<Unit?> {
-        val macroHelper = activeBid.let {
-            MacroHelper(
-                System.currentTimeMillis(),
-                customData,
-                it.adRevenue,
-                it.cpmPrice,
-                it.partnerName
-            )
-        }
+        val macroHelper =
+            activeBid.let {
+                MacroHelper(
+                    System.currentTimeMillis(),
+                    customData,
+                    it.adRevenue,
+                    it.cpmPrice,
+                    it.partnerName,
+                )
+            }
 
         val url = macroHelper.replaceMacros(rewardedCallbackData.url, true)
 
@@ -243,25 +245,26 @@ internal object ChartboostMediationNetworking {
             ChartboostMediationNetworkingResult.Failure(
                 code = -1,
                 headers = null,
-                error = ChartboostMediationError.CM_INTERNAL_ERROR
+                error = ChartboostMediationError.CM_INTERNAL_ERROR,
             )
 
         var remainingRetries = rewardedCallbackData.maxRetries
 
         while (remainingRetries > 0 && result is ChartboostMediationNetworkingResult.Failure) {
             remainingRetries--
-            result = safeApiCall {
-                if (rewardedCallbackData.method == Method.POST) {
-                    api.makeRewardedCallbackPostRequest(
-                        url,
-                        HeliumJson.parseToJsonElement(
-                            macroHelper.replaceMacros(rewardedCallbackData.body, false)
+            result =
+                safeApiCall {
+                    if (rewardedCallbackData.method == Method.POST) {
+                        api.makeRewardedCallbackPostRequest(
+                            url,
+                            HeliumJson.parseToJsonElement(
+                                macroHelper.replaceMacros(rewardedCallbackData.body, false),
+                            ),
                         )
-                    )
-                } else {
-                    api.makeRewardedCallbackGetRequest(url)
+                    } else {
+                        api.makeRewardedCallbackGetRequest(url)
+                    }
                 }
-            }
             // delay before retrying. only retry (and therefore delay) on failure
             if (result is ChartboostMediationNetworkingResult.Failure) {
                 delay(REWARDED_CALLBACK_DELAY_MS)
@@ -277,27 +280,29 @@ internal object ChartboostMediationNetworking {
         adLoadParams: AdLoadParams,
         bidTokens: Map<String, Map<String, String>>,
         rateLimitHeaderValue: String,
-        impressionDepth: Int
+        impressionDepth: Int,
     ): ChartboostMediationNetworkingResult<BidsResponse?> {
-        val bidRequestBody = BidRequestBody(
-            adLoadParams = adLoadParams,
-            partnerController = partnerController,
-            privacyController = privacyController,
-            impressionDepth = impressionDepth,
-            bidTokens = bidTokens,
-        )
+        val bidRequestBody =
+            BidRequestBody(
+                adLoadParams = adLoadParams,
+                partnerController = partnerController,
+                privacyController = privacyController,
+                impressionDepth = impressionDepth,
+                bidTokens = bidTokens,
+            )
 
         val appSetId = Environment.fetchAppSetId()
 
         return safeApiCall {
             api.makeBidRequest(
                 url = Endpoints.Rtb.AUCTIONS.endpoint,
-                headers = ChartboostBidRequestMediationHeaderMap(
-                    rateLimitHeaderValue,
-                    adLoadParams.loadId,
-                    appSetId
-                ),
-                body = bidRequestBody
+                headers =
+                    ChartboostBidRequestMediationHeaderMap(
+                        rateLimitHeaderValue,
+                        adLoadParams.loadId,
+                        appSetId,
+                    ),
+                body = bidRequestBody,
             )
         }
     }
@@ -310,32 +315,35 @@ internal object ChartboostMediationNetworking {
         return safeApiCall<AppConfig> {
             api.getConfig(
                 url = "${Endpoints.Sdk.SDK_INIT.endpoint}/$appId",
-                headers = ChartboostMediationAppConfigHeaderMap(initHash, appSetId)
+                headers = ChartboostMediationAppConfigHeaderMap(initHash, appSetId),
             )
         }
     }
 
     @PublishedApi
-    internal suspend inline fun <reified T> safeApiCall(crossinline apiCall: suspend () -> Response<String>): ChartboostMediationNetworkingResult<T?> {
+    internal suspend inline fun <reified T> safeApiCall(
+        crossinline apiCall: suspend () -> Response<String>,
+    ): ChartboostMediationNetworkingResult<T?> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = apiCall.invoke()
 
                 ChartboostMediationNetworkingResult.makeResult(
                     response = response,
-                    error = NetworkErrorTransformer.transform(response)
+                    error = NetworkErrorTransformer.transform(response),
                 )
             } catch (throwable: Throwable) {
                 LogController.e("Error making network request: ${throwable.message}")
                 ChartboostMediationNetworkingResult.Failure(
                     code = -1,
                     headers = null,
-                    error = if (throwable is UnknownHostException) {
-                        ChartboostMediationError.CM_NO_CONNECTIVITY
-                    } else {
-                        ChartboostMediationError.CM_UNKNOWN_ERROR
-                    },
-                    throwable = throwable
+                    error =
+                        if (throwable is UnknownHostException) {
+                            ChartboostMediationError.CM_NO_CONNECTIVITY
+                        } else {
+                            ChartboostMediationError.CM_UNKNOWN_ERROR
+                        },
+                    throwable = throwable,
                 )
             }
         }

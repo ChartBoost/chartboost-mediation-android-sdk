@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -42,7 +42,10 @@ interface PartnerAdapter {
      *
      * @return Result.success() if the initialization was successful, otherwise Result.failure(Exception).
      */
-    suspend fun setUp(context: Context, partnerConfiguration: PartnerConfiguration): Result<Unit>
+    suspend fun setUp(
+        context: Context,
+        partnerConfiguration: PartnerConfiguration,
+    ): Result<Unit>
 
     /**
      * Get a bid token if network bidding is supported.
@@ -54,7 +57,7 @@ interface PartnerAdapter {
      */
     suspend fun fetchBidderInformation(
         context: Context,
-        request: PreBidRequest
+        request: PreBidRequest,
     ): Map<String, String>
 
     /**
@@ -69,7 +72,7 @@ interface PartnerAdapter {
     suspend fun load(
         context: Context,
         request: PartnerAdLoadRequest,
-        partnerAdListener: PartnerAdListener
+        partnerAdListener: PartnerAdListener,
     ): Result<PartnerAd>
 
     /**
@@ -80,7 +83,10 @@ interface PartnerAdapter {
      *
      * @return Result.success(PartnerAd) if the ad was successfully shown, Result.failure(Exception) otherwise.
      */
-    suspend fun show(context: Context, partnerAd: PartnerAd): Result<PartnerAd>
+    suspend fun show(
+        context: Context,
+        partnerAd: PartnerAd,
+    ): Result<PartnerAd>
 
     /**
      * Discard unnecessary partner ad objects and release resources. This is required to destroy
@@ -99,7 +105,11 @@ interface PartnerAdapter {
      * @param applies True if GDPR applies, false otherwise.
      * @param gdprConsentStatus The user's GDPR consent status.
      */
-    fun setGdpr(context: Context, applies: Boolean?, gdprConsentStatus: GdprConsentStatus)
+    fun setGdpr(
+        context: Context,
+        applies: Boolean?,
+        gdprConsentStatus: GdprConsentStatus,
+    )
 
     /**
      * Notify the partner of CCPA consent. https://github.com/InteractiveAdvertisingBureau/USPrivacy/blob/master/CCPA/US%20Privacy%20String.md
@@ -109,7 +119,11 @@ interface PartnerAdapter {
      * @param hasGrantedCcpaConsent True if the user has granted CCPA consent, false otherwise.
      * @param privacyString The CCPA privacy string.
      */
-    fun setCcpaConsent(context: Context, hasGrantedCcpaConsent: Boolean, privacyString: String)
+    fun setCcpaConsent(
+        context: Context,
+        hasGrantedCcpaConsent: Boolean,
+        privacyString: String,
+    )
 
     /**
      * Notify the partner if the current user is subject to COPPA.
@@ -117,5 +131,8 @@ interface PartnerAdapter {
      * @param context The current [Context].
      * @param isSubjectToCoppa True if the user is subject to COPPA, false otherwise.
      */
-    fun setUserSubjectToCoppa(context: Context, isSubjectToCoppa: Boolean)
+    fun setUserSubjectToCoppa(
+        context: Context,
+        isSubjectToCoppa: Boolean,
+    )
 }

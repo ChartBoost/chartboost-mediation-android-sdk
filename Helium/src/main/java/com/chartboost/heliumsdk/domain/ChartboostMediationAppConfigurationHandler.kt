@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -38,10 +38,11 @@ class ChartboostMediationAppConfigurationHandler(
         val validCachedConfigExists = AppConfigStorage.validCachedConfigExists
 
         if (parsingError == null || validCachedConfigExists) {
-            val context = context ?: run {
-                LogController.e("Failed to initialize mediation partners. Context is null.")
-                return ChartboostMediationError.CM_INITIALIZATION_FAILURE_ABORTED
-            }
+            val context =
+                context ?: run {
+                    LogController.e("Failed to initialize mediation partners. Context is null.")
+                    return ChartboostMediationError.CM_INITIALIZATION_FAILURE_ABORTED
+                }
 
             val initializationOptions = chartboostMediationInitializationOptions
             val skippedPartnerIds = initializationOptions?.skippedPartnerIds.orEmpty()
@@ -57,9 +58,9 @@ class ChartboostMediationAppConfigurationHandler(
                 event = Endpoints.Sdk.Event.INITIALIZATION,
                 auctionIdentifier = null,
                 chartboostMediationError = mediationError,
-                chartboostMediationErrorMessage =  mediationError.message,
+                chartboostMediationErrorMessage = mediationError.message,
                 loadId = null,
-                eventResult = sdkInitializationResult
+                eventResult = sdkInitializationResult,
             )
             return mediationError
         }
@@ -97,21 +98,23 @@ class ChartboostMediationAppConfigurationHandler(
         partnerController: PartnerController,
         context: Context,
         partnerConfigMap: MutableMap<String, PartnerConfiguration>,
-        skippedPartnerIds: Set<String>
+        skippedPartnerIds: Set<String>,
     ): ChartboostMediationError? {
         return suspendCancellableCoroutine { continuation ->
+            // Using manually tracked resumes since the coroutine seems to sometimes still be
+            // active when something has gone wrong.
+            var coroutineResumed = false
             partnerController.setUpAdapters(
                 context,
                 partnerConfigMap,
                 AppConfigStorage.adapterClassPaths,
                 skippedPartnerIds,
                 onPartnerInitializationComplete = { error ->
-                    if (continuation.isActive) {
-                        continuation.resumeWith(Result.success(error))
-                    }
-                }
+                    if (coroutineResumed) return@setUpAdapters
+                    coroutineResumed = true
+                    continuation.resumeWith(Result.success(error))
+                },
             )
         }
-
     }
 }

@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -42,7 +42,8 @@ object Endpoints {
         V1,
         V2,
         V3,
-        V4;
+        V4,
+        ;
 
         /**
          * Lowercase the name of the Version enums (ie: __V1__ ~> __v1__).
@@ -56,13 +57,15 @@ object Endpoints {
      * Endpoints associated with the __helium-rtb.chartboost.com__ domain.
      */
     enum class Rtb(val version: Version) {
-        AUCTIONS(Version.V3);
+        AUCTIONS(Version.V3),
+        ;
 
         /**
          * Endpoints associated with the __helium-rtb.chartboost.com__ domain with a config path.
          */
         enum class Config(val version: Version) {
-            PLACEMENTS(Version.V4);
+            PLACEMENTS(Version.V4),
+            ;
 
             /**
              * Creates a [String] URL for the particular [Config] enum.
@@ -70,7 +73,7 @@ object Endpoints {
              * __helium-rtb.chartboost.com/[Version]/config/[Config.name]__
              */
             val endpoint
-                get() ="$RTB_DOMAIN/$version/config/${name.lowercase()}"
+                get() = "$RTB_DOMAIN/$version/config/${name.lowercase()}"
         }
 
         /**
@@ -86,7 +89,8 @@ object Endpoints {
      * Endpoints associated with the __helium-sdk.chartboost.com__ domain.
      */
     enum class Sdk(val version: Version) {
-        SDK_INIT(Version.V1);
+        SDK_INIT(Version.V1),
+        ;
 
         /**
          * Endpoints associated with the __helium-sdk.chartboost.com__ domain with an event path.
@@ -106,7 +110,8 @@ object Endpoints {
             PREBID(Version.V1),
             REWARD(Version.V2),
             SHOW(Version.V1),
-            WINNER(Version.V3);
+            WINNER(Version.V3),
+            ;
 
             /**
              * Creates a String URL for the particular [Event] enum.
@@ -120,7 +125,10 @@ object Endpoints {
             object EventEnumSetSerializer : KSerializer<EnumSet<Event>> {
                 override val descriptor = JsonArray.serializer().descriptor
 
-                override fun serialize(encoder: Encoder, value: EnumSet<Event>) {
+                override fun serialize(
+                    encoder: Encoder,
+                    value: EnumSet<Event>,
+                ) {
                     val jsonArray = JsonArray(value.map { JsonPrimitive(it.name) })
                     encoder.encodeSerializableValue(JsonArray.serializer(), jsonArray)
                 }

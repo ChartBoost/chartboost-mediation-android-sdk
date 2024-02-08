@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -56,12 +56,13 @@ class HeliumSdkTest {
     fun setUp() {
         setFinalStatic(
             Build.VERSION::class.java.getField("RELEASE"),
-            ChartboostMediationNetworkingTest.BUILD_RELEASE
+            ChartboostMediationNetworkingTest.BUILD_RELEASE,
         )
 
-        val url = mockWebServer.url("").toString().let {
-            it.take(it.length - 1)
-        }
+        val url =
+            mockWebServer.url("").toString().let {
+                it.take(it.length - 1)
+            }
 
         Endpoints.SDK_DOMAIN = url
         Endpoints.RTB_DOMAIN = url
@@ -97,50 +98,51 @@ class HeliumSdkTest {
 
     @Test
     @Ignore
-    fun `start when Helium SDK is initialized twice should trigger an error when in progress`() = runBlocking {
-        // Create a mocked HeliumSdkListener and a slot to check for errors.
-        val mockInitListener = mockk<HeliumSdk.HeliumSdkListener>()
-        val listError = mutableListOf<Error>()
-        val context = RuntimeEnvironment.getApplication().baseContext
+    fun `start when Helium SDK is initialized twice should trigger an error when in progress`() =
+        runBlocking {
+            // Create a mocked HeliumSdkListener and a slot to check for errors.
+            val mockInitListener = mockk<HeliumSdk.HeliumSdkListener>()
+            val listError = mutableListOf<Error>()
+            val context = RuntimeEnvironment.getApplication().baseContext
 
-        MockResponse()
-            .setResponseCode(200)
-            .setHeader(
-                ChartboostMediationNetworking.INIT_HASH_HEADER_KEY,
-                ChartboostMediationNetworkingTest.INIT_HASH_NEW
-            )
-            .setBody(NetworkTestJsonObjects.HTTP_200_SDK_INIT_FAILURE.trimmedJsonString)
-            .let {
-                mockWebServer.enqueue(it)
+            MockResponse()
+                .setResponseCode(200)
+                .setHeader(
+                    ChartboostMediationNetworking.INIT_HASH_HEADER_KEY,
+                    ChartboostMediationNetworkingTest.INIT_HASH_NEW,
+                )
+                .setBody(NetworkTestJsonObjects.HTTP_200_SDK_INIT_FAILURE.trimmedJsonString)
+                .let {
+                    mockWebServer.enqueue(it)
+                }
+
+            // Capture the Error so that we can later verify.
+            justRun { mockInitListener.didInitialize(capture(listError)) }
+
+            // Start the HeliumSDK
+            withContext(IO) {
+                HeliumSdk.start(context, "app_id", "app_signature", null, mockInitListener)
+                delay(1000L)
             }
 
-        // Capture the Error so that we can later verify.
-        justRun { mockInitListener.didInitialize(capture(listError)) }
+            // Verify that no error has been captured and there are no errors.
+            shadowOf(Looper.getMainLooper()).idle()
+            assertTrue(listError.isEmpty())
+            verify(exactly = 0) { mockInitListener.didInitialize(any()) }
 
-        // Start the HeliumSDK
-        withContext(IO) {
-            HeliumSdk.start(context, "app_id", "app_signature", null, mockInitListener)
-            delay(1000L)
+            // Start the Helium SDK again
+            withContext(IO) {
+                HeliumSdk.start(context, "app_id", "app_signature", null, mockInitListener)
+                delay(1000L)
+            }
+
+            // Verify that our error has been captured and the mock delegate is triggered.
+            // This is needed so that we can capture the Error.
+            shadowOf(Looper.getMainLooper()).idle()
+            assertEquals(2, listError.size)
+            verify(exactly = 2) { mockInitListener.didInitialize(any()) }
+            confirmVerified(mockInitListener)
         }
-
-        // Verify that no error has been captured and there are no errors.
-        shadowOf(Looper.getMainLooper()).idle()
-        assertTrue(listError.isEmpty())
-        verify(exactly = 0) { mockInitListener.didInitialize(any()) }
-
-        // Start the Helium SDK again
-        withContext(IO) {
-            HeliumSdk.start(context, "app_id", "app_signature", null, mockInitListener)
-            delay(1000L)
-        }
-
-        // Verify that our error has been captured and the mock delegate is triggered.
-        // This is needed so that we can capture the Error.
-        shadowOf(Looper.getMainLooper()).idle()
-        assertEquals(2, listError.size)
-        verify(exactly = 2) { mockInitListener.didInitialize(any()) }
-        confirmVerified(mockInitListener)
-    }
 
     @Test
     fun `start when Helium SDK is initialized should trigger config listener`() {
@@ -172,7 +174,7 @@ class HeliumSdkTest {
             "app_id",
             "app_signature",
             null,
-            mockInitListener
+            mockInitListener,
         )
 
         // Verify no errors were detected.
@@ -195,11 +197,11 @@ class HeliumSdkTest {
             appID,
             "app_signature",
             null,
-            object: HeliumSdk.HeliumSdkListener {
+            object : HeliumSdk.HeliumSdkListener {
                 override fun didInitialize(error: Error?) {
                     assertEquals(appID, HeliumSdk.getAppId())
                 }
-            }
+            },
         )
     }
 
@@ -208,11 +210,17 @@ class HeliumSdkTest {
         val appSig = "abcdefghojklmnopqrstuvwxyz01234567"
 
         // Start the HeliumSdk
-        HeliumSdk.start(RuntimeEnvironment.getApplication().baseContext, "app_id", appSig, null, object: HeliumSdk.HeliumSdkListener {
-            override fun didInitialize(error: Error?) {
-                assertEquals(appSig, HeliumSdk.getAppSignature())
-            }
-        })
+        HeliumSdk.start(
+            RuntimeEnvironment.getApplication().baseContext,
+            "app_id",
+            appSig,
+            null,
+            object : HeliumSdk.HeliumSdkListener {
+                override fun didInitialize(error: Error?) {
+                    assertEquals(appSig, HeliumSdk.getAppSignature())
+                }
+            },
+        )
     }
 
     @After

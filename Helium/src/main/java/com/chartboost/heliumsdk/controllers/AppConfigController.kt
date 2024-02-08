@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -48,7 +48,8 @@ class AppConfigController(
             field = value
             appContext.getSharedPreferences(HELIUM_CONFIG_IDENTIFIER, Context.MODE_PRIVATE).edit()
                 .putString(
-                    INIT_HASH_KEY, value
+                    INIT_HASH_KEY,
+                    value,
                 ).apply()
         }
 
@@ -57,9 +58,11 @@ class AppConfigController(
      * to keep the SharedPreferences up-to-date.
      */
     suspend fun get() {
-        val sharedPreferences = appContext.getSharedPreferences(
-            HELIUM_CONFIG_IDENTIFIER, Context.MODE_PRIVATE
-        )
+        val sharedPreferences =
+            appContext.getSharedPreferences(
+                HELIUM_CONFIG_IDENTIFIER,
+                Context.MODE_PRIVATE,
+            )
 
         /**
          * Check validity of the local config if it exists and reset initHash if invalid
@@ -110,8 +113,10 @@ class AppConfigController(
         return withContext(IO) {
             val appSetId = Environment.fetchAppSetId()
 
-            when (val result =
-                ChartboostMediationNetworking.getAppConfig(HeliumSdk.getAppId() ?: "", initHash, appSetId)) {
+            when (
+                val result =
+                    ChartboostMediationNetworking.getAppConfig(HeliumSdk.getAppId() ?: "", initHash, appSetId)
+            ) {
                 is ChartboostMediationNetworkingResult.Success -> {
                     if (result.body != null) {
                         result.headers[INIT_HASH_HEADER_KEY]?.let {
@@ -123,27 +128,31 @@ class AppConfigController(
                 }
                 is ChartboostMediationNetworkingResult.JsonParsingFailure -> {
                     val cmError = ChartboostMediationError.CM_INITIALIZATION_FAILURE_INTERNAL_ERROR
-                    val exceptionMessage = result.exception.message?.split('\n', limit = 2)?.let {
-                        it[0]
-                    } ?: ""
+                    val exceptionMessage =
+                        result.exception.message?.split('\n', limit = 2)?.let {
+                            it[0]
+                        } ?: ""
 
                     val malformedJson =
                         result.exception.message?.substring(exceptionMessage.length)?.let {
                             if (it.startsWith("\nJSON input: ")) {
                                 it.substring("\nJSON input: ".length)
-                            } else it
+                            } else {
+                                it
+                            }
                         } ?: ""
 
-                    AppConfigStorage.parsingError = MetricsError.JsonParseError(
-                        cmError,
-                        result.exception,
-                        exceptionMessage,
-                        malformedJson
-                    )
+                    AppConfigStorage.parsingError =
+                        MetricsError.JsonParseError(
+                            cmError,
+                            result.exception,
+                            exceptionMessage,
+                            malformedJson,
+                        )
 
                     failServerConfig(
                         ChartboostMediationError.CM_INITIALIZATION_FAILURE_INTERNAL_ERROR,
-                        result.exception
+                        result.exception,
                     )
                 }
                 is ChartboostMediationNetworkingResult.Failure -> {
@@ -162,7 +171,10 @@ class AppConfigController(
      * @param sharedPreferences The SharedPreferences to which to store the config.
      * @param appConfig The config from the server.
      */
-    private fun processServerConfig(sharedPreferences: SharedPreferences, appConfig: AppConfig) {
+    private fun processServerConfig(
+        sharedPreferences: SharedPreferences,
+        appConfig: AppConfig,
+    ) {
         val editor = sharedPreferences.edit()
         editor.putString(HELIUM_CONFIG_IDENTIFIER, appConfig.toJsonString())
         editor.apply()
@@ -175,17 +187,19 @@ class AppConfigController(
      * @param error The error from the server.
      * @param exception The optional exception thrown during the failure.
      */
-    private fun failServerConfig(error: ChartboostMediationError, exception: Exception? = null) {
+    private fun failServerConfig(
+        error: ChartboostMediationError,
+        exception: Exception? = null,
+    ) {
         if (error == ChartboostMediationError.CM_INITIALIZATION_FAILURE_INTERNAL_ERROR) {
             LogController.d(
                 "Failed to parse retrieved config with error: $error due to " +
-                        (exception?.message ?: "<no message provided>")
+                    (exception?.message ?: "<no message provided>"),
             )
-
         } else {
             LogController.d(
-                "Failed to retrieve config from server with error: ${error}. " +
-                        "This is normal when no updates to the config are necessary."
+                "Failed to retrieve config from server with error: $error. " +
+                    "This is normal when no updates to the config are necessary.",
             )
         }
     }

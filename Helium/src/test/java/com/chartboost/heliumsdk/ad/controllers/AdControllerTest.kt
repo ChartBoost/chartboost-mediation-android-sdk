@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
+ * Copyright 2023-2024 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -10,12 +10,11 @@ package com.chartboost.heliumsdk.ad.controllers
 import com.chartboost.heliumsdk.controllers.AdController
 import com.chartboost.heliumsdk.domain.Ad
 import com.chartboost.heliumsdk.domain.AdFormat
-import org.junit.Test
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
+import org.junit.Test
 
 class AdControllerTest {
-
     @Test
     fun `adTypeToAdFormat should convert BANNER to BANNER format`() {
         assertEquals(AdFormat.BANNER, AdController.adTypeToAdFormat(Ad.AdType.BANNER))
@@ -44,9 +43,10 @@ class AdControllerTest {
     @Test
     fun `adTypeToAdFormat should throw IllegalArgumentException for unknown AdType`() {
         val unknownAdType = 9999 // assuming this value doesn't correspond to any known Ad.AdType
-        val exception = assertThrows(IllegalArgumentException::class.java) {
-            AdController.adTypeToAdFormat(unknownAdType)
-        }
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                AdController.adTypeToAdFormat(unknownAdType)
+            }
         assertEquals("Unknown AdType value: $unknownAdType", exception.message)
     }
 }

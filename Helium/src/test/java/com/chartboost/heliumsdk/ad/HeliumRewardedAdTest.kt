@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -51,7 +51,7 @@ class HeliumRewardedAdTest {
         assertEquals("", customDataInCachedAdSlot.captured)
     }
 
-    private fun generateRandomString(length: Int) : String {
+    private fun generateRandomString(length: Int): String {
         val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
         return (1..length)
             .map { allowedChars.random() }

@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -16,7 +16,6 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class HeliumJsonTest {
-
     private val SAMPLE_FULL_JSON_PAYLOAD = """{"nameform":"work_data","login_admin":"noteadm","login":"user","passw":"password","mode":"flat","mode_data":[{"flat_data":{"unique_start":"1516966548.648839","flat_on_stage_id":33,"flat_status_id":4,"retry_count":3,"time_start":"2017-01-26 15:51:18","duration":70,"gps_start":"GPS","gps_end":"GPS","audio_info":"35","photo_flat":"ph_1516966548_fl_hRd8dpz"},"quizer_data":{"argessive":0,"registration":1,"take_apm":0,"request":1,"live_in_flat":3,"first_vote":1,"will_vote":1,"home_vote":0,"rf":1}}]}"""
 
     private val PARTIAL_PAYLOAD_MAX_SIZE = 300

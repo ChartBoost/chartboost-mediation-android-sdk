@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -15,7 +15,10 @@ package com.chartboost.heliumsdk.domain
  * @property adType The ad type for the ad.
  * @property placementName The placement name for the ad.
  */
-class AdIdentifier(@field:Ad.AdType @param:Ad.AdType val adType: Int, val placementName: String) {
+class AdIdentifier(
+    @field:Ad.AdType @param:Ad.AdType val adType: Int,
+    val placementName: String,
+) {
     override fun hashCode(): Int {
         return "$adType:$placementName".hashCode()
     }
@@ -29,14 +32,15 @@ class AdIdentifier(@field:Ad.AdType @param:Ad.AdType val adType: Int, val placem
     }
 
     val placementType: String
-        get() = when (adType) {
-            Ad.AdType.INTERSTITIAL -> "interstitial"
-            Ad.AdType.REWARDED -> "rewarded"
-            Ad.AdType.BANNER -> "banner"
-            Ad.AdType.ADAPTIVE_BANNER -> "adaptive_banner"
-            Ad.AdType.REWARDED_INTERSTITIAL -> "rewarded_interstitial"
-            else -> "unknown"
-        }
+        get() =
+            when (adType) {
+                Ad.AdType.INTERSTITIAL -> "interstitial"
+                Ad.AdType.REWARDED -> "rewarded"
+                Ad.AdType.BANNER -> "banner"
+                Ad.AdType.ADAPTIVE_BANNER -> "adaptive_banner"
+                Ad.AdType.REWARDED_INTERSTITIAL -> "rewarded_interstitial"
+                else -> "unknown"
+            }
 
     override fun toString(): String {
         return when (adType) {

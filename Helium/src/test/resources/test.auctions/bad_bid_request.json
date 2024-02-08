@@ -139,10 +139,6 @@
         "bid_token": "3:H4sIAAAAAAAAAG1UW5eiOBD+L3lWO+EmOE+otG2PtMcWpdvdPZyQhBBBQG5e2v7vG+yd2Tm7k4dA6vZ9VZXKByB5VrGsBqMPQEiBu29V47qpwAjkRc1oIDLw2QOcFmWnPLCqwpwFLSsrkWfSCg4g6IEqb0rC5DHLpUfNSkzqTt/7N1yTJVl+6kS1kGFqfCjACH7K4JS1onP+ADijZS7o/bcogorVQXcCSLEsTQlRn0Km95ll0j4iGuljoiqqNgwjquOOZohriX0JKiwJBizDYcqkf4TTivUAO9cs+6L9AUQVVIKyNMf0f4YVDQguaYBbLNJOBUZ12bB7mtkv5p1QoopIFg5QwzQximjf0g2jrxHJ0UJDq48jI8JDyzTIkMjkU5zxRpZQerAfxQiuedYJ7AMrBcEPk1juPJfaNk8bqU9Zy1JZrYH6nyXRS3ZsZDnvLcyzSPDglzyBw6G+XGtn97ppXI/oi/37ec7to8md72Plsdk9PbfYX63tvXOZcXp999GV+no257HnrdHT0ku07foY2xvUskNahTOnfVlrp/kkdrGvIzat+MrXE3Kwit3EPrv7im8grF+vib583PBVti3C2ardIPu8WmsX17M115s37tRRlpexSkXCV2/jUzjbvu385wV+W7Uvnqsu9q4iMRbrx9cXb3Li4Swtd+vx085/KcNLwreH7YUoaRsKEy72Nl8p8SVUULq4Omd3op0W+w1cTh2Z8wbOHdS+S+7S33v3dzE5JD8x3AWfL+faq8/HYsxzZwvT2drPnyecovBQN6FKG8KTZ/ufZU4tY8yFrX3fU28/t2WP8pKKDKdBK9gJjPQeKEpGMInl8NR5IjsBRn8A5baC2OWnPxsIVfq13wg3zTxqkhYjIsTQCAnlMiC66aGiUaIOh4qlUkT1CA0ZISpkSmgxRVpTFiHTgLfwWLPCMFTB9LhpzDAX+y6CcjslzqNn/watwBE0oJbkcRUJeLf1Uv+KfsfsSGl8tGLDZLVFIPirm4wkaCo5W/IGd88G2DYZT9m0m9oHY4CUAfrW3kVxWD1ogy+RfCI+P/8GbmMLG20EAAA=",
         "version": "6.12.1",
         "adapter_version": "4.6.12.1.0"
-      },
-      "yahoo": {
-        "version": "1.4.0",
-        "adapter_version": "4.1.4.0.0"
       }
     },
     "inactive_bidders": {},

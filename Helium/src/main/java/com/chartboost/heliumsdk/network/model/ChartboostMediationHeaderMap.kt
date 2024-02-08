@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -15,7 +15,6 @@ import com.chartboost.heliumsdk.utils.Environment
  * @suppress
  */
 sealed class ChartboostMediationHeaderMap : HashMap<String, String?>() {
-
     data class ChartboostMediationAdLifecycleHeaderMap(
         val loadId: String?,
         val appSetId: String,
@@ -40,7 +39,7 @@ sealed class ChartboostMediationHeaderMap : HashMap<String, String?>() {
                 ChartboostMediationNetworking.SDK_VERSION_HEADER_KEY to HeliumSdk.getVersion(),
                 ChartboostMediationNetworking.DEVICE_OS_HEADER_KEY to Environment.operatingSystem,
                 ChartboostMediationNetworking.DEVICE_OS_VERSION_HEADER_KEY to Environment.operatingSystemVersion,
-                ChartboostMediationNetworking.INIT_HASH_HEADER_KEY to initHash
+                ChartboostMediationNetworking.INIT_HASH_HEADER_KEY to initHash,
             ).let { putAll(it) }
         }
     }
@@ -55,7 +54,7 @@ sealed class ChartboostMediationHeaderMap : HashMap<String, String?>() {
                 "X-Helium-SessionID" to Environment.sessionId,
                 ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY to appSetId,
                 ChartboostMediationNetworking.MEDIATION_LOAD_ID_HEADER_KEY to loadId,
-                ChartboostMediationNetworking.RATE_LIMIT_HEADER_KEY to rateLimit
+                ChartboostMediationNetworking.RATE_LIMIT_HEADER_KEY to rateLimit,
             ).let { putAll(it) }
         }
     }

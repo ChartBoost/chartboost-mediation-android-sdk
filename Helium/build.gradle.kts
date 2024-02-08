@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -35,7 +35,7 @@ android {
         buildConfigField(
             "String",
             "CHARTBOOST_MEDIATION_VERSION",
-            "\"${HeliumSdkInfo.heliumSdkVersion}\""
+            "\"${HeliumSdkInfo.heliumSdkVersion}\"",
         )
 
         consumerProguardFiles("proguard-rules.pro")
@@ -91,6 +91,8 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+    implementation("androidx.lifecycle:lifecycle-common:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
     implementation("com.google.android.gms:play-services-base:18.1.0")

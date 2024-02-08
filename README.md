@@ -47,13 +47,15 @@ repositories {
 }
  
 dependencies {
-   implementation 'com.chartboost:chartboost-mediation-sdk:4.7.1'
+   implementation 'com.chartboost:chartboost-mediation-sdk:4.8.0'
 }
 ```
 
 ## Add 3rd-Party Dependencies
 
 ```gradle
+implementation("androidx.lifecycle:lifecycle-common:2.5.1")
+implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
 implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
 implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20")

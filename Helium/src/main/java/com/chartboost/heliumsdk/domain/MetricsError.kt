@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -20,23 +20,22 @@ import kotlinx.serialization.json.put
  */
 @Serializable
 sealed class MetricsError {
-
     @Serializable
     class SimpleError private constructor(
         @SerialName("cm_code")
         val cmCode: String,
-
         @SerialName("details")
-        val details: JsonObject
+        val details: JsonObject,
     ) : MetricsError() {
         constructor(
-            chartboostMediationError: ChartboostMediationError
+            chartboostMediationError: ChartboostMediationError,
         ) : this(
             cmCode = chartboostMediationError.code,
-            details = buildJsonObject {
-                put("type", chartboostMediationError.name)
-                put("description", chartboostMediationError.message)
-            }
+            details =
+                buildJsonObject {
+                    put("type", chartboostMediationError.name)
+                    put("description", chartboostMediationError.message)
+                },
         )
     }
 
@@ -44,9 +43,8 @@ sealed class MetricsError {
     class JsonParseError private constructor(
         @SerialName("cm_code")
         val cmCode: String,
-
         @SerialName("details")
-        val details: JsonObject
+        val details: JsonObject,
     ) : MetricsError() {
         constructor(
             chartboostMediationError: ChartboostMediationError,
@@ -55,11 +53,12 @@ sealed class MetricsError {
             malformedJson: String,
         ) : this(
             cmCode = chartboostMediationError.code,
-            details = buildJsonObject {
-                put("type", exception::class.toString())
-                put("description", exceptionMessage)
-                put("data_as_string", getMaxJsonPayload(malformedJson, MAX_JSON_SIZE))
-            }
+            details =
+                buildJsonObject {
+                    put("type", exception::class.toString())
+                    put("description", exceptionMessage)
+                    put("data_as_string", getMaxJsonPayload(malformedJson, MAX_JSON_SIZE))
+                },
         )
 
         companion object {

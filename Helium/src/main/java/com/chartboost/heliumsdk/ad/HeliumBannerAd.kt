@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -24,7 +24,6 @@ import com.chartboost.heliumsdk.ad.HeliumBannerAd.HeliumBannerSize.Companion.STA
 import com.chartboost.heliumsdk.ad.HeliumBannerAd.HeliumBannerSize.Companion.bannerSize
 import com.chartboost.heliumsdk.controllers.banners.BannerController
 import com.chartboost.heliumsdk.controllers.banners.VisibilityTracker
-import com.chartboost.heliumsdk.domain.Ad
 import com.chartboost.heliumsdk.domain.AdFormat
 import com.chartboost.heliumsdk.domain.AppConfigStorage
 import com.chartboost.heliumsdk.domain.Keywords
@@ -38,7 +37,6 @@ private const val EMPTY_PLACEMENT = ""
 
 @SuppressLint("ViewConstructor")
 class HeliumBannerAd : FrameLayout, HeliumAd {
-
     var availableWidthDips: Int = 0
         private set
     var availableHeightDips: Int = 0
@@ -73,9 +71,9 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-            context,
-            attrs,
-            defStyleAttr
+        context,
+        attrs,
+        defStyleAttr,
     ) {
         if (attrs != null) {
             val attributesFromLayout = retrieveValuesFromAttributes(context.theme, attrs)
@@ -84,10 +82,11 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
             if (attrSize == NOT_FOUND) {
                 LogController.e("Error creating HeliumBannerAd, make sure the attributes declared in the XML are correct")
             } else {
-                this.size = attrSize.toBannerSize(
-                    Dips.pixelsToIntDips(attributesFromLayout.flexibleWidth, context),
-                    Dips.pixelsToIntDips(attributesFromLayout.flexibleHeight, context)
-                )
+                this.size =
+                    attrSize.toBannerSize(
+                        Dips.pixelsToIntDips(attributesFromLayout.flexibleWidth, context),
+                        Dips.pixelsToIntDips(attributesFromLayout.flexibleHeight, context),
+                    )
                 this.placementName = attrPlacementName
             }
         } else {
@@ -99,7 +98,7 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
         context: Context,
         placementName: String,
         size: HeliumBannerSize,
-        heliumBannerAdListener: HeliumBannerAdListener?
+        heliumBannerAdListener: HeliumBannerAdListener?,
     ) : super(context) {
         this.placementName = placementName
         this.size = size
@@ -112,14 +111,17 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
         }
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    override fun onMeasure(
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int,
+    ) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         // The parent's constraints on the width and height
         val parentWidth = MeasureSpec.getSize(widthMeasureSpec)
         val parentHeight = MeasureSpec.getSize(heightMeasureSpec)
 
-        if (parentHeight == 0  && parentWidth == 0) {
+        if (parentHeight == 0 && parentWidth == 0) {
             availableWidthDips = 0
             availableHeightDips = 0
             return
@@ -159,11 +161,12 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
         val height: Int,
         val isAdaptive: Boolean = false,
     ) {
-        val aspectRatio: Double = if (height == 0 || width == 0) {
-            0.0
-        } else {
-            width.toDouble() / height.toDouble()
-        }
+        val aspectRatio: Double =
+            if (height == 0 || width == 0) {
+                0.0
+            } else {
+                width.toDouble() / height.toDouble()
+            }
 
         companion object {
             @JvmField
@@ -175,8 +178,13 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
             @JvmField
             val LEADERBOARD = HeliumBannerSize("LEADERBOARD", 728, 90)
 
+            fun HeliumBannerSize.asSize() = Size(width, height)
+
             @JvmStatic
-            fun bannerSize(width: Int, height: Int = 0): HeliumBannerSize {
+            fun bannerSize(
+                width: Int,
+                height: Int = 0,
+            ): HeliumBannerSize {
                 return HeliumBannerSize("ADAPTIVE", width, height, true)
             }
 
@@ -203,7 +211,10 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
         }
     }
 
-    private fun Int.toBannerSize(flexibleWidth: Int, flexibleHeight: Int): HeliumBannerSize {
+    private fun Int.toBannerSize(
+        flexibleWidth: Int,
+        flexibleHeight: Int,
+    ): HeliumBannerSize {
         return when (this) {
             0 -> STANDARD
             1 -> MEDIUM
@@ -218,11 +229,14 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
 
     override fun getAdType(): Int {
         return AdFormat.toAdType(
-            AppConfigStorage.placementsToAdFormats?.get(placementName)
+            AppConfigStorage.placementsToAdFormats?.get(placementName),
         )
     }
 
-    fun load(placementName: String? = null, size: HeliumBannerSize? = null) {
+    fun load(
+        placementName: String? = null,
+        size: HeliumBannerSize? = null,
+    ) {
         if (placementName != this.placementName || this.size != size) {
             this.placementName = placementName ?: this.placementName
             this.size = size ?: this.size
@@ -270,7 +284,10 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
         }
     }
 
-    override fun onVisibilityChanged(changedView: View, visibility: Int) {
+    override fun onVisibilityChanged(
+        changedView: View,
+        visibility: Int,
+    ) {
         super.onVisibilityChanged(changedView, visibility)
 
         val overallVisibility = getOverallVisibility()
@@ -316,21 +333,26 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
     }
 
     private fun retrieveValuesFromAttributes(
-            theme: Theme,
-            attrs: AttributeSet
+        theme: Theme,
+        attrs: AttributeSet,
     ): HeliumBannerAttributes {
         val attributes = theme.obtainStyledAttributes(attrs, R.styleable.HeliumBannerAd, 0, 0)
         val location: String? = attributes.getString(R.styleable.HeliumBannerAd_heliumPlacementName)
-        val sizeInLayout: Int = attributes.getInt(
+        val sizeInLayout: Int =
+            attributes.getInt(
                 R.styleable.HeliumBannerAd_heliumBannerSize,
-                NOT_FOUND
-        )
-        val flexibleWidth = attributes.getDimensionPixelSize(
-            R.styleable.HeliumBannerAd_heliumBannerFlexibleWidth, 0
-        )
-        val flexibleHeight = attributes.getDimensionPixelSize(
-            R.styleable.HeliumBannerAd_heliumBannerFlexibleHeight, 0
-        )
+                NOT_FOUND,
+            )
+        val flexibleWidth =
+            attributes.getDimensionPixelSize(
+                R.styleable.HeliumBannerAd_heliumBannerFlexibleWidth,
+                0,
+            )
+        val flexibleHeight =
+            attributes.getDimensionPixelSize(
+                R.styleable.HeliumBannerAd_heliumBannerFlexibleHeight,
+                0,
+            )
 
         attributes.recycle()
         return HeliumBannerAttributes(location, sizeInLayout, flexibleWidth, flexibleHeight)
@@ -340,6 +362,6 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
         val placementName: String?,
         val size: Int,
         val flexibleWidth: Int,
-        val flexibleHeight: Int
+        val flexibleHeight: Int,
     )
 }

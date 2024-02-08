@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -19,7 +19,9 @@ import com.chartboost.heliumsdk.HeliumSdk
 import com.chartboost.heliumsdk.Ilrd
 import com.chartboost.heliumsdk.ad.HeliumBannerAd
 import com.chartboost.heliumsdk.ad.HeliumBannerAd.HeliumBannerSize.Companion.STANDARD
+import com.chartboost.heliumsdk.ad.HeliumBannerAd.HeliumBannerSize.Companion.asSize
 import com.chartboost.heliumsdk.domain.*
+import com.chartboost.heliumsdk.domain.PartnerAdUtils.getCreativeSizeFromPartnerAdDetails
 import com.chartboost.heliumsdk.network.ChartboostMediationNetworking
 import com.chartboost.heliumsdk.network.Endpoints
 import com.chartboost.heliumsdk.network.model.BannerAdDimensions
@@ -38,9 +40,8 @@ import java.lang.ref.WeakReference
 class BannerController(
     private val heliumBannerAdRef: WeakReference<HeliumBannerAd>,
     private val fullscreenAdShowingState: FullscreenAdShowingState? = HeliumSdk.chartboostMediationInternal.fullscreenAdShowingState,
-    private val ilrd: Ilrd? = HeliumSdk.chartboostMediationInternal.ilrd
+    private val ilrd: Ilrd? = HeliumSdk.chartboostMediationInternal.ilrd,
 ) {
-
     /**
      * Whether or not auto refresh is enabled for this placement
      */
@@ -186,7 +187,9 @@ class BannerController(
         }
         isPublisherTriggeredLoad = true
         if (fetchAdJob != null) {
-            LogController.w("${ChartboostMediationError.CM_LOAD_FAILURE_LOAD_IN_PROGRESS.message} Treating the next load as a publisher initiated load.")
+            LogController.w(
+                "${ChartboostMediationError.CM_LOAD_FAILURE_LOAD_IN_PROGRESS.message} Treating the next load as a publisher initiated load.",
+            )
             return
         }
         nextAd?.let { heliumAd ->
@@ -198,7 +201,11 @@ class BannerController(
                             partnerAd.request.chartboostPlacement,
                             heliumAd.loadId,
                             heliumAd.winningBidInfo,
-                            null
+                            null,
+                            getCreativeSizeFromPartnerAdDetails(
+                                partnerAd,
+                                partnerAd.request.size ?: STANDARD.asSize()
+                            ),
                         )
                             ?: LogController.e("The Helium SDK Banner listener is detached on onHeliumAdLoaded for onAdCached.")
                     }
@@ -302,12 +309,13 @@ class BannerController(
 
         try {
             if (bannerSize?.isAdaptive == true) {
-                adapterProvidedSize = currentlyShowingAd?.partnerAd?.details?.let {
-                    Size(
-                        it["banner_width_dips"]?.toInt() ?: bannerSize.width,
-                        it["banner_height_dips"]?.toInt() ?: bannerSize.height
-                    )
-                }
+                adapterProvidedSize =
+                    currentlyShowingAd?.partnerAd?.let {
+                        getCreativeSizeFromPartnerAdDetails(
+                            it,
+                            bannerSize.asSize()
+                        )
+                    }
             }
         } catch (e: Exception) {
             LogController.e("Encountered a problem getting the creative size: ${e.message}")
@@ -315,7 +323,7 @@ class BannerController(
 
         return adapterProvidedSize ?: Size(
             bannerSize?.width ?: STANDARD.width,
-            bannerSize?.height ?: STANDARD.height
+            bannerSize?.height ?: STANDARD.height,
         )
     }
 
@@ -343,96 +351,126 @@ class BannerController(
         }
         heliumBannerAdRef.get()?.let { heliumBannerAd ->
             val loadId = Environment.sessionId + System.currentTimeMillis()
-            fetchAdJob = CoroutineScope(Main).launch(CoroutineExceptionHandler { _, error ->
-                fetchAdJob = null
-                if (isPublisherTriggeredLoad) {
-                    CoroutineScope(Main).launch {
-                        heliumBannerAd.heliumBannerAdListener?.onAdCached(
-                            heliumBannerAd.placementName,
-                            loadId,
-                            mapOf(),
-                            if (error is ChartboostMediationAdException) error else ChartboostMediationAdException(
-                                ChartboostMediationError.CM_UNKNOWN_ERROR
-                            )
-                        )
-                    }
-                }
-            }) {
-                // This is a placeholder set for load metrics for banner that nothing else is using.
-                // Feel free to utilize this when the public banner API should also return load metrics.
-                val loadMetrics = mutableSetOf<Metrics>()
-                val loadResult = HeliumSdk.chartboostMediationInternal.adController?.load(
-                    heliumBannerAd.context,
-                    AdLoadParams(adIdentifier = AdIdentifier(heliumBannerAd.getAdType(), heliumBannerAd.placementName),
-                        keywords = heliumBannerAd.keywords,
-                        loadId = loadId,
-                        bannerSize = heliumBannerAd.getSize(),
-                        adInteractionListener = object : AdInteractionListener {
-                            override fun onImpressionTracked(partnerAd: PartnerAd) {
-                                // Helium ignores partner impression.
-                            }
-
-                            override fun onClicked(partnerAd: PartnerAd) {
-                                heliumBannerAdRef.get()?.heliumBannerAdListener?.onAdClicked(
-                                    partnerAd.request.chartboostPlacement
+            fetchAdJob =
+                CoroutineScope(Main).launch(
+                    CoroutineExceptionHandler { _, error ->
+                        fetchAdJob = null
+                        if (isPublisherTriggeredLoad) {
+                            CoroutineScope(Main).launch {
+                                heliumBannerAd.heliumBannerAdListener?.onAdCached(
+                                    heliumBannerAd.placementName,
+                                    loadId,
+                                    mapOf(),
+                                    if (error is ChartboostMediationAdException) {
+                                        error
+                                    } else {
+                                        ChartboostMediationAdException(
+                                            ChartboostMediationError.CM_UNKNOWN_ERROR,
+                                        )
+                                    },
+                                    currentlyShowingAd?.partnerAd?.let {
+                                        getCreativeSizeFromPartnerAdDetails(
+                                            it,
+                                            it.request.size ?: STANDARD.asSize()
+                                        )
+                                    } ?: STANDARD.asSize(),
                                 )
                             }
-
-                            override fun onRewarded(partnerAd: PartnerAd) {
-                                // This should not happen
-                                LogController.e("${partnerAd.request.chartboostPlacement} Banner received rewarded callback?")
-                            }
-
-                            override fun onDismissed(
-                                partnerAd: PartnerAd, error: ChartboostMediationAdException?
-                            ) {
-                                // This should not happen
-                                LogController.e("${partnerAd.request.chartboostPlacement} Banner received dismissed callback?")
-                            }
-
-                            override fun onExpired(partnerAd: PartnerAd) {
-                                // No action for now
-                                LogController.e("${partnerAd.request.chartboostPlacement} Banner received expired callback?")
-                            }
-                        }), loadMetrics
-                )
-                fetchAdJob = null
-                if (!isActive) {
-                    return@launch
-                }
-                loadResult?.fold({
-                    if (it.partnerAd?.inlineView != null) {
-                        if (forceRefresh) {
-                            // if we're forcing a refresh, set the time shown to equal 1 greater than the refresh time threshold
-                            shownDurationMillis = 1L + refreshTimeMillis
                         }
-                        handleLoadSuccess(it, loadId)
-                    } else {
-                        handleLoadFailure(
-                            loadId,
-                            ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_NO_INLINE_VIEW)
+                    },
+                ) {
+                    // This is a placeholder set for load metrics for banner that nothing else is using.
+                    // Feel free to utilize this when the public banner API should also return load metrics.
+                    val loadMetrics = mutableSetOf<Metrics>()
+                    val loadResult =
+                        HeliumSdk.chartboostMediationInternal.adController?.load(
+                            heliumBannerAd.context,
+                            AdLoadParams(
+                                adIdentifier = AdIdentifier(heliumBannerAd.getAdType(), heliumBannerAd.placementName),
+                                keywords = heliumBannerAd.keywords,
+                                loadId = loadId,
+                                bannerSize = heliumBannerAd.getSize(),
+                                adInteractionListener =
+                                    object : AdInteractionListener {
+                                        override fun onImpressionTracked(partnerAd: PartnerAd) {
+                                            // Helium ignores partner impression.
+                                        }
+
+                                        override fun onClicked(partnerAd: PartnerAd) {
+                                            heliumBannerAdRef.get()?.heliumBannerAdListener?.onAdClicked(
+                                                partnerAd.request.chartboostPlacement,
+                                            )
+                                        }
+
+                                        override fun onRewarded(partnerAd: PartnerAd) {
+                                            // This should not happen
+                                            LogController.e("${partnerAd.request.chartboostPlacement} Banner received rewarded callback?")
+                                        }
+
+                                        override fun onDismissed(
+                                            partnerAd: PartnerAd,
+                                            error: ChartboostMediationAdException?,
+                                        ) {
+                                            // This should not happen
+                                            LogController.e("${partnerAd.request.chartboostPlacement} Banner received dismissed callback?")
+                                        }
+
+                                        override fun onExpired(partnerAd: PartnerAd) {
+                                            // No action for now
+                                            LogController.e("${partnerAd.request.chartboostPlacement} Banner received expired callback?")
+                                        }
+                                    },
+                            ),
+                            loadMetrics,
                         )
+                    fetchAdJob = null
+                    if (!isActive) {
+                        return@launch
                     }
-                }, {
-                    handleLoadFailure(loadId, it)
-                }) ?: run {
-                    LogController.e("Helium is not initialized.")
-                    CoroutineScope(Main).launch {
-                        heliumBannerAd.heliumBannerAdListener?.onAdCached(
-                            heliumBannerAd.placementName,
-                            loadId,
-                            mapOf(),
-                            ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_CHARTBOOST_MEDIATION_NOT_INITIALIZED)
-                        )
+                    loadResult?.fold({
+                        if (it.partnerAd?.inlineView != null) {
+                            if (forceRefresh) {
+                                // if we're forcing a refresh, set the time shown to equal 1 greater than the refresh time threshold
+                                shownDurationMillis = 1L + refreshTimeMillis
+                            }
+                            handleLoadSuccess(it, loadId)
+                        } else {
+                            handleLoadFailure(
+                                loadId,
+                                ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_NO_INLINE_VIEW),
+                            )
+                        }
+                    }, {
+                        handleLoadFailure(loadId, it)
+                    }) ?: run {
+                        LogController.e("Helium is not initialized.")
+                        CoroutineScope(Main).launch {
+                            heliumBannerAd.heliumBannerAdListener?.onAdCached(
+                                heliumBannerAd.placementName,
+                                loadId,
+                                mapOf(),
+                                ChartboostMediationAdException(
+                                    ChartboostMediationError.CM_LOAD_FAILURE_CHARTBOOST_MEDIATION_NOT_INITIALIZED,
+                                ),
+                                currentlyShowingAd?.partnerAd?.let {
+                                    getCreativeSizeFromPartnerAdDetails(
+                                        it,
+                                        it.request.size ?: STANDARD.asSize()
+                                    )
+                                } ?: STANDARD.asSize(),
+                            )
+                        }
                     }
                 }
-            }
         } ?: LogController.e("The Helium SDK Banner reference is missing on getNextAd()")
 
         checkAndResumeRefresh()
     }
 
-    private fun handleLoadSuccess(cachedAd: CachedAd, loadId: String) {
+    private fun handleLoadSuccess(
+        cachedAd: CachedAd,
+        loadId: String,
+    ) {
         cachedAd.loadId = loadId
         nextAd = cachedAd
         refreshesFailed = 0
@@ -441,14 +479,26 @@ class BannerController(
         if (isPublisherTriggeredLoad) {
             CoroutineScope(Main).launch {
                 heliumBannerAdRef.get()?.heliumBannerAdListener?.onAdCached(
-                    getBannerAdPlacementName(), loadId, cachedAd.winningBidInfo, null
+                    getBannerAdPlacementName(),
+                    loadId,
+                    cachedAd.winningBidInfo,
+                    null,
+                    currentlyShowingAd?.partnerAd?.let {
+                        getCreativeSizeFromPartnerAdDetails(
+                            it,
+                            it.request.size ?: STANDARD.asSize()
+                        )
+                    } ?: STANDARD.asSize(),
                 )
             }
         }
         isPublisherTriggeredLoad = false
     }
 
-    private fun handleLoadFailure(loadId: String, error: Throwable) {
+    private fun handleLoadFailure(
+        loadId: String,
+        error: Throwable,
+    ) {
         refreshesFailed++
         shownDurationMillis = 0
         scheduleNextRefresh()
@@ -459,9 +509,19 @@ class BannerController(
                     getBannerAdPlacementName(),
                     loadId,
                     mapOf(),
-                    if (error is ChartboostMediationAdException) error else ChartboostMediationAdException(
-                        ChartboostMediationError.CM_LOAD_FAILURE_UNKNOWN
-                    )
+                    if (error is ChartboostMediationAdException) {
+                        error
+                    } else {
+                        ChartboostMediationAdException(
+                            ChartboostMediationError.CM_LOAD_FAILURE_UNKNOWN,
+                        )
+                    },
+                    currentlyShowingAd?.partnerAd?.let {
+                        getCreativeSizeFromPartnerAdDetails(
+                            it,
+                            it.request.size ?: STANDARD.asSize()
+                        )
+                    } ?: STANDARD.asSize(),
                 )
             }
         }
@@ -493,35 +553,40 @@ class BannerController(
         }
         LogController.d("Scheduling a banner ad swap in $timeToRefreshMillis millis.")
         swapAdJob?.cancel()
-        swapAdJob = CoroutineScope(Main).launch {
-            withContext(IO) {
-                delay(timeToRefreshMillis)
+        swapAdJob =
+            CoroutineScope(Main).launch {
+                withContext(IO) {
+                    delay(timeToRefreshMillis)
+                }
+                if (!isActive) return@launch
+                swapAd()
             }
-            if (!isActive) return@launch
-            swapAd()
-        }
     }
 
     /**
      * Swaps the ad in.
      */
     private fun swapAd() {
-        val heliumBannerAd = heliumBannerAdRef.get() ?: run {
-            LogController.d("Failed to swap ad because reference to HeliumBannerAd lost")
-            return
-        }
-        val nextAd = nextAd ?: run {
-            LogController.d("Attempting to swap ad with no loaded ad.")
-            return
-        }
-        val partnerAd = nextAd.partnerAd ?: run {
-            LogController.d("Attempting to swap ad with no loaded partner ad. ${ChartboostMediationError.CM_LOAD_FAILURE_NO_FILL}")
-            return
-        }
-        val nextBannerAdView = partnerAd.inlineView ?: run {
-            LogController.d("Attempting to swap ad with no loaded ad view. ${ChartboostMediationError.CM_LOAD_FAILURE_NO_INLINE_VIEW}")
-            return
-        }
+        val heliumBannerAd =
+            heliumBannerAdRef.get() ?: run {
+                LogController.d("Failed to swap ad because reference to HeliumBannerAd lost")
+                return
+            }
+        val nextAd =
+            nextAd ?: run {
+                LogController.d("Attempting to swap ad with no loaded ad.")
+                return
+            }
+        val partnerAd =
+            nextAd.partnerAd ?: run {
+                LogController.d("Attempting to swap ad with no loaded partner ad. ${ChartboostMediationError.CM_LOAD_FAILURE_NO_FILL}")
+                return
+            }
+        val nextBannerAdView =
+            partnerAd.inlineView ?: run {
+                LogController.d("Attempting to swap ad with no loaded ad view. ${ChartboostMediationError.CM_LOAD_FAILURE_NO_INLINE_VIEW}")
+                return
+            }
 
         LogController.d("Showing banner.")
 
@@ -543,24 +608,27 @@ class BannerController(
 
         val bannerSize = heliumBannerAd.getSize()
         val density: Double = heliumBannerAd.context.resources.displayMetrics.density.toDouble()
-        val layoutParams = when {
-            bannerSize?.isAdaptive == true -> {
-                FrameLayout.LayoutParams(
-                    (getCreativeSizeDips(bannerSize).width * density).toInt(),
-                    (getCreativeSizeDips(bannerSize).height * density).toInt()
-                )
+        val layoutParams =
+            when {
+                bannerSize?.isAdaptive == true -> {
+                    FrameLayout.LayoutParams(
+                        (getCreativeSizeDips(bannerSize).width * density).toInt(),
+                        (getCreativeSizeDips(bannerSize).height * density).toInt(),
+                    )
+                }
+                bannerSize != null -> {
+                    FrameLayout.LayoutParams(
+                        (bannerSize.width * density).toInt(),
+                        (bannerSize.height * density).toInt(),
+                    )
+                }
+                else -> {
+                    FrameLayout.LayoutParams(
+                        (STANDARD.width * density).toInt(),
+                        (STANDARD.height * density).toInt(),
+                    )
+                }
             }
-            bannerSize != null -> {
-                FrameLayout.LayoutParams(
-                    (bannerSize.width * density).toInt(), (bannerSize.height * density).toInt()
-                )
-            }
-            else -> {
-                FrameLayout.LayoutParams(
-                    (STANDARD.width * density).toInt(), (STANDARD.height * density).toInt()
-                )
-            }
-        }
         layoutParams.gravity = Gravity.CENTER
         heliumBannerAd.addView(nextBannerAdView, layoutParams)
 
@@ -576,96 +644,109 @@ class BannerController(
         bannerShownUptimeMillis = SystemClock.uptimeMillis()
 
         visibilityTracker?.destroy()
-        visibilityTracker = VisibilityTracker(
-            heliumBannerAd.context,
-            nextBannerAdView,
-            VisibilityTracker.getTopmostView(heliumBannerAd.context, heliumBannerAd)
-                ?: heliumBannerAd,
-            AppConfigStorage.bannerImpressionMinVisibleDips,
-            AppConfigStorage.bannerImpressionMinVisibleDurationMs,
-            AppConfigStorage.visibilityTrackerPollIntervalMs,
-            AppConfigStorage.visibilityTrackerTraversalLimit
-        ).also {
-            it.visibilityTrackerListener = object : VisibilityTracker.VisibilityTrackerListener {
-                override fun onVisibilityThresholdMet() {
-                    sendShowMetricsData(
-                        startTime = System.currentTimeMillis(),
-                        partnerName = partnerAd.request.partnerId,
-                        auctionId = nextAd.auctionId,
-                        loadId = nextAd.loadId
-                    )
-                    val placementName = getBannerAdPlacementName()
-                    HeliumSdk.chartboostMediationInternal.adController?.incrementBannerImpressionDepth()
-                        ?: LogController.e("Failed to increment banner impression depth due to no ad controller.")
-                    mainHandler.post {
-                        heliumBannerAdRef.get()?.heliumBannerAdListener?.onAdImpressionRecorded(
-                            placementName
-                        )
-                            ?: LogController.e("The Helium SDK Banner listener is detached on onAdImpressionRecorded.")
-                    }
-                    CoroutineScope(IO).launch {
-                        ChartboostMediationNetworking.trackChartboostImpression(nextAd.auctionId, nextAd.loadId)
-
-                        delay(timeToVerifyAdSizeJobMillis)
-
-                        if (!isActive) {
-                            return@launch
-                        }
-
-                        val creativeWidth = Dips.pixelsToIntDips(nextBannerAdView.width,
-                            nextBannerAdView.context
-                        )
-                        val creativeHeight = Dips.pixelsToIntDips(nextBannerAdView.height,
-                            nextBannerAdView.context
-                        )
-
-                        val containerWidth = Dips.pixelsToIntDips(heliumBannerAd.width,
-                            heliumBannerAd.context
-                        )
-                        val containerHeight = Dips.pixelsToIntDips(heliumBannerAd.height,
-                            heliumBannerAd.context
-                        )
-
-                        if (creativeWidth <= containerWidth && creativeHeight <= containerHeight) {
-                            return@launch
-                        }
-
-                        val requestedWidth = nextAd.partnerAd?.request?.size?.width ?: 0
-                        val requestedHeight = nextAd.partnerAd?.request?.size?.height ?: 0
-
-                        ChartboostMediationNetworking.trackAdaptiveBannerSize(
-                            loadId = nextAd.loadId,
-                            BannerSizeBody(
+        visibilityTracker =
+            VisibilityTracker(
+                heliumBannerAd.context,
+                nextBannerAdView,
+                VisibilityTracker.getTopmostView(heliumBannerAd.context, heliumBannerAd)
+                    ?: heliumBannerAd,
+                AppConfigStorage.bannerImpressionMinVisibleDips,
+                AppConfigStorage.bannerImpressionMinVisibleDurationMs,
+                AppConfigStorage.visibilityTrackerPollIntervalMs,
+                AppConfigStorage.visibilityTrackerTraversalLimit,
+            ).also {
+                it.visibilityTrackerListener =
+                    object : VisibilityTracker.VisibilityTrackerListener {
+                        override fun onVisibilityThresholdMet() {
+                            sendShowMetricsData(
+                                startTime = System.currentTimeMillis(),
+                                partnerName = partnerAd.request.partnerId,
                                 auctionId = nextAd.auctionId,
-                                creativeSize = BannerAdDimensions(
-                                    width = creativeWidth,
-                                    height = creativeHeight
-                                ),
-                                containerSize = BannerAdDimensions(
-                                    width = containerWidth,
-                                    height = containerHeight
-                                ),
-                                requestSize = BannerAdDimensions(
-                                    width = requestedWidth,
-                                    height = requestedHeight
-                                ),
+                                loadId = nextAd.loadId,
                             )
-                        )
-                    }
+                            val placementName = getBannerAdPlacementName()
+                            HeliumSdk.chartboostMediationInternal.adController?.incrementBannerImpressionDepth()
+                                ?: LogController.e("Failed to increment banner impression depth due to no ad controller.")
+                            mainHandler.post {
+                                heliumBannerAdRef.get()?.heliumBannerAdListener?.onAdImpressionRecorded(
+                                    placementName,
+                                )
+                                    ?: LogController.e("The Helium SDK Banner listener is detached on onAdImpressionRecorded.")
+                            }
+                            CoroutineScope(IO).launch {
+                                ChartboostMediationNetworking.trackChartboostImpression(nextAd.auctionId, nextAd.loadId)
 
-                    nextAd.ilrdJson?.let { ilrdJson ->
-                        ilrd?.onIlrdReceived(
-                            partnerAd.request.chartboostPlacement,
-                            ilrdJson.toJSONObject()
-                        )
-                    }
+                                delay(timeToVerifyAdSizeJobMillis)
 
-                    bannerShownUptimeMillis = SystemClock.uptimeMillis()
-                    scheduleNextRefresh()
-                }
+                                if (!isActive) {
+                                    return@launch
+                                }
+
+                                val creativeWidth =
+                                    Dips.pixelsToIntDips(
+                                        nextBannerAdView.width,
+                                        nextBannerAdView.context,
+                                    )
+                                val creativeHeight =
+                                    Dips.pixelsToIntDips(
+                                        nextBannerAdView.height,
+                                        nextBannerAdView.context,
+                                    )
+
+                                val containerWidth =
+                                    Dips.pixelsToIntDips(
+                                        heliumBannerAd.width,
+                                        heliumBannerAd.context,
+                                    )
+                                val containerHeight =
+                                    Dips.pixelsToIntDips(
+                                        heliumBannerAd.height,
+                                        heliumBannerAd.context,
+                                    )
+
+                                if (creativeWidth <= containerWidth && creativeHeight <= containerHeight) {
+                                    return@launch
+                                }
+
+                                val requestedWidth = nextAd.partnerAd?.request?.size?.width ?: 0
+                                val requestedHeight = nextAd.partnerAd?.request?.size?.height ?: 0
+
+                                ChartboostMediationNetworking.trackAdaptiveBannerSize(
+                                    loadId = nextAd.loadId,
+                                    BannerSizeBody(
+                                        auctionId = nextAd.auctionId,
+                                        creativeSize =
+                                            BannerAdDimensions(
+                                                width = creativeWidth,
+                                                height = creativeHeight,
+                                            ),
+                                        containerSize =
+                                            BannerAdDimensions(
+                                                width = containerWidth,
+                                                height = containerHeight,
+                                            ),
+                                        requestSize =
+                                            BannerAdDimensions(
+                                                width = requestedWidth,
+                                                height = requestedHeight,
+                                            ),
+                                    ),
+                                )
+                            }
+
+                            nextAd.ilrdJson?.let { ilrdJson ->
+                                ilrd?.onIlrdReceived(
+                                    partnerAd.request.chartboostPlacement,
+                                    ilrdJson.toJSONObject(),
+                                )
+                            }
+
+                            bannerShownUptimeMillis = SystemClock.uptimeMillis()
+                            scheduleNextRefresh()
+                        }
+                    }
+                it.start()
             }
-            it.start()
-        }
 
         // Now we invalidate the previous banner
         invalidateAd(previousAd)
@@ -683,13 +764,14 @@ class BannerController(
             return
         }
 
-        var timeToRefreshMillis = if (nextAd == null && refreshesFailed < 1) {
-            0
-        } else if (refreshesFailed >= maxTriesUntilPenaltyTime) {
-            maxRefreshTime - shownDurationMillis
-        } else {
-            refreshTimeMillis - shownDurationMillis
-        }
+        var timeToRefreshMillis =
+            if (nextAd == null && refreshesFailed < 1) {
+                0
+            } else if (refreshesFailed >= maxTriesUntilPenaltyTime) {
+                maxRefreshTime - shownDurationMillis
+            } else {
+                refreshTimeMillis - shownDurationMillis
+            }
 
         // Just in case we go negative
         if (timeToRefreshMillis < 0) {
@@ -697,17 +779,21 @@ class BannerController(
         }
         LogController.d("Scheduling next banner refresh in $timeToRefreshMillis millis.")
         nextAdJob?.cancel()
-        nextAdJob = CoroutineScope(Main).launch {
-            withContext(IO) {
-                delay(timeToRefreshMillis)
+        nextAdJob =
+            CoroutineScope(Main).launch {
+                withContext(IO) {
+                    delay(timeToRefreshMillis)
+                }
+                if (!isActive) return@launch
+                getNextAd()
             }
-            if (!isActive) return@launch
-            getNextAd()
-        }
     }
 
     private fun sendShowMetricsData(
-        startTime: Long, partnerName: String, auctionId: String, loadId: String
+        startTime: Long,
+        partnerName: String,
+        auctionId: String,
+        loadId: String,
     ) {
         val metrics = Metrics(partnerName, Endpoints.Sdk.Event.SHOW)
         val showMetricsDataSet: MutableSet<Metrics> = HashSet()

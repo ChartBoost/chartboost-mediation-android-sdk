@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -23,7 +23,10 @@ interface ChartboostMediationFullscreenAdListener {
      * @param ad The current ChartboostMediationFullscreenAd instance.
      * @param error If there was an error in the lifecycle of the ad, it will be presented here.
      */
-    fun onAdClosed(ad: ChartboostMediationFullscreenAd, error: ChartboostMediationAdException?)
+    fun onAdClosed(
+        ad: ChartboostMediationFullscreenAd,
+        error: ChartboostMediationAdException?,
+    )
 
     /**
      * Called when the user should receive the reward associated with this rewarded ad.

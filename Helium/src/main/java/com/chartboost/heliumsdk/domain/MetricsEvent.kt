@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -19,7 +19,12 @@ data class MetricsEvent(val eventType: EventType, val partner: String) {
      * The type of event.
      */
     enum class EventType {
-        INITIALIZATION, PREBID, LOAD, SHOW, CLICK, EXPIRATION
+        INITIALIZATION,
+        PREBID,
+        LOAD,
+        SHOW,
+        CLICK,
+        EXPIRATION,
     }
 
     private val startTimestamp: Long = System.currentTimeMillis()

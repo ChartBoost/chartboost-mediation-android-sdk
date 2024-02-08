@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Chartboost, Inc.
+ * Copyright 2023-2024 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -13,12 +13,10 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class PartnerConsentsTest {
-
     private var subject: PartnerConsents = PartnerConsents()
     private var mockPartnerConsentsObserver: PartnerConsents.PartnerConsentsObserver = mockk()
 

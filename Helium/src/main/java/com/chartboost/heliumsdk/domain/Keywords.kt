@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -17,7 +17,6 @@ import java.util.*
  */
 @Serializable(with = KeywordsSerializer::class)
 class Keywords {
-
     private val KEYWORD_CHAR_LIMIT = 64
     private val VALUE_CHAR_LIMIT = 256
     private val keywords: MutableMap<String, String> = mutableMapOf()
@@ -32,17 +31,18 @@ class Keywords {
      * @return true if the keyword was set successfully. Otherwise, false if the keyword or
      * value exceed the maximum allowable characters.
      */
-    operator fun set(keyword: String, value: String): Boolean {
-
+    operator fun set(
+        keyword: String,
+        value: String,
+    ): Boolean {
         // If the keyword or value has more characters than their maximum allowed, return false.
         if (exceedsCharacterLimit(keyword, KEYWORD_CHAR_LIMIT) ||
             exceedsCharacterLimit(value, VALUE_CHAR_LIMIT)
         ) {
-
             LogController.w(
                 "The keyword or value exceeded the maximum allowable" +
-                        " characters. Maximum allowable characters for " +
-                        "Keyword is: $KEYWORD_CHAR_LIMIT & for Value is: $VALUE_CHAR_LIMIT"
+                    " characters. Maximum allowable characters for " +
+                    "Keyword is: $KEYWORD_CHAR_LIMIT & for Value is: $VALUE_CHAR_LIMIT",
             )
 
             return false
@@ -73,7 +73,10 @@ class Keywords {
      * Check the character limit.
      * Returns whether or not the character exceeds the limit
      */
-    private fun exceedsCharacterLimit(string: String, limit: Int): Boolean {
+    private fun exceedsCharacterLimit(
+        string: String,
+        limit: Int,
+    ): Boolean {
         return string.length > limit
     }
 }
