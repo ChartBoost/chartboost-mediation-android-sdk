@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -24,13 +24,10 @@ import kotlinx.serialization.Serializable
 data class AdLoadNotificationRequestBody(
     @SerialName("placement_name")
     private val placementName: String,
-
     @SerialName("ad_type")
     private val adType: String,
-
     @SerialName("load_id")
     private val loadId: String,
-
     @SerialName("status")
-    private val status: String
+    private val status: String,
 )

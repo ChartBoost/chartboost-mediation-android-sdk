@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -21,12 +21,16 @@ import kotlinx.serialization.json.JsonArray
 object AdFormatEnumSetSerializer : KSerializer<AdFormat> {
     override val descriptor = JsonArray.serializer().descriptor
 
-    override fun serialize(encoder: Encoder, value: AdFormat) {
+    override fun serialize(
+        encoder: Encoder,
+        value: AdFormat,
+    ) {
         encoder.encodeSerializableValue(String.serializer(), value.name)
     }
 
     override fun deserialize(decoder: Decoder): AdFormat {
         return AdFormat.fromString(
-            decoder.decodeSerializableValue(String.serializer()))
+            decoder.decodeSerializableValue(String.serializer()),
+        )
     }
 }

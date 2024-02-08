@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -9,13 +9,6 @@ package com.chartboost.heliumsdk.domain
 
 import android.util.Size
 import com.chartboost.heliumsdk.network.Endpoints.Sdk
-import com.chartboost.heliumsdk.utils.getMaxJsonPayload
-import com.google.android.gms.common.util.VisibleForTesting
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 import java.util.*
 
 /**
@@ -27,13 +20,13 @@ import java.util.*
  * @property event The ad lifecycle event.
  */
 class Metrics(val partner: String?, val event: Sdk.Event) {
-
     /**
      * Collection of reportable network type
      */
     enum class NetworkType(val value: String) {
         MEDIATION("mediation"),
-        BIDDING("bidding");
+        BIDDING("bidding"),
+        ;
 
         companion object {
             fun getType(isMediation: Boolean): String {

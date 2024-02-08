@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -37,7 +37,7 @@ class VisibilityTracker(
     private val minVisibleDips: Int,
     private val minVisibleMs: Int,
     private val visibilityCheckIntervalMs: Long,
-    private val traversalLimit: Int
+    private val traversalLimit: Int,
 ) {
     companion object {
         /**
@@ -72,7 +72,10 @@ class VisibilityTracker(
          * @return The topmost View in the currency Activity or current view hierarchy. Null if no
          * applicable View can be found.
          */
-        fun getTopmostView(context: Context?, view: View?): View? {
+        fun getTopmostView(
+            context: Context?,
+            view: View?,
+        ): View? {
             return (context as? Activity)?.window?.decorView?.findViewById(android.R.id.content)
                 ?: view?.rootView?.findViewById(android.R.id.content) ?: view?.rootView
         }
@@ -97,10 +100,11 @@ class VisibilityTracker(
 
     private var job: Job? = null
     private var weakViewTreeObserver: WeakReference<ViewTreeObserver> = WeakReference(null)
-    private var preDrawListener = ViewTreeObserver.OnPreDrawListener {
-        scheduleVisibilityCheck()
-        true
-    }
+    private var preDrawListener =
+        ViewTreeObserver.OnPreDrawListener {
+            scheduleVisibilityCheck()
+            true
+        }
     private var isVisibilityTracked = false
     private var startTimeMs: Long? = null
 
@@ -136,30 +140,33 @@ class VisibilityTracker(
     private fun scheduleVisibilityCheck() {
         if (job != null) return
 
-        job = CoroutineScope(Main).launch(CoroutineExceptionHandler { _, throwable ->
-            LogController.d("Visibility check ran into a problem: $throwable")
-        }) {
-            while (isActive) {
-                if (isVisibilityTracked) {
-                    break
-                }
-
-                // Check to see if the tracked view is within the bounds of the root view.
-                if (isViewVisible()) {
-                    // Start the timer for duration requirement if it hasn't already.
-                    startTimeMs = startTimeMs ?: SystemClock.uptimeMillis()
-
-                    if (hasRequiredTimeElapsed()) {
-                        visibilityTrackerListener?.onVisibilityThresholdMet()
-                        isVisibilityTracked = true
+        job =
+            CoroutineScope(Main).launch(
+                CoroutineExceptionHandler { _, throwable ->
+                    LogController.d("Visibility check ran into a problem: $throwable")
+                },
+            ) {
+                while (isActive) {
+                    if (isVisibilityTracked) {
                         break
                     }
-                }
-                withContext(IO) {
-                    delay(visibilityCheckIntervalMs)
+
+                    // Check to see if the tracked view is within the bounds of the root view.
+                    if (isViewVisible()) {
+                        // Start the timer for duration requirement if it hasn't already.
+                        startTimeMs = startTimeMs ?: SystemClock.uptimeMillis()
+
+                        if (hasRequiredTimeElapsed()) {
+                            visibilityTrackerListener?.onVisibilityThresholdMet()
+                            isVisibilityTracked = true
+                            break
+                        }
+                    }
+                    withContext(IO) {
+                        delay(visibilityCheckIntervalMs)
+                    }
                 }
             }
-        }
     }
 
     /**

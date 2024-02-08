@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -49,14 +49,15 @@ class ChartboostMediationFullscreenAdTest {
         every { cachedAd.customData = any() } just Runs
         every { cachedAd.customData } returns ""
 
-        fullscreenAd = ChartboostMediationFullscreenAd(
-            cachedAd,
-            listener,
-            request,
-            loadId,
-            winningBidInfo,
-            adController
-        )
+        fullscreenAd =
+            ChartboostMediationFullscreenAd(
+                cachedAd,
+                listener,
+                request,
+                loadId,
+                winningBidInfo,
+                adController,
+            )
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -68,94 +69,100 @@ class ChartboostMediationFullscreenAdTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `show success`() = runTest {
-        val mockFullscreenAdShowingState = mockk<FullscreenAdShowingState>()
-        val heliumSdkCompanion = HeliumSdk::class.companionObjectInstance
+    fun `show success`() =
+        runTest {
+            val mockFullscreenAdShowingState = mockk<FullscreenAdShowingState>()
+            val heliumSdkCompanion = HeliumSdk::class.companionObjectInstance
 
-        val chartboostMediationInternalField = HeliumSdk::class.java.getDeclaredField("chartboostMediationInternal")
-        chartboostMediationInternalField.isAccessible = true
-        val chartboostMediationInternal = chartboostMediationInternalField.get(heliumSdkCompanion)
+            val chartboostMediationInternalField = HeliumSdk::class.java.getDeclaredField("chartboostMediationInternal")
+            chartboostMediationInternalField.isAccessible = true
+            val chartboostMediationInternal = chartboostMediationInternalField.get(heliumSdkCompanion)
 
-        val fullscreenAdShowingStateField = chartboostMediationInternal.javaClass.getDeclaredField("fullscreenAdShowingState")
-        fullscreenAdShowingStateField.isAccessible = true
-        fullscreenAdShowingStateField.set(chartboostMediationInternal, mockFullscreenAdShowingState)
+            val fullscreenAdShowingStateField = chartboostMediationInternal.javaClass.getDeclaredField("fullscreenAdShowingState")
+            fullscreenAdShowingStateField.isAccessible = true
+            fullscreenAdShowingStateField.set(chartboostMediationInternal, mockFullscreenAdShowingState)
 
-        val showResult = ChartboostMediationAdShowResult(JSONObject(), null)
+            val showResult = ChartboostMediationAdShowResult(JSONObject(), null)
 
-        coEvery { adController.show(context, cachedAd) } returns showResult
-        coEvery { listener.onAdImpressionRecorded(any()) } just Runs
-        coEvery { mockFullscreenAdShowingState.notifyFullscreenAdShown() } just Runs
+            coEvery { adController.show(context, cachedAd) } returns showResult
+            coEvery { listener.onAdImpressionRecorded(any()) } just Runs
+            coEvery { mockFullscreenAdShowingState.notifyFullscreenAdShown() } just Runs
 
-        val result = fullscreenAd.show(context)
+            val result = fullscreenAd.show(context)
 
-        assertEquals(showResult, result)
-        coVerify { adController.show(context, cachedAd) }
+            assertEquals(showResult, result)
+            coVerify { adController.show(context, cachedAd) }
 
-        verify(exactly = 1) { listener.onAdImpressionRecorded(fullscreenAd) }
-        verify(exactly = 1) { mockFullscreenAdShowingState.notifyFullscreenAdShown() }
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `show failure ad not ready`() = runTest {
-        fullscreenAd.cachedAd = null
-
-        val result = fullscreenAd.show(context)
-
-        assertEquals(ChartboostMediationError.CM_SHOW_FAILURE_AD_NOT_READY, result.error)
-
-        verify(exactly = 0) { listener.onAdImpressionRecorded(fullscreenAd) }
-    }
+            verify(exactly = 1) { listener.onAdImpressionRecorded(fullscreenAd) }
+            verify(exactly = 1) { mockFullscreenAdShowingState.notifyFullscreenAdShown() }
+        }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `show failure with exception`() = runTest {
-        val exception =
-            ChartboostMediationAdException(ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION)
+    fun `show failure ad not ready`() =
+        runTest {
+            fullscreenAd.cachedAd = null
 
-        coEvery { adController.show(context, cachedAd) } throws exception
+            val result = fullscreenAd.show(context)
 
-        val result = fullscreenAd.show(context)
+            assertEquals(ChartboostMediationError.CM_SHOW_FAILURE_AD_NOT_READY, result.error)
 
-        assertEquals(ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION, result.error)
-
-        verify(exactly = 0) { listener.onAdImpressionRecorded(fullscreenAd) }
-    }
+            verify(exactly = 0) { listener.onAdImpressionRecorded(fullscreenAd) }
+        }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `show failure null adcontroller`() = runTest {
-        fullscreenAd = ChartboostMediationFullscreenAd(
-            cachedAd,
-            listener,
-            request,
-            loadId,
-            winningBidInfo,
-            null
-        )
+    fun `show failure with exception`() =
+        runTest {
+            val exception =
+                ChartboostMediationAdException(ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION)
 
-        val result = fullscreenAd.show(context)
+            coEvery { adController.show(context, cachedAd) } throws exception
 
-        assertEquals(ChartboostMediationError.CM_SHOW_FAILURE_NOT_INITIALIZED, result.error)
+            val result = fullscreenAd.show(context)
 
-        verify(exactly = 0) { listener.onAdImpressionRecorded(fullscreenAd) }
-    }
+            assertEquals(ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION, result.error)
+
+            verify(exactly = 0) { listener.onAdImpressionRecorded(fullscreenAd) }
+        }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `show failure show in progress`() = runTest {
-        // Given
-        val showResult = ChartboostMediationAdShowResult(JSONObject(), null)
+    fun `show failure null adcontroller`() =
+        runTest {
+            fullscreenAd =
+                ChartboostMediationFullscreenAd(
+                    cachedAd,
+                    listener,
+                    request,
+                    loadId,
+                    winningBidInfo,
+                    null,
+                )
 
-        coEvery { adController.show(context, cachedAd) } returns showResult
+            val result = fullscreenAd.show(context)
 
-        fullscreenAd.show(context)
-        val result = fullscreenAd.show(context)
+            assertEquals(ChartboostMediationError.CM_SHOW_FAILURE_NOT_INITIALIZED, result.error)
 
-        assertEquals(ChartboostMediationError.CM_SHOW_FAILURE_SHOW_IN_PROGRESS, result.error)
+            verify(exactly = 0) { listener.onAdImpressionRecorded(fullscreenAd) }
+        }
 
-        verify(exactly = 1) { listener.onAdImpressionRecorded(fullscreenAd) }
-    }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `show failure show in progress`() =
+        runTest {
+            // Given
+            val showResult = ChartboostMediationAdShowResult(JSONObject(), null)
+
+            coEvery { adController.show(context, cachedAd) } returns showResult
+
+            fullscreenAd.show(context)
+            val result = fullscreenAd.show(context)
+
+            assertEquals(ChartboostMediationError.CM_SHOW_FAILURE_SHOW_IN_PROGRESS, result.error)
+
+            verify(exactly = 1) { listener.onAdImpressionRecorded(fullscreenAd) }
+        }
 
     @Test
     fun invalidate() {
@@ -170,24 +177,27 @@ class ChartboostMediationFullscreenAdTest {
 
     @Test
     fun `ad load result cached ad is set`() {
-        val ad = ChartboostMediationFullscreenAd(
-            cachedAd = null,
-            listener = null,
-            request = ChartboostMediationAdLoadRequest(
-                placementName = "test_placement",
-                keywords = Keywords(),
-            ),
-            loadId = "test_load_id",
-            winningBidInfo = mapOf(),
-            adController = adController
-        )
+        val ad =
+            ChartboostMediationFullscreenAd(
+                cachedAd = null,
+                listener = null,
+                request =
+                    ChartboostMediationAdLoadRequest(
+                        placementName = "test_placement",
+                        keywords = Keywords(),
+                    ),
+                loadId = "test_load_id",
+                winningBidInfo = mapOf(),
+                adController = adController,
+            )
 
-        val loadResult = ChartboostMediationFullscreenAdLoadResult(
-            ad = ad,
-            loadId = "",
-            metrics = JSONObject(),
-            error = null
-        )
+        val loadResult =
+            ChartboostMediationFullscreenAdLoadResult(
+                ad = ad,
+                loadId = "",
+                metrics = JSONObject(),
+                error = null,
+            )
 
         assertEquals(ad, loadResult.ad)
     }
@@ -195,40 +205,48 @@ class ChartboostMediationFullscreenAdTest {
     @Test
     fun `ad load result request id is set`() {
         val loadId = UUID.randomUUID().toString()
-        val loadResult = ChartboostMediationFullscreenAdLoadResult(
-            ad = null,
-            loadId = loadId,
-            metrics = JSONObject(),
-            error = null
-        )
+        val loadResult =
+            ChartboostMediationFullscreenAdLoadResult(
+                ad = null,
+                loadId = loadId,
+                metrics = JSONObject(),
+                error = null,
+            )
 
         assertEquals(loadId, loadResult.loadId)
     }
 
     @Test
     fun `ad load result metrics is set`() {
-        val metrics = JSONObject().apply {
-            put("auction_id", "ef28e4a2124648ca82518716d6b776ef9266649c")
-            put("metrics", JSONArray().apply {
-                put(JSONObject().apply {
-                    put("network_type", "mediation")
-                    put("line_item_id", "68d83ae9-3c9e-4737-9371-6c09a99f6e89")
-                    put("partner_placement", "ca-app-pub-6548817822928201/6752711386")
-                    put("partner", "admob")
-                    put("start", 1679599980090)
-                    put("end", 1679599982425)
-                    put("duration", 2336)
-                    put("is_success", true)
-                })
-            })
-        }
+        val metrics =
+            JSONObject().apply {
+                put("auction_id", "ef28e4a2124648ca82518716d6b776ef9266649c")
+                put(
+                    "metrics",
+                    JSONArray().apply {
+                        put(
+                            JSONObject().apply {
+                                put("network_type", "mediation")
+                                put("line_item_id", "68d83ae9-3c9e-4737-9371-6c09a99f6e89")
+                                put("partner_placement", "ca-app-pub-6548817822928201/6752711386")
+                                put("partner", "admob")
+                                put("start", 1679599980090)
+                                put("end", 1679599982425)
+                                put("duration", 2336)
+                                put("is_success", true)
+                            },
+                        )
+                    },
+                )
+            }
 
-        val result = ChartboostMediationFullscreenAdLoadResult(
-            ad = null,
-            loadId = "",
-            metrics = metrics,
-            error = null
-        )
+        val result =
+            ChartboostMediationFullscreenAdLoadResult(
+                ad = null,
+                loadId = "",
+                metrics = metrics,
+                error = null,
+            )
 
         assertEquals(metrics, result.metrics)
     }
@@ -236,12 +254,13 @@ class ChartboostMediationFullscreenAdTest {
     @Test
     fun `ad load result error is set`() {
         val error = ChartboostMediationError.CM_UNKNOWN_ERROR
-        val result = ChartboostMediationFullscreenAdLoadResult(
-            ad = null,
-            loadId = "",
-            metrics = JSONObject(),
-            error = error
-        )
+        val result =
+            ChartboostMediationFullscreenAdLoadResult(
+                ad = null,
+                loadId = "",
+                metrics = JSONObject(),
+                error = error,
+            )
 
         assertEquals(error, result.error)
     }

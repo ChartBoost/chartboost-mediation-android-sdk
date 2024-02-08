@@ -1,16 +1,13 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
 
 package com.chartboost.heliumsdk.utils
 
-import android.content.Context
 import android.os.Build
-import android.telephony.TelephonyManager
-import com.chartboost.heliumsdk.HeliumSdk
 import io.mockk.*
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -18,12 +15,10 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-
 import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
 class EnvironmentTest {
-
     @Before
     fun setUp() {
         mockkStatic("com.chartboost.heliumsdk.HeliumSdk")

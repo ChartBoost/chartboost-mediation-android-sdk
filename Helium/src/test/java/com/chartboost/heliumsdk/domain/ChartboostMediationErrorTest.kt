@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -27,9 +27,10 @@ class ChartboostMediationErrorTest {
 
     @Test
     fun `Chartboost Mediation error codes have the CM_ prefix and end with a three digit number`() {
-        val invalidErrorCodes = definedErrorCodes.filter {
-            !it.startsWith("CM_") || !it.matches(Regex("CM_\\d{3}"))
-        }
+        val invalidErrorCodes =
+            definedErrorCodes.filter {
+                !it.startsWith("CM_") || !it.matches(Regex("CM_\\d{3}"))
+            }
 
         if (invalidErrorCodes.isNotEmpty()) {
             println("Error codes with incorrect syntax defined: $invalidErrorCodes")
@@ -40,8 +41,9 @@ class ChartboostMediationErrorTest {
 
     @Test
     fun `Chartboost Mediation errors have non-empty code, message, cause, and resolution`() {
-        val invalidErrorCodes = ChartboostMediationError.values()
-            .filter { it.code.isBlank() || it.message.isBlank() || it.cause.isBlank() || it.resolution.isBlank() }
+        val invalidErrorCodes =
+            ChartboostMediationError.values()
+                .filter { it.code.isBlank() || it.message.isBlank() || it.cause.isBlank() || it.resolution.isBlank() }
 
         if (invalidErrorCodes.isNotEmpty()) {
             println("Error codes with blank message/cause/resolution: $invalidErrorCodes")
@@ -65,9 +67,10 @@ class ChartboostMediationErrorTest {
     @Test
     fun `Chartboost Mediation error codes increment by 1 in each range`() {
         (100..600 step 100).forEach { rangeStart ->
-            val errorCodesInRange = definedErrorCodes.filter {
-                it.substring("CM_".length).toInt() in rangeStart..rangeStart + 99
-            }
+            val errorCodesInRange =
+                definedErrorCodes.filter {
+                    it.substring("CM_".length).toInt() in rangeStart..rangeStart + 99
+                }
 
             errorCodesInRange.forEachIndexed { index, errorCode ->
                 val expectedErrorCode = "CM_${rangeStart + index}"
@@ -84,7 +87,7 @@ class ChartboostMediationErrorTest {
         definedChartboostMediationError.forEach {
             assert(it.message.contains(regex = Regex("[^.]\\.\\z"))) {
                 "Missing period at end of message (${it.code}):\n" +
-                        " \t\"${it.message}\"\n"
+                    " \t\"${it.message}\"\n"
             }
         }
     }
@@ -94,7 +97,7 @@ class ChartboostMediationErrorTest {
         definedChartboostMediationError.forEach {
             assert(it.cause.contains(regex = Regex("[^.]\\.\\z"))) {
                 "Missing period at end of cause (${it.code}):\n" +
-                        " \t\"${it.cause}\"\n"
+                    " \t\"${it.cause}\"\n"
             }
         }
     }
@@ -104,7 +107,7 @@ class ChartboostMediationErrorTest {
         definedChartboostMediationError.forEach {
             assert(it.resolution.contains(regex = Regex("[^.]\\.\\z"))) {
                 "Missing period at end of resolution (${it.code}):\n" +
-                        "\"${it.resolution}\"\n"
+                    "\"${it.resolution}\"\n"
             }
         }
     }

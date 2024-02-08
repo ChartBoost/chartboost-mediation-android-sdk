@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -9,6 +9,7 @@ package com.chartboost.heliumsdk
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.chartboost.heliumsdk.ad.ChartboostMediationAdLoadRequest
 import com.chartboost.heliumsdk.ad.ChartboostMediationFullscreenAd
 import com.chartboost.heliumsdk.ad.ChartboostMediationFullscreenAdListener
@@ -18,6 +19,7 @@ import com.chartboost.heliumsdk.domain.AdapterInfo
 import com.chartboost.heliumsdk.domain.ChartboostMediationAdException
 import com.chartboost.heliumsdk.domain.ChartboostMediationError
 import com.chartboost.heliumsdk.utils.Environment.fetchUserAgent
+import com.chartboost.heliumsdk.utils.LifecycleStatusObserver
 import com.chartboost.heliumsdk.utils.LogController
 import com.chartboost.heliumsdk.utils.LogController.w
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -28,8 +30,7 @@ import kotlinx.coroutines.launch
 /**
  * Core logic for the Chartboost Mediation SDK.
  */
-class HeliumSdk private constructor(
-) {
+class HeliumSdk private constructor() {
     interface HeliumSdkListener {
         fun didInitialize(error: Error?)
     }
@@ -42,11 +43,12 @@ class HeliumSdk private constructor(
     enum class ChartboostMediationInitializationStatus {
         IDLE,
         INITIALIZING,
-        INITIALIZED
+        INITIALIZED,
     }
 
     companion object {
         internal val chartboostMediationInternal = ChartboostMediationInternal()
+        private val lifecycleStatusObserver = LifecycleStatusObserver()
 
         /**
          * Get the PartnerConsents object to be able to set consent on a per-partner basis.
@@ -55,7 +57,7 @@ class HeliumSdk private constructor(
          * @param context The Android context.
          */
         @JvmStatic
-        fun getPartnerConsents(context: Context): PartnerConsents{
+        fun getPartnerConsents(context: Context): PartnerConsents {
             return chartboostMediationInternal.getPartnerConsents(context)
         }
 
@@ -80,13 +82,16 @@ class HeliumSdk private constructor(
             appId: String,
             appSignature: String,
             options: HeliumInitializationOptions? = null,
-            heliumSdkListener: HeliumSdkListener?
+            heliumSdkListener: HeliumSdkListener?,
         ) {
-            CoroutineScope(Main).launch(CoroutineExceptionHandler { _, exception ->
-                heliumSdkListener?.didInitialize(Error("Failed to initialize Chartboost Mediation: $exception}"))
-            }) {
+            CoroutineScope(Main).launch(
+                CoroutineExceptionHandler { _, exception ->
+                    heliumSdkListener?.didInitialize(Error("Failed to initialize Chartboost Mediation: $exception}"))
+                },
+            ) {
                 chartboostMediationInternal.initialize(context, appId, appSignature, options).fold({
                     LogController.d("Chartboost Mediation ${getVersion()} initialized successfully")
+                    ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleStatusObserver)
                     heliumSdkListener?.didInitialize(null)
                 }, {
                     LogController.e("Chartboost Mediation failed to initialize. $it")
@@ -241,7 +246,10 @@ class HeliumSdk private constructor(
          * @param version game engine's version
          */
         @JvmStatic
-        fun setGameEngine(name: String?, version: String?) {
+        fun setGameEngine(
+            name: String?,
+            version: String?,
+        ) {
             chartboostMediationInternal.gameEngineName = name
             chartboostMediationInternal.gameEngineVersion = version
         }
@@ -302,7 +310,7 @@ class HeliumSdk private constructor(
             context: Context,
             request: ChartboostMediationAdLoadRequest,
             listener: ChartboostMediationFullscreenAdListener,
-            adLoadListener: ChartboostMediationFullscreenAdLoadListener
+            adLoadListener: ChartboostMediationFullscreenAdLoadListener,
         ) {
             CoroutineScope(Main).launch {
                 val result = loadFullscreenAd(context, request, listener)
@@ -323,7 +331,7 @@ class HeliumSdk private constructor(
         suspend fun loadFullscreenAd(
             context: Context,
             request: ChartboostMediationAdLoadRequest,
-            listener: ChartboostMediationFullscreenAdListener
+            listener: ChartboostMediationFullscreenAdListener,
         ): ChartboostMediationFullscreenAdLoadResult {
             return ChartboostMediationFullscreenAd.loadFullscreenAd(context, request, chartboostMediationInternal.adController, listener)
         }

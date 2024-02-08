@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -25,46 +25,46 @@ class BidRequestImpression private constructor(
      */
     @SerialName("displaymanager")
     private val displayManager: String = "Helium",
-
     /**
      * The SDK version of our Helium SDK.
      */
     @SerialName("displaymanagerver")
     private val displayManagerVersion: String = HeliumSdk.getVersion(),
-
     /**
      * Indicates whether this is a fullscreen or interstitial (1) or a banner (0).
      */
     @SerialName("instl")
     private val fullscreen: Int,
-
     /**
      * The Helium placement.
      */
     @SerialName("tagid")
     private val tagId: String,
-
     /**
      * Always use HTTPS
      */
     @SerialName("secure")
     private val secure: Int = 1,
-
     @SerialName("video")
     private val video: BidRequestImpressionVideo,
-
     @SerialName("banner")
-    private val banner: BidRequestImpressionBanner
+    private val banner: BidRequestImpressionBanner,
 ) {
     constructor(
         adIdentifier: AdIdentifier,
-        size: HeliumBannerAd.HeliumBannerSize?
+        size: HeliumBannerAd.HeliumBannerSize?,
     ) : this(
         tagId = adIdentifier.placementName,
-        fullscreen = if (adIdentifier.adType == AdType.BANNER
-            || adIdentifier.adType == AdType.ADAPTIVE_BANNER) 0 else 1,
+        fullscreen =
+            if (adIdentifier.adType == AdType.BANNER ||
+                adIdentifier.adType == AdType.ADAPTIVE_BANNER
+            ) {
+                0
+            } else {
+                1
+            },
         video = BidRequestImpressionVideo(size, adIdentifier.adType),
-        banner = BidRequestImpressionBanner(size, adIdentifier.adType)
+        banner = BidRequestImpressionBanner(size, adIdentifier.adType),
     )
 }
 
@@ -78,19 +78,16 @@ class BidRequestImpressionVideo private constructor(
      */
     @SerialName("mimes")
     private val mimes: List<String> = listOf("video/mp4"),
-
     /**
      * The width dimension.
      */
     @SerialName("w")
     private val width: Int,
-
     /**
      * The height dimension.
      */
     @SerialName("h")
     private val height: Int,
-
     /**
      * 2 = In-Banner
      * 5 = Interstitial/modal
@@ -98,21 +95,18 @@ class BidRequestImpressionVideo private constructor(
      */
     @SerialName("placement")
     private val placement: Int,
-
     /**
      * Position on screen: 7 (Fullscreen)
      */
     @SerialName("pos")
     private val position: Int,
-
     /**
      * Use (1,2) 1=Static, 2=HTMLResource
      */
     @SerialName("companiontype")
     private val companionType: List<Int>,
-
     @SerialName("ext")
-    private val ext: BidRequestImpressionExt
+    private val ext: BidRequestImpressionExt,
 ) {
     constructor(
         size: HeliumBannerAd.HeliumBannerSize?,
@@ -123,7 +117,7 @@ class BidRequestImpressionVideo private constructor(
         placement = if (adType == AdType.BANNER || adType == AdType.ADAPTIVE_BANNER) 2 else 5,
         position = if (adType == AdType.BANNER || adType == AdType.ADAPTIVE_BANNER) 1 else 7,
         companionType = listOf(1, 2),
-        ext = BidRequestImpressionExt(adType)
+        ext = BidRequestImpressionExt(adType),
     )
 }
 
@@ -137,36 +131,32 @@ class BidRequestImpressionBanner private constructor(
      */
     @SerialName("w")
     private val width: Int,
-
     /**
      * The height dimension.
      */
     @SerialName("h")
     private val height: Int,
-
     /**
      * Position on screen: 7 (Fullscreen)
      */
     @SerialName("pos")
     private val position: Int,
-
     /**
      * Indicates if the banner is in the top frame as opposed to an iframe, where 0 = no, 1 = yes.
      */
     @SerialName("topframe")
     private val topFrame: Int = 1,
-
     @SerialName("ext")
-    private val ext: BidRequestImpressionExt
+    private val ext: BidRequestImpressionExt,
 ) {
     constructor(
         size: HeliumBannerAd.HeliumBannerSize?,
-        @AdType adType: Int
+        @AdType adType: Int,
     ) : this(
         width = size?.width ?: Environment.displayWidth,
         height = size?.height ?: Environment.displayHeight,
         position = if (adType == AdType.BANNER || adType == AdType.ADAPTIVE_BANNER) 1 else 7,
-        ext = BidRequestImpressionExt(adType)
+        ext = BidRequestImpressionExt(adType),
     )
 }
 
@@ -179,17 +169,19 @@ class BidRequestImpressionExt private constructor(
      * The placement type.
      */
     @SerialName("placementtype")
-    private val placementType: String
+    private val placementType: String,
 ) {
-    constructor(@AdType adType: Int) : this(
-        placementType = when (adType) {
-            AdType.REWARDED_INTERSTITIAL -> "rewarded_interstitial"
-            AdType.INTERSTITIAL -> "interstitial"
-            AdType.REWARDED -> "rewarded"
-            AdType.BANNER -> "banner"
-            AdType.ADAPTIVE_BANNER -> "adaptive_banner"
-            else -> "unknown"
-        }
+    constructor(
+        @AdType adType: Int,
+    ) : this(
+        placementType =
+            when (adType) {
+                AdType.REWARDED_INTERSTITIAL -> "rewarded_interstitial"
+                AdType.INTERSTITIAL -> "interstitial"
+                AdType.REWARDED -> "rewarded"
+                AdType.BANNER -> "banner"
+                AdType.ADAPTIVE_BANNER -> "adaptive_banner"
+                else -> "unknown"
+            },
     )
 }
-

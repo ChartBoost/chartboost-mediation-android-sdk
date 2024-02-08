@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -28,18 +28,18 @@ class AdRefresher(
     private val initialRefreshRateSec: Int,
     private val penaltyRefreshRateSec: Int,
     private val maxFailuresUntilPenaltyTime: Int,
-    private val adRefresherCallback: AdRefresherCallback
+    private val adRefresherCallback: AdRefresherCallback,
 ) {
-
     private var isRefreshing = false
     private var refreshesFailed = 0
     private var totalTimePausedMs: Long = 0
     private var timeStartedRefreshingMs: Long = 0
     private val handler = Handler(Looper.getMainLooper())
-    private val refreshRunnable = Runnable {
-        LogController.i("Helium AdRefresherCallback onAdNeedsRefreshing.")
-        adRefresherCallback.onAdNeedsRefreshing()
-    }
+    private val refreshRunnable =
+        Runnable {
+            LogController.i("Helium AdRefresherCallback onAdNeedsRefreshing.")
+            adRefresherCallback.onAdNeedsRefreshing()
+        }
     private var isResumed = false
 
     private fun scheduleNextRefresh() {
@@ -54,8 +54,8 @@ class AdRefresher(
         // To enable debug logging set HeliumSdk.setDebugMode(true)
         LogController.i(
             "Helium AdRefresherCallback start. Current refresh rate at: " +
-                    "${if (refreshesFailed < maxFailuresUntilPenaltyTime) initialRefreshRateSec else penaltyRefreshRateSec}s. " +
-                    "Time to the next update: ${delayTimeMs}ms"
+                "${if (refreshesFailed < maxFailuresUntilPenaltyTime) initialRefreshRateSec else penaltyRefreshRateSec}s. " +
+                "Time to the next update: ${delayTimeMs}ms",
         )
         handler.removeCallbacks(refreshRunnable)
         handler.postDelayed(refreshRunnable, delayTimeMs)

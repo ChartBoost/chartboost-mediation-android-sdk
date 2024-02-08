@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -22,5 +22,5 @@ import org.json.JSONObject
 open class AdLoadResult(
     val loadId: String,
     val metrics: JSONObject,
-    var error: ChartboostMediationError?
+    var error: ChartboostMediationError?,
 )

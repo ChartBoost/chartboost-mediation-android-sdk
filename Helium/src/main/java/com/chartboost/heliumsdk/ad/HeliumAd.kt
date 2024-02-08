@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -16,7 +16,6 @@ import com.chartboost.heliumsdk.domain.Keywords
  * The Helium SDK Ad interface.
  */
 interface HeliumAd {
-
     /**
      * Storage to add key-value pairs for Helium's open RTB requests.
      */
@@ -25,7 +24,7 @@ interface HeliumAd {
     /**
      * Get the Helium Ad's placement name
      */
-     val placementName: String
+    val placementName: String
 
     /**
      * Get the ad type of this Helium Ad.

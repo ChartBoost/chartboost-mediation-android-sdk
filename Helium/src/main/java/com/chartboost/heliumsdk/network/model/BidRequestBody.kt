@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -24,25 +24,19 @@ import kotlinx.serialization.Serializable
 class BidRequestBody private constructor(
     @SerialName("user")
     val user: BidRequestUser,
-
     /**
      * Indicates whether the bid is a test (1) or not (0).
      */
     @SerialName("test")
     val testFlag: Int = HeliumSdk.getTestMode(),
-
     @SerialName("imp")
     val impressionList: List<BidRequestImpression>,
-
     @SerialName("app")
     val app: BidRequestApp,
-
     @SerialName("device")
     val device: BidRequestDevice,
-
     @SerialName("regs")
     val regs: BidRequestRegs,
-
     @SerialName("ext")
     val ext: BidRequestExt?,
 ) {
@@ -53,32 +47,37 @@ class BidRequestBody private constructor(
         impressionDepth: Int,
         bidTokens: Map<String, Map<String, String>>,
     ) : this(
-        user = BidRequestUser(
-            consent = privacyController.userConsent,
-            impressionDepth = impressionDepth,
-            keywords = adLoadParams.keywords
-        ),
-        impressionList = listOf(
-            BidRequestImpression(
-                adIdentifier = adLoadParams.adIdentifier,
-                size = adLoadParams.bannerSize
-            )
-        ),
+        user =
+            BidRequestUser(
+                consent = privacyController.userConsent,
+                impressionDepth = impressionDepth,
+                keywords = adLoadParams.keywords,
+            ),
+        impressionList =
+            listOf(
+                BidRequestImpression(
+                    adIdentifier = adLoadParams.adIdentifier,
+                    size = adLoadParams.bannerSize,
+                ),
+            ),
         app = BidRequestApp(),
-        device = BidRequestDevice(
-            size = adLoadParams.bannerSize,
-        ),
-        regs = BidRequestRegs(
-            isCoppa = privacyController.coppa,
-            gdpr = privacyController.gdpr,
-            ccpaConsent = privacyController.ccpaConsent
-        ),
-        ext = BidRequestExt(
-            adapters = partnerController.adapters,
-            bidTokens = bidTokens,
-            loadId = adLoadParams.loadId,
-            initStatuses = partnerController.initStatuses
-        )
+        device =
+            BidRequestDevice(
+                size = adLoadParams.bannerSize,
+            ),
+        regs =
+            BidRequestRegs(
+                isCoppa = privacyController.coppa,
+                gdpr = privacyController.gdpr,
+                ccpaConsent = privacyController.ccpaConsent,
+            ),
+        ext =
+            BidRequestExt(
+                adapters = partnerController.adapters,
+                bidTokens = bidTokens,
+                loadId = adLoadParams.loadId,
+                initStatuses = partnerController.initStatuses,
+            ),
     )
 }
 
@@ -92,50 +91,48 @@ class BidRequestExt(
      */
     @SerialName("bidders")
     val activeBidders: Map<String, Map<String, String>>,
-
     /**
      * Map of all inactive bidders to their bid token and [AdapterInfo] key-value pairs
      */
     @SerialName("inactive_bidders")
     val inactiveBidders: Map<String, Map<String, String>>,
-
     /**
      * Chartboost Mediation request  ID required by Google Bidding
      */
     @SerialName("helium_sdk_request_id")
-    val heliumSdkRequestId: String?
+    val heliumSdkRequestId: String?,
 ) {
     constructor(
         adapters: Map<String, PartnerAdapter>,
         bidTokens: Map<String, Map<String, String>>,
         loadId: String,
-        initStatuses: Map<String, PartnerController.PartnerInitializationStatus>
+        initStatuses: Map<String, PartnerController.PartnerInitializationStatus>,
     ) : this(
         activeBidders = mapActiveBidders(adapters, bidTokens, initStatuses),
         inactiveBidders = mapInactiveBidders(adapters, bidTokens, initStatuses),
-        heliumSdkRequestId = loadId
+        heliumSdkRequestId = loadId,
     )
 
     /**
      * @suppress
      */
     companion object {
-
         private fun mapAllBidders(
             adapters: Map<String, PartnerAdapter>,
-            bidTokens: Map<String, Map<String, String>>
+            bidTokens: Map<String, Map<String, String>>,
         ): Map<String, Map<String, String>> {
             return mutableMapOf<String, Map<String, String>>().apply {
                 adapters.forEach { partnerId ->
-                    val partnerValues = mutableMapOf<String, String>().apply {
-                        bidTokens[partnerId.key]?.forEach { tokenEntry ->
-                            put(tokenEntry.key, tokenEntry.value)
+                    val partnerValues =
+                        mutableMapOf<String, String>().apply {
+                            bidTokens[partnerId.key]?.forEach { tokenEntry ->
+                                put(tokenEntry.key, tokenEntry.value)
+                            }
+                            adapterInfo[partnerId.key]?.let {
+                                put("version", it.partnerVersion)
+                                put("adapter_version", it.adapterVersion)
+                            }
                         }
-                        adapterInfo[partnerId.key]?.let {
-                            put("version", it.partnerVersion)
-                            put("adapter_version", it.adapterVersion)
-                        }
-                    }
                     put(partnerId.key, partnerValues)
                 }
             }
@@ -144,7 +141,7 @@ class BidRequestExt(
         private fun mapActiveBidders(
             adapters: Map<String, PartnerAdapter>,
             bidTokens: Map<String, Map<String, String>>,
-            initStatuses: Map<String, PartnerController.PartnerInitializationStatus>
+            initStatuses: Map<String, PartnerController.PartnerInitializationStatus>,
         ): Map<String, Map<String, String>> {
             return mutableMapOf<String, Map<String, String>>().apply {
                 mapAllBidders(adapters, bidTokens).forEach { bidder ->
@@ -158,7 +155,7 @@ class BidRequestExt(
         private fun mapInactiveBidders(
             adapters: Map<String, PartnerAdapter>,
             bidTokens: Map<String, Map<String, String>>,
-            initStatuses: Map<String, PartnerController.PartnerInitializationStatus>
+            initStatuses: Map<String, PartnerController.PartnerInitializationStatus>,
         ): Map<String, Map<String, String>> {
             return mutableMapOf<String, Map<String, String>>().apply {
                 mapAllBidders(adapters, bidTokens).forEach { bidder ->
@@ -171,7 +168,7 @@ class BidRequestExt(
                                 if (initStatus == FAILED) {
                                     put("status", "Initialization Failed")
                                 }
-                            }
+                            },
                         )
                     }
                 }

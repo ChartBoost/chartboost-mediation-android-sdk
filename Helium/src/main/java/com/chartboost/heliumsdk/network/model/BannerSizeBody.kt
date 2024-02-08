@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -17,13 +17,10 @@ import kotlinx.serialization.Serializable
 data class BannerSizeBody(
     @SerialName("auction_id")
     val auctionId: String,
-
     @SerialName("creative_size")
     val creativeSize: BannerAdDimensions,
-
     @SerialName("container_size")
     val containerSize: BannerAdDimensions,
-
     @SerialName("request_size")
     val requestSize: BannerAdDimensions,
 )

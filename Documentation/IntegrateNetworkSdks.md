@@ -4,7 +4,6 @@
 
 | Network               | Support         | Banner | Interstitial | Rewarded |
 | :-------------------- | :-------------- | :----: | :----------: | :------: |
-| AdColony              | Android 4.7.0   |    ✅   |      ✅      |     ✅    |
 | AdMob                 | Android 20.6.0  |    ✅   |      ✅      |     ✅    |
 | AppLovin              | Android 11.3.1  |    ✅   |      ✅      |     ✅    |
 | Chartboost            | Android 8.3.1   |    ✅   |      ✅      |     ✅    |
@@ -17,7 +16,6 @@
 | Tapjoy                | Android 12.9.1  |    🚫   |      ✅      |     ✅    |
 | Unity Ads             | Android 4.2.1   |    ✅   |      ✅      |     ✅    |
 | Vungle                | Android 6.10.5  |    ✅   |      ✅      |     ✅    |
-| Yahoo                 | Android 1.14.0  |    ✅   |      ✅      |     ✅    |
 
 ## Adding Ad Network SDKs
 
@@ -39,10 +37,6 @@ repositories {
       name "Tapjoy's maven repo"
       url "https://sdk.tapjoy.com/"
   }
-  maven {
-      name "Yahoo's maven repo"
-      url "https://artifactory.verizonmedia.com/artifactory/maven/"
-  }
   ...
 }
   
@@ -59,7 +53,6 @@ implementation 'com.chartboost:helium-mintegral:3.3.1.0'
 implementation 'com.chartboost:helium-tapjoy:3.3.1.0'
 implementation 'com.chartboost:helium-unityads:3.3.1.0'
 implementation 'com.chartboost:helium-vungle:3.3.1.0'
-implementation 'com.chartboost:helium-yahoo:3.3.1.0'
 ```
 
 ## AdColony
@@ -138,9 +131,3 @@ To integrate with Unity Ads Android SDK, simply follow the Unity’s instruction
 ## Vungle
 
 To integrate with Vungle Android SDK, simply follow Vungle’s instructions for adding the Vungle SDK via gradle ([Vungle Android SDK documentation](https://support.vungle.com/hc/en-us/articles/360002922871)).
-
-## Yahoo
-
-To integrate with Yahoo Android SDK, simply follow the Yahoo instructions for adding the Yahoo SDK ([Yahoo Android SDK documentation](https://vas-docs-service.one-mobile-prod.aws.oath.cloud/standard-edition/integration.html)).
-
->_Note: Yahoo does not use Maven Central for distributing their SDKs, since they provide their own Maven Repository. See the above example for where it can be found._

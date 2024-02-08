@@ -2,6 +2,18 @@ Android Change Log
 ==================
 Check for the latest Chartboost Mediation SDK at the Chartboost Mediation website.
 
+### Version 4.8.0 *(2024-02-08)*
+The following ad networks have been deprecated:
+- AdColony
+- Tapjoy
+- Yahoo
+
+Improvements:
+- Introduced a new overridden callback [`HeliumBannerAdListener#onAdCached(placementName: String, loadId: String, winningBidInfo: Map<String, String>, error: ChartboostMediationAdException?, bannerSize: Size)`](https://s3.amazonaws.com/reference.docs/mediation/android/4.8.0/-helium/com.chartboost.heliumsdk.ad/-helium-banner-ad-listener/index.html) that provides the size of the banner in dp as provided by the partner. If the size from the partner is not available, this will give back the requested size.
+
+Bug Fixes:
+- Fixed a rare crash in `ChartboostMediationAppConfigurationHandler` when initializing in certain circumstances.
+
 ### Version 4.7.1 *(2023-12-05)*
 Bug Fixes:
 - Removed the `repackageclass` annotation in proguard-rules.pro as to not affect publisher builds.

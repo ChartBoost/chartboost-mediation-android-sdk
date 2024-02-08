@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -22,7 +22,6 @@ import java.util.*
  */
 @Suppress("UNCHECKED_CAST")
 object AppConfigStorage {
-
     private var appConfig: AppConfig = AppConfig()
 
     /**
@@ -43,17 +42,18 @@ object AppConfigStorage {
      */
     var placementsToAdFormats: Map<String, AdFormat>? = null
         private set
-        get() = field ?: mutableMapOf<String, AdFormat>().apply {
-            appConfig.placements?.forEach { placement ->
-                put(
-                    placement.chartboostPlacement,
-                    AdFormat.fromString(placement.format.toString())
+        get() =
+            field ?: mutableMapOf<String, AdFormat>().apply {
+                appConfig.placements?.forEach { placement ->
+                    put(
+                        placement.chartboostPlacement,
+                        AdFormat.fromString(placement.format.toString()),
+                    )
+                } ?: LogController.e(
+                    "Failed to build placements to ad formats map. Placements list is null.",
                 )
-            } ?: LogController.e(
-                "Failed to build placements to ad formats map. Placements list is null."
-            )
-            field = this
-        }
+                field = this
+            }
 
     /**
      * Log level for the Helium SDK.
@@ -205,12 +205,15 @@ object AppConfigStorage {
      * @param response The app config String.
      */
     fun updateFields(appConfig: AppConfig) {
-        this@AppConfigStorage.appConfig = appConfig.copy(
-            metricsEvents = (getReportableMetricsEvents(
-                EnumSet.allOf(Sdk.Event::class.java),
-                appConfig.metricsEvents
-            ))
-        )
+        this@AppConfigStorage.appConfig =
+            appConfig.copy(
+                metricsEvents = (
+                    getReportableMetricsEvents(
+                        EnumSet.allOf(Sdk.Event::class.java),
+                        appConfig.metricsEvents,
+                    )
+                ),
+            )
         // TODO make metrics events a separate enum set field in this class
         appConfig.credentials.jsonObject.let {
             partners = compilePartners(it)
@@ -235,8 +238,10 @@ object AppConfigStorage {
     ): EnumSet<Sdk.Event> {
         return if (serverSet.isEmpty()) {
             fullSet
-        } else EnumSet.noneOf(Sdk.Event::class.java).apply {
-            serverSet.forEach { add(it) }
+        } else {
+            EnumSet.noneOf(Sdk.Event::class.java).apply {
+                serverSet.forEach { add(it) }
+            }
         }
     }
 

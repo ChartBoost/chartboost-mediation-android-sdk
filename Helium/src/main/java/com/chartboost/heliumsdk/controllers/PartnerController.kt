@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -65,7 +65,7 @@ class PartnerController {
         INITIALIZING(1), // Initialization is in progress.
         INITIALIZED(2), // Initialization has been successfully completed.
         FAILED(3), // Initialization has failed.
-        SKIPPED(4) // Initialization deliberately skipped by the publisher.
+        SKIPPED(4), // Initialization deliberately skipped by the publisher.
     }
 
     /**
@@ -113,7 +113,7 @@ class PartnerController {
         partnerConfigurationMap: Map<String, PartnerConfiguration>,
         adapterClasses: Set<String>,
         skippedPartnerIds: Set<String>,
-        onPartnerInitializationComplete: (ChartboostMediationError?) -> Unit
+        onPartnerInitializationComplete: (ChartboostMediationError?) -> Unit,
     ) {
         if (!requiredDataIsValid(context, adapterClasses)) {
             MetricsManager.postMetricsDataForFailedEvent(
@@ -122,13 +122,14 @@ class PartnerController {
                 auctionIdentifier = null,
                 chartboostMediationError = ChartboostMediationError.CM_INVALID_ARGUMENTS,
                 chartboostMediationErrorMessage = ChartboostMediationError.CM_INVALID_ARGUMENTS.message,
-                eventResult = AppConfigStorage.parsingError?.let {
-                    if(AppConfigStorage.validCachedConfigExists) {
-                        EventResult.SdkInitializationResult.InitResult2B(it)
-                    } else {
-                        EventResult.SdkInitializationResult.InitResult1B(it)
-                    }
-                }
+                eventResult =
+                    AppConfigStorage.parsingError?.let {
+                        if (AppConfigStorage.validCachedConfigExists) {
+                            EventResult.SdkInitializationResult.InitResult2B(it)
+                        } else {
+                            EventResult.SdkInitializationResult.InitResult1B(it)
+                        }
+                    },
             )
 
             onPartnerInitializationComplete(ChartboostMediationError.CM_INVALID_ARGUMENTS)
@@ -140,21 +141,24 @@ class PartnerController {
         createAdapters(adapterClasses)
 
         var setUpError: ChartboostMediationError? = null
-        CoroutineScope(Main).launch(CoroutineExceptionHandler { _, error ->
-            LogController.e("Failed to set up adapters: $error")
-            setUpError = ChartboostMediationError.CM_INITIALIZATION_FAILURE_EXCEPTION
-        }) {
+        CoroutineScope(Main).launch(
+            CoroutineExceptionHandler { _, error ->
+                LogController.e("Failed to set up adapters: $error")
+                setUpError = ChartboostMediationError.CM_INITIALIZATION_FAILURE_EXCEPTION
+            },
+        ) {
             // A subset of partners has not completed initialization within the allotted time.
             // Report init completion to Chartboost Mediation once the time is up anyway, but still let the
             // partners in question finish initialization (they are not cancelled).
-            val timer = Timer().schedule(AppConfigStorage.partnerInitTimeoutSeconds * 1000L) {
-                if (!initCompletionReported) {
-                    cancel()
+            val timer =
+                Timer().schedule(AppConfigStorage.partnerInitTimeoutSeconds * 1000L) {
+                    if (!initCompletionReported) {
+                        cancel()
 
-                    initCompletionReported = true
-                    onPartnerInitializationComplete(setUpError)
+                        initCompletionReported = true
+                        onPartnerInitializationComplete(setUpError)
+                    }
                 }
-            }
 
             val metricsDataSet = mutableSetOf<Metrics>()
 
@@ -182,13 +186,14 @@ class PartnerController {
             Timer().schedule(AppConfigStorage.initializationMetricsPostTimeout * 1000L) {
                 MetricsManager.postMetricsData(
                     metricsDataSet,
-                    eventResult = AppConfigStorage.parsingError?.let {
-                        EventResult.SdkInitializationResult.InitResult2B(it)
-                    } ?: if(AppConfigStorage.validCachedConfigExists) {
-                        EventResult.SdkInitializationResult.InitResult2A
-                    } else {
-                        EventResult.SdkInitializationResult.InitResult1A
-                    }
+                    eventResult =
+                        AppConfigStorage.parsingError?.let {
+                            EventResult.SdkInitializationResult.InitResult2B(it)
+                        } ?: if (AppConfigStorage.validCachedConfigExists) {
+                            EventResult.SdkInitializationResult.InitResult2A
+                        } else {
+                            EventResult.SdkInitializationResult.InitResult1A
+                        },
                 )
                 cancel()
             }
@@ -235,11 +240,16 @@ class PartnerController {
      * @param status The user's [GdprConsentStatus] consent status.
      * @param partnerConsents Per-partner consents.
      */
-    fun setGdpr(context: Context, applies: Boolean?, status: GdprConsentStatus, partnerConsents: PartnerConsents) {
+    fun setGdpr(
+        context: Context,
+        applies: Boolean?,
+        status: GdprConsentStatus,
+        partnerConsents: PartnerConsents,
+    ) {
         val partnerIdToConsentMap = partnerConsents.getPartnerIdToConsentGivenMapCopy()
         adapters.forEach { (_, adapter) ->
             try {
-                when(partnerIdToConsentMap[adapter.partnerId]) {
+                when (partnerIdToConsentMap[adapter.partnerId]) {
                     true -> adapter.setGdpr(context, applies, GdprConsentStatus.GDPR_CONSENT_GRANTED)
                     false -> adapter.setGdpr(context, applies, GdprConsentStatus.GDPR_CONSENT_DENIED)
                     null -> adapter.setGdpr(context, applies, status)
@@ -259,7 +269,12 @@ class PartnerController {
      * @param privacyString The CCPA privacy string.
      * @param partnerConsents Per-partner consents.
      */
-    fun setCcpaConsent(context: Context, hasGrantedCcpaConsent: Boolean?, privacyString: String, partnerConsents: PartnerConsents) {
+    fun setCcpaConsent(
+        context: Context,
+        hasGrantedCcpaConsent: Boolean?,
+        privacyString: String,
+        partnerConsents: PartnerConsents,
+    ) {
         val partnerIdToConsentMap = partnerConsents.getPartnerIdToConsentGivenMapCopy()
         adapters.forEach { (_, adapter) ->
             try {
@@ -268,13 +283,13 @@ class PartnerController {
                         adapter.setCcpaConsent(
                             context,
                             true,
-                            PrivacyController.PrivacyString.GRANTED.consentString
+                            PrivacyController.PrivacyString.GRANTED.consentString,
                         )
                     } else {
                         adapter.setCcpaConsent(
                             context,
                             false,
-                            PrivacyController.PrivacyString.DENIED.consentString
+                            PrivacyController.PrivacyString.DENIED.consentString,
                         )
                     }
                 } else if (hasGrantedCcpaConsent != null) {
@@ -293,7 +308,10 @@ class PartnerController {
      * @param context The context to use for the call.
      * @param isSubjectToCoppa True if the user is subject to COPPA, false otherwise.
      */
-    fun setUserSubjectToCoppa(context: Context, isSubjectToCoppa: Boolean) {
+    fun setUserSubjectToCoppa(
+        context: Context,
+        isSubjectToCoppa: Boolean,
+    ) {
         adapters.forEach { (_, adapter) ->
             try {
                 adapter.setUserSubjectToCoppa(context, isSubjectToCoppa)
@@ -313,7 +331,7 @@ class PartnerController {
      */
     suspend fun routeGetBidderInformation(
         context: Context,
-        request: PreBidRequest
+        request: PreBidRequest,
     ): Map<String, Map<String, String>> {
         val bidTokens: ConcurrentHashMap<String, Map<String, String>> = ConcurrentHashMap()
         if (!requiredDataIsValid(context, request)) {
@@ -323,66 +341,71 @@ class PartnerController {
                 auctionIdentifier = null,
                 chartboostMediationError = ChartboostMediationError.CM_INVALID_ARGUMENTS,
                 chartboostMediationErrorMessage = ChartboostMediationError.CM_INVALID_ARGUMENTS.message,
-                loadId = request.loadId
+                loadId = request.loadId,
             )
             return bidTokens
         }
 
-        val bidJob = CoroutineScope(Main).launch(CoroutineExceptionHandler { _, error ->
-            MetricsManager.postMetricsDataForFailedEvent(
-                partner = null,
-                event = PREBID,
-                auctionIdentifier = null,
-                chartboostMediationError = (error as? ChartboostMediationAdException)?.chartboostMediationError
-                    ?: ChartboostMediationError.CM_PREBID_FAILURE_EXCEPTION,
-                chartboostMediationErrorMessage = error.message,
-                loadId = request.loadId
-            )
-        }) {
-            val metricsDataSet = mutableSetOf<Metrics>()
+        val bidJob =
+            CoroutineScope(Main).launch(
+                CoroutineExceptionHandler { _, error ->
+                    MetricsManager.postMetricsDataForFailedEvent(
+                        partner = null,
+                        event = PREBID,
+                        auctionIdentifier = null,
+                        chartboostMediationError =
+                            (error as? ChartboostMediationAdException)?.chartboostMediationError
+                                ?: ChartboostMediationError.CM_PREBID_FAILURE_EXCEPTION,
+                        chartboostMediationErrorMessage = error.message,
+                        loadId = request.loadId,
+                    )
+                },
+            ) {
+                val metricsDataSet = mutableSetOf<Metrics>()
 
-            withContext(IO) {
-                withTimeoutOrNull(prebidFetchTimeoutMs) {
-                    adapters.keys.map { partnerId ->
-                        val metrics = Metrics(partnerId, PREBID)
-                        metricsDataSet.add(metrics)
+                withContext(IO) {
+                    withTimeoutOrNull(prebidFetchTimeoutMs) {
+                        adapters.keys.map { partnerId ->
+                            val metrics = Metrics(partnerId, PREBID)
+                            metricsDataSet.add(metrics)
 
-                        async {
-                            measureTimeMillis {
-                                adapters[partnerId]?.let { adapter ->
-                                    metrics.start = System.currentTimeMillis()
+                            async {
+                                measureTimeMillis {
+                                    adapters[partnerId]?.let { adapter ->
+                                        metrics.start = System.currentTimeMillis()
 
-                                    bidTokens[partnerId] = try {
-                                        adapter.fetchBidderInformation(context, request)
-                                            .let { result ->
-                                                // For token fetches, empty token (bidding not supported)
-                                                // is still a success. Failure is indicated by an exception.
+                                        bidTokens[partnerId] =
+                                            try {
+                                                adapter.fetchBidderInformation(context, request)
+                                                    .let { result ->
+                                                        // For token fetches, empty token (bidding not supported)
+                                                        // is still a success. Failure is indicated by an exception.
+                                                        metrics.end = System.currentTimeMillis()
+                                                        metrics.isSuccess = true
+
+                                                        result
+                                                    }
+                                            } catch (e: Exception) {
                                                 metrics.end = System.currentTimeMillis()
-                                                metrics.isSuccess = true
+                                                metrics.isSuccess = false
+                                                metrics.chartboostMediationError =
+                                                    (e as? ChartboostMediationAdException)?.chartboostMediationError
+                                                        ?: ChartboostMediationError.CM_PREBID_FAILURE_EXCEPTION
+                                                metrics.chartboostMediationErrorMessage = e.message
 
-                                                result
+                                                emptyMap()
                                             }
-                                    } catch (e: Exception) {
-                                        metrics.end = System.currentTimeMillis()
-                                        metrics.isSuccess = false
-                                        metrics.chartboostMediationError =
-                                            (e as? ChartboostMediationAdException)?.chartboostMediationError
-                                                ?: ChartboostMediationError.CM_PREBID_FAILURE_EXCEPTION
-                                        metrics.chartboostMediationErrorMessage = e.message
-
-                                        emptyMap()
                                     }
+                                }.also {
+                                    metrics.duration = it
                                 }
-                            }.also {
-                                metrics.duration = it
                             }
-                        }
-                    }.awaitAll()
+                        }.awaitAll()
+                    }
                 }
-            }
 
-            MetricsManager.postMetricsData(metricsDataSet, request.loadId)
-        }
+                MetricsManager.postMetricsData(metricsDataSet, request.loadId)
+            }
         bidJob.join()
         return bidTokens
     }
@@ -403,7 +426,7 @@ class PartnerController {
         isMediation: Boolean,
         request: PartnerAdLoadRequest,
         loadMetricsSet: MutableSet<Metrics>,
-        placementType: String?
+        placementType: String?,
     ): Result<PartnerAd> {
         if (!requiredDataIsValid(context, request.partnerPlacement, request.chartboostPlacement)) {
             MetricsManager.postMetricsDataForFailedEvent(
@@ -414,115 +437,133 @@ class PartnerController {
                 chartboostMediationErrorMessage = ChartboostMediationError.CM_INVALID_ARGUMENTS.message,
                 loadId = request.identifier,
                 placementType = placementType,
-                size = request.size?.takeIf { (placementType == "adaptive_banner") }
+                size = request.size?.takeIf { (placementType == "adaptive_banner") },
+                networkType = Metrics.NetworkType.getType(isMediation),
+                lineItemId = lineItemId,
+                partnerPlacement = request.partnerPlacement,
             )
             return Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_INVALID_ARGUMENTS))
         }
 
         var result: Result<PartnerAd> =
             Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_UNKNOWN_ERROR))
-        val job = CoroutineScope(Main).launch(CoroutineExceptionHandler { _, error ->
-            MetricsManager.postMetricsDataForFailedEvent(
-                partner = request.partnerId,
-                event = LOAD,
-                auctionIdentifier = auctionId,
-                chartboostMediationError = (error as? ChartboostMediationAdException)?.chartboostMediationError
-                    ?: ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION,
-                chartboostMediationErrorMessage = error.message,
-                loadId = request.identifier,
-                placementType = placementType,
-                size = request.size?.takeIf { (placementType == "adaptive_banner") }
-            )
-            result =
-                Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION))
-        }) {
-            withContext(IO) {
-                withTimeoutOrNull(getLoadTimeoutMs(request.format)) {
-                    adapters[request.partnerId]?.let { adapter ->
-                        val metrics = Metrics(adapter.partnerId, LOAD)
+        val job =
+            CoroutineScope(Main).launch(
+                CoroutineExceptionHandler { _, error ->
+                    MetricsManager.postMetricsDataForFailedEvent(
+                        partner = request.partnerId,
+                        event = LOAD,
+                        auctionIdentifier = auctionId,
+                        chartboostMediationError =
+                            (error as? ChartboostMediationAdException)?.chartboostMediationError
+                                ?: ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION,
+                        chartboostMediationErrorMessage = error.message,
+                        loadId = request.identifier,
+                        placementType = placementType,
+                        size = request.size?.takeIf { (placementType == "adaptive_banner") },
+                        networkType = Metrics.NetworkType.getType(isMediation),
+                        lineItemId = lineItemId,
+                        partnerPlacement = request.partnerPlacement,
+                    )
+                    result =
+                        Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION))
+                },
+            ) {
+                withContext(IO) {
+                    withTimeoutOrNull(getLoadTimeoutMs(request.format)) {
+                        adapters[request.partnerId]?.let { adapter ->
+                            val metrics = Metrics(adapter.partnerId, LOAD)
 
-                        // Since it's possible for a Chartboost Mediation placement to consist of multiple line items
-                        // at load time and we are tracking metrics data per line item, we need to batch data for
-                        // the same placement in the same dataset.
-                        loadMetricsSet.add(metrics)
+                            // Since it's possible for a Chartboost Mediation placement to consist of multiple line items
+                            // at load time and we are tracking metrics data per line item, we need to batch data for
+                            // the same placement in the same dataset.
+                            loadMetricsSet.add(metrics)
 
-                        metrics.auctionId = auctionId
-                        metrics.lineItemId = lineItemId
-                        metrics.networkType = Metrics.NetworkType.getType(isMediation)
-                        metrics.partnerPlacement = request.partnerPlacement
-                        metrics.placementType = placementType
-                        if (placementType == "adaptive_banner"
-                            && request.size != null) {
-                            metrics.size = Size(
-                                request.size.width,
-                                request.size.height
-                            )
-                        }
-
-                        measureTimeMillis {
-                            withContext(Main) {
-                                metrics.start = System.currentTimeMillis()
-
-                                try {
-                                    adapter.load(
-                                        context, request, createPartnerAdListener(
-                                            request.adInteractionListener, auctionId
-                                        )
-                                    ).let {
-                                        handleLoadResult(it, metrics)
-                                        result = it
-                                    }
-                                } catch (e: Exception) {
-                                    metrics.end = System.currentTimeMillis()
-                                    metrics.isSuccess = false
-                                    metrics.chartboostMediationError =
-                                        (e as? ChartboostMediationAdException)?.chartboostMediationError
-                                            ?: ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION
-                                    metrics.chartboostMediationErrorMessage = e.message
-
-                                    result =
-                                        Result.failure(
-                                            ChartboostMediationAdException(
-                                                ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION
-                                            )
-                                        )
-                                }
+                            metrics.auctionId = auctionId
+                            metrics.lineItemId = lineItemId
+                            metrics.networkType = Metrics.NetworkType.getType(isMediation)
+                            metrics.partnerPlacement = request.partnerPlacement
+                            metrics.placementType = placementType
+                            if (placementType == "adaptive_banner" &&
+                                request.size != null
+                            ) {
+                                metrics.size =
+                                    Size(
+                                        request.size.width,
+                                        request.size.height,
+                                    )
                             }
-                        }.also {
-                            metrics.duration = it
+
+                            measureTimeMillis {
+                                withContext(Main) {
+                                    metrics.start = System.currentTimeMillis()
+
+                                    try {
+                                        adapter.load(
+                                            context,
+                                            request,
+                                            createPartnerAdListener(
+                                                request.adInteractionListener,
+                                                auctionId,
+                                            ),
+                                        ).let {
+                                            handleLoadResult(it, metrics)
+                                            result = it
+                                        }
+                                    } catch (e: Exception) {
+                                        metrics.end = System.currentTimeMillis()
+                                        metrics.isSuccess = false
+                                        metrics.chartboostMediationError =
+                                            (e as? ChartboostMediationAdException)?.chartboostMediationError
+                                                ?: ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION
+                                        metrics.chartboostMediationErrorMessage = e.message
+
+                                        result =
+                                            Result.failure(
+                                                ChartboostMediationAdException(
+                                                    ChartboostMediationError.CM_LOAD_FAILURE_EXCEPTION,
+                                                ),
+                                            )
+                                    }
+                                }
+                            }.also {
+                                metrics.duration = it
+                            }
+                        } ?: run {
+                            MetricsManager.postMetricsDataForFailedEvent(
+                                partner = request.partnerId,
+                                event = LOAD,
+                                auctionIdentifier = auctionId,
+                                chartboostMediationError = ChartboostMediationError.CM_LOAD_FAILURE_ADAPTER_NOT_FOUND,
+                                chartboostMediationErrorMessage = ChartboostMediationError.CM_LOAD_FAILURE_ADAPTER_NOT_FOUND.message,
+                                loadId = request.identifier,
+                                placementType = placementType,
+                                size = request.size?.takeIf { (placementType == "adaptive_banner") },
+                            )
+
+                            result =
+                                Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_ADAPTER_NOT_FOUND))
                         }
                     } ?: run {
                         MetricsManager.postMetricsDataForFailedEvent(
                             partner = request.partnerId,
                             event = LOAD,
                             auctionIdentifier = auctionId,
-                            chartboostMediationError = ChartboostMediationError.CM_LOAD_FAILURE_ADAPTER_NOT_FOUND,
-                            chartboostMediationErrorMessage = ChartboostMediationError.CM_LOAD_FAILURE_ADAPTER_NOT_FOUND.message,
+                            chartboostMediationError = ChartboostMediationError.CM_LOAD_FAILURE_TIMEOUT,
+                            chartboostMediationErrorMessage = ChartboostMediationError.CM_LOAD_FAILURE_TIMEOUT.message,
                             loadId = request.identifier,
                             placementType = placementType,
-                            size = request.size?.takeIf { (placementType == "adaptive_banner") }
+                            size = request.size?.takeIf { (placementType == "adaptive_banner") },
+                            networkType = Metrics.NetworkType.getType(isMediation),
+                            lineItemId = lineItemId,
+                            partnerPlacement = request.partnerPlacement,
                         )
 
                         result =
-                            Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_ADAPTER_NOT_FOUND))
+                            Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_TIMEOUT))
                     }
-                } ?: run {
-                    MetricsManager.postMetricsDataForFailedEvent(
-                        partner = request.partnerId,
-                        event = LOAD,
-                        auctionIdentifier = auctionId,
-                        chartboostMediationError = ChartboostMediationError.CM_LOAD_FAILURE_TIMEOUT,
-                        chartboostMediationErrorMessage = ChartboostMediationError.CM_LOAD_FAILURE_TIMEOUT.message,
-                        loadId = request.identifier,
-                        placementType = placementType,
-                        size = request.size?.takeIf { (placementType == "adaptive_banner") }
-                    )
-
-                    result =
-                        Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_TIMEOUT))
                 }
             }
-        }
         job.join()
         return result
     }
@@ -535,18 +576,25 @@ class PartnerController {
      * @param auctionIdentifier The current auction ID.
      */
     suspend fun routeShow(
-        context: Context, partnerAd: PartnerAd?, auctionIdentifier: String, loadId: String
+        context: Context,
+        partnerAd: PartnerAd?,
+        auctionIdentifier: String,
+        loadId: String,
     ): PartnerShowResult {
-        var internalAdShowResult = PartnerShowResult(
-            partnerAd = partnerAd,
-            metrics = setOf(Metrics(partnerAd?.request?.partnerId, SHOW).apply {
-                isSuccess = false
-                auctionId = auctionIdentifier
-                chartboostMediationError = ChartboostMediationError.CM_SHOW_FAILURE_UNKNOWN
-                chartboostMediationErrorMessage =
-                    ChartboostMediationError.CM_SHOW_FAILURE_UNKNOWN.message
-            }),
-        )
+        var internalAdShowResult =
+            PartnerShowResult(
+                partnerAd = partnerAd,
+                metrics =
+                    setOf(
+                        Metrics(partnerAd?.request?.partnerId, SHOW).apply {
+                            isSuccess = false
+                            auctionId = auctionIdentifier
+                            chartboostMediationError = ChartboostMediationError.CM_SHOW_FAILURE_UNKNOWN
+                            chartboostMediationErrorMessage =
+                                ChartboostMediationError.CM_SHOW_FAILURE_UNKNOWN.message
+                        },
+                    ),
+            )
 
         if (!requiredDataIsValid(context) || partnerAd == null) {
             MetricsManager.postMetricsDataForFailedEvent(
@@ -555,7 +603,8 @@ class PartnerController {
                 auctionIdentifier = auctionIdentifier,
                 chartboostMediationError = ChartboostMediationError.CM_INVALID_ARGUMENTS,
                 chartboostMediationErrorMessage = ChartboostMediationError.CM_INVALID_ARGUMENTS.message,
-                loadId = loadId
+                loadId = loadId,
+                partnerPlacement = partnerAd?.request?.partnerPlacement,
             )
 
             internalAdShowResult.metrics.first().chartboostMediationError =
@@ -566,62 +615,72 @@ class PartnerController {
             return internalAdShowResult
         }
 
-        val partnerShowJob = CoroutineScope(Main).launch(CoroutineExceptionHandler { _, error ->
-            MetricsManager.postMetricsDataForFailedEvent(
-                partner = partnerAd.request.partnerId,
-                event = SHOW,
-                auctionIdentifier = auctionIdentifier,
-                chartboostMediationError = ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION,
-                chartboostMediationErrorMessage = error.message
-                    ?: ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION.message
-            )
+        val partnerShowJob =
+            CoroutineScope(Main).launch(
+                CoroutineExceptionHandler { _, error ->
+                    MetricsManager.postMetricsDataForFailedEvent(
+                        partner = partnerAd.request.partnerId,
+                        event = SHOW,
+                        auctionIdentifier = auctionIdentifier,
+                        chartboostMediationError = ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION,
+                        chartboostMediationErrorMessage =
+                            error.message
+                                ?: ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION.message,
+                        partnerPlacement = partnerAd.request.partnerPlacement,
+                    )
 
-            internalAdShowResult = PartnerShowResult(
-                partnerAd = partnerAd,
-                metrics = setOf(Metrics(partnerAd.request.partnerId, SHOW).apply {
-                    isSuccess = false
-                    auctionId = auctionIdentifier
-                    chartboostMediationError = ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION
-                    chartboostMediationErrorMessage =
-                        error.message ?: ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION.message
-                })
-            )
-        }) {
-            val metricsDataSet = mutableSetOf<Metrics>()
-            val metrics = Metrics(partnerAd.request.partnerId, SHOW)
-            metricsDataSet.add(metrics)
+                    internalAdShowResult =
+                        PartnerShowResult(
+                            partnerAd = partnerAd,
+                            metrics =
+                                setOf(
+                                    Metrics(partnerAd.request.partnerId, SHOW).apply {
+                                        isSuccess = false
+                                        auctionId = auctionIdentifier
+                                        chartboostMediationError = ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION
+                                        chartboostMediationErrorMessage =
+                                            error.message ?: ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION.message
+                                    },
+                                ),
+                        )
+                },
+            ) {
+                val metricsDataSet = mutableSetOf<Metrics>()
+                val metrics = Metrics(partnerAd.request.partnerId, SHOW)
+                metricsDataSet.add(metrics)
 
-            adapters[partnerAd.request.partnerId]?.let { adapter ->
-                metrics.auctionId = auctionIdentifier
+                adapters[partnerAd.request.partnerId]?.let { adapter ->
+                    metrics.auctionId = auctionIdentifier
 
-                withTimeoutOrNull(AppConfigStorage.showTimeoutSeconds * 1000L) {
-                    metrics.start = System.currentTimeMillis()
+                    withTimeoutOrNull(AppConfigStorage.showTimeoutSeconds * 1000L) {
+                        metrics.start = System.currentTimeMillis()
 
-                    measureTimeMillis {
-                        try {
-                            handleShowResult(adapter.show(context, partnerAd), metrics)
-                        } catch (e: Exception) {
-                            metrics.end = System.currentTimeMillis()
-                            metrics.isSuccess = false
-                            metrics.chartboostMediationError =
-                                ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION
-                            metrics.chartboostMediationErrorMessage =
-                                e.message
-                                    ?: ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION.message
+                        measureTimeMillis {
+                            try {
+                                handleShowResult(adapter.show(context, partnerAd), metrics)
+                            } catch (e: Exception) {
+                                metrics.end = System.currentTimeMillis()
+                                metrics.isSuccess = false
+                                metrics.chartboostMediationError =
+                                    ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION
+                                metrics.chartboostMediationErrorMessage =
+                                    e.message
+                                        ?: ChartboostMediationError.CM_SHOW_FAILURE_EXCEPTION.message
+                            }
+                        }.also {
+                            metrics.duration = it
                         }
-                    }.also {
-                        metrics.duration = it
                     }
                 }
+
+                internalAdShowResult =
+                    PartnerShowResult(
+                        partnerAd = partnerAd,
+                        metrics = metricsDataSet,
+                    )
+
+                MetricsManager.postMetricsData(metricsDataSet, loadId)
             }
-
-            internalAdShowResult = PartnerShowResult(
-                partnerAd = partnerAd,
-                metrics = metricsDataSet
-            )
-
-            MetricsManager.postMetricsData(metricsDataSet, loadId)
-        }
         partnerShowJob.join()
         return internalAdShowResult
     }
@@ -633,12 +692,14 @@ class PartnerController {
      */
     fun routeInvalidate(partnerAd: PartnerAd) {
         adapters[partnerAd.request.partnerId]?.let { adapter ->
-            CoroutineScope(Main).launch(CoroutineExceptionHandler { _, error ->
-                LogController.e(
-                    "Invalidation failed for ${partnerAd.request.partnerId} and Chartboost Mediation" +
-                            "placement ${partnerAd.request.chartboostPlacement}. Error: ${error.message}."
-                )
-            }) {
+            CoroutineScope(Main).launch(
+                CoroutineExceptionHandler { _, error ->
+                    LogController.e(
+                        "Invalidation failed for ${partnerAd.request.partnerId} and Chartboost Mediation" +
+                            "placement ${partnerAd.request.chartboostPlacement}. Error: ${error.message}.",
+                    )
+                },
+            ) {
                 adapter.invalidate(partnerAd)
             }
         }
@@ -661,7 +722,7 @@ class PartnerController {
             } catch (exception: Exception) {
                 LogController.e(
                     "Failed to create adapter $name. Error: ${exception.message}." +
-                            "The associated network will not be initialized."
+                        "The associated network will not be initialized.",
                 )
             }
         }
@@ -679,7 +740,7 @@ class PartnerController {
         context: Context,
         adapter: PartnerAdapter,
         partnerConfiguration: PartnerConfiguration,
-        metrics: Metrics
+        metrics: Metrics,
     ) {
         initStatuses[adapter.partnerId] = PartnerInitializationStatus.INITIALIZING
 
@@ -710,30 +771,34 @@ class PartnerController {
      * @param adapter The adapter that attempted to initialize.
      */
     private fun handleSetupResult(
-        result: Result<Unit>, adapter: PartnerAdapter, metrics: Metrics
+        result: Result<Unit>,
+        adapter: PartnerAdapter,
+        metrics: Metrics,
     ) {
-        initStatuses[adapter.partnerId] = if (result.isSuccess) {
-            // Preferred to be called after a successful setup as select partner SDKs might require
-            // initialization first before version (and other data) are made available.
-            setUpAdapterInfo(adapter)
+        initStatuses[adapter.partnerId] =
+            if (result.isSuccess) {
+                // Preferred to be called after a successful setup as select partner SDKs might require
+                // initialization first before version (and other data) are made available.
+                setUpAdapterInfo(adapter)
 
-            metrics.isSuccess = true
-            PartnerInitializationStatus.INITIALIZED
-        } else {
-            // Remove adapters that failed to initialize so that we don't call other operations
-            // (token fetch, load, show) on them. Note that we still wait for adapters that don't finish
-            // initialization within the timeout period (their result will be handled here as well).
-            adapters.remove(adapter.partnerId)
+                metrics.isSuccess = true
+                PartnerInitializationStatus.INITIALIZED
+            } else {
+                // Remove adapters that failed to initialize so that we don't call other operations
+                // (token fetch, load, show) on them. Note that we still wait for adapters that don't finish
+                // initialization within the timeout period (their result will be handled here as well).
+                adapters.remove(adapter.partnerId)
 
-            val chartboostMediationError = (result.exceptionOrNull() as? ChartboostMediationAdException)?.chartboostMediationError
-                ?: ChartboostMediationError.CM_INITIALIZATION_FAILURE_UNKNOWN
+                val chartboostMediationError =
+                    (result.exceptionOrNull() as? ChartboostMediationAdException)?.chartboostMediationError
+                        ?: ChartboostMediationError.CM_INITIALIZATION_FAILURE_UNKNOWN
 
-            metrics.isSuccess = false
-            metrics.chartboostMediationError = chartboostMediationError
-            metrics.chartboostMediationErrorMessage = chartboostMediationError.message
+                metrics.isSuccess = false
+                metrics.chartboostMediationError = chartboostMediationError
+                metrics.chartboostMediationErrorMessage = chartboostMediationError.message
 
-            PartnerInitializationStatus.FAILED
-        }
+                PartnerInitializationStatus.FAILED
+            }
 
         metrics.partnerSdkVersion = adapterInfo[adapter.partnerId]?.partnerVersion ?: ""
         metrics.partnerAdapterVersion = adapterInfo[adapter.partnerId]?.adapterVersion ?: ""
@@ -746,17 +811,18 @@ class PartnerController {
      */
     private fun setUpAdapterInfo(adapter: PartnerAdapter) {
         try {
-            adapterInfo[adapter.partnerId] = AdapterInfo(
-                partnerVersion = adapter.partnerSdkVersion,
-                adapterVersion = adapter.adapterVersion,
-                partnerId = adapter.partnerId,
-                partnerDisplayName = adapter.partnerDisplayName,
-            )
+            adapterInfo[adapter.partnerId] =
+                AdapterInfo(
+                    partnerVersion = adapter.partnerSdkVersion,
+                    adapterVersion = adapter.adapterVersion,
+                    partnerId = adapter.partnerId,
+                    partnerDisplayName = adapter.partnerDisplayName,
+                )
         } catch (exception: Exception) {
             LogController.e(
                 "Failed to make AdapterInfo for " + "${adapter.partnerDisplayName}. Its version data will not be available." + " Error: ${
                     (exception as? ChartboostMediationAdException)?.chartboostMediationError ?: ChartboostMediationError.CM_INITIALIZATION_FAILURE_EXCEPTION
-                }"
+                }",
             )
         }
     }
@@ -768,7 +834,8 @@ class PartnerController {
      * @param metrics The [Metrics] instance for the current ad load call.
      */
     private fun handleLoadResult(
-        result: Result<PartnerAd>, metrics: Metrics
+        result: Result<PartnerAd>,
+        metrics: Metrics,
     ) {
         metrics.end = System.currentTimeMillis()
         metrics.isSuccess = result.isSuccess
@@ -808,7 +875,8 @@ class PartnerController {
      * @param auctionId The auction ID for the current ad load call.
      */
     private fun createPartnerAdListener(
-        adInteractionListener: AdInteractionListener, auctionId: String
+        adInteractionListener: AdInteractionListener,
+        auctionId: String,
     ): PartnerAdListener {
         return object : PartnerAdListener {
             override fun onPartnerAdImpression(partnerAd: PartnerAd) {
@@ -825,7 +893,7 @@ class PartnerController {
 
             override fun onPartnerAdDismissed(
                 partnerAd: PartnerAd,
-                error: ChartboostMediationAdException?
+                error: ChartboostMediationAdException?,
             ) {
                 adInteractionListener.onDismissed(partnerAd, error)
             }
@@ -834,11 +902,14 @@ class PartnerController {
                 adInteractionListener.onExpired(partnerAd)
 
                 MetricsManager.postMetricsData(
-                    setOf(Metrics(
-                        partnerAd.request.partnerId, EXPIRATION
-                    ).apply {
-                        this.auctionId = auctionId
-                    })
+                    setOf(
+                        Metrics(
+                            partnerAd.request.partnerId,
+                            EXPIRATION,
+                        ).apply {
+                            this.auctionId = auctionId
+                        },
+                    ),
                 )
             }
         }
@@ -851,7 +922,8 @@ class PartnerController {
      * @param metrics The metrics to update with the show result.
      */
     private fun handleShowResult(
-        result: Result<PartnerAd>, metrics: Metrics
+        result: Result<PartnerAd>,
+        metrics: Metrics,
     ) {
         metrics.end = System.currentTimeMillis()
         metrics.isSuccess = result.isSuccess

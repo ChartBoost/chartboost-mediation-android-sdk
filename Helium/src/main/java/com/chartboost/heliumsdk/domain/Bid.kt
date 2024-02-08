@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -24,7 +24,7 @@ class Bid(
     private val requestedSize: HeliumBannerSize?,
     val adIdentifier: AdIdentifier,
     private val bidResponse: BidResponse,
-    val loadRequestId: String
+    val loadRequestId: String,
 ) : Comparable<Bid> {
     val partnerName: String = bidResponse.partnerName
     val nurl: String = bidResponse.bidInfoArray.firstOrNull()?.nurl ?: ""
@@ -45,11 +45,15 @@ class Bid(
     init {
         val adaptiveBannerWidth = bidResponse.bidInfoArray.firstOrNull()?.adaptiveBannerWidth
         val adaptiveBannerHeight = bidResponse.bidInfoArray.firstOrNull()?.adaptiveBannerHeight
-        size = if (requestedSize?.isAdaptive == true
-            && adaptiveBannerWidth != null
-            && adaptiveBannerHeight != null) {
-            HeliumBannerSize.bannerSize(adaptiveBannerWidth, adaptiveBannerHeight)
-        } else requestedSize
+        size =
+            if (requestedSize?.isAdaptive == true &&
+                adaptiveBannerWidth != null &&
+                adaptiveBannerHeight != null
+            ) {
+                HeliumBannerSize.bannerSize(adaptiveBannerWidth, adaptiveBannerHeight)
+            } else {
+                requestedSize
+            }
     }
 
     override fun compareTo(other: Bid): Int {
@@ -62,7 +66,10 @@ class Bid(
      * @param updatedIlrdJson The new JSON blob to add.
      * @param overwriteExisting If the key exists, overwrite the data if there's a conflict
      */
-    fun updateIlrd(updatedIlrdJson: JsonObject?, overwriteExisting: Boolean) {
+    fun updateIlrd(
+        updatedIlrdJson: JsonObject?,
+        overwriteExisting: Boolean,
+    ) {
         updatedIlrdJson?.let { updatedJson ->
             ilrd = ilrd?.let {
                 buildJsonObject {

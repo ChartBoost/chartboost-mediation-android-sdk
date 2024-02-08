@@ -12,10 +12,6 @@
       "price":100.0
     },
     {
-      "seat":"yahoo",
-      "price":50.0
-    },
-    {
       "seat":"inmobi",
       "price":30.0
     },

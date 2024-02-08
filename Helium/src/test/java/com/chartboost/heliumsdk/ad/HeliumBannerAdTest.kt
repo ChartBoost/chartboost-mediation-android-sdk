@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
+ * Copyright 2023-2024 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -22,7 +22,6 @@ import org.junit.Test
 import java.lang.reflect.Field
 
 class HeliumBannerAdTest {
-
     private lateinit var mockBannerController: BannerController
     private lateinit var mockBannerListener: HeliumBannerAdListener
 
@@ -39,12 +38,13 @@ class HeliumBannerAdTest {
     fun `load`() {
         // Given a new placement name
         val newPlacementName = "newPlacementName"
-        val ad = HeliumBannerAd(
-            mockk(relaxed = true),
-            "testPlacement",
-            HeliumBannerSize.STANDARD,
-            mockBannerListener
-        )
+        val ad =
+            HeliumBannerAd(
+                mockk(relaxed = true),
+                "testPlacement",
+                HeliumBannerSize.STANDARD,
+                mockBannerListener,
+            )
         setBannerController(ad, mockBannerController)
 
         every { mockBannerController.load() } just runs
@@ -58,12 +58,13 @@ class HeliumBannerAdTest {
     fun `load with new placement`() {
         // Given a new placement name
         val newPlacementName = "newPlacementName"
-        val ad = HeliumBannerAd(
-            mockk(relaxed = true),
-            "testPlacement",
-            HeliumBannerSize.STANDARD,
-            mockBannerListener
-        )
+        val ad =
+            HeliumBannerAd(
+                mockk(relaxed = true),
+                "testPlacement",
+                HeliumBannerSize.STANDARD,
+                mockBannerListener,
+            )
         setBannerController(ad, mockBannerController)
 
         every { mockBannerController.renewCachedAd() } just runs
@@ -80,12 +81,13 @@ class HeliumBannerAdTest {
     fun `load with new size`() {
         // Given a new size
         val newSize = HeliumBannerSize.MEDIUM
-        val ad = HeliumBannerAd(
-            mockk(relaxed = true),
-            "testPlacement",
-            HeliumBannerSize.STANDARD,
-            mockBannerListener
-        )
+        val ad =
+            HeliumBannerAd(
+                mockk(relaxed = true),
+                "testPlacement",
+                HeliumBannerSize.STANDARD,
+                mockBannerListener,
+            )
         setBannerController(ad, mockBannerController)
 
         every { mockBannerController.renewCachedAd() } just runs
@@ -103,12 +105,13 @@ class HeliumBannerAdTest {
         // Given a new placement name and size
         val newPlacementName = "newPlacementName"
         val newSize = HeliumBannerSize.MEDIUM
-        val ad = HeliumBannerAd(
-            mockk(relaxed = true),
-            "testPlacement",
-            HeliumBannerSize.STANDARD,
-            mockBannerListener
-        )
+        val ad =
+            HeliumBannerAd(
+                mockk(relaxed = true),
+                "testPlacement",
+                HeliumBannerSize.STANDARD,
+                mockBannerListener,
+            )
         setBannerController(ad, mockBannerController)
 
         every { mockBannerController.renewCachedAd() } just runs
@@ -124,12 +127,13 @@ class HeliumBannerAdTest {
     @Test
     fun `onViewAdded calls onAdViewAdded on listener`() {
         // Given an ad
-        val ad = HeliumBannerAd(
-            mockk(relaxed = true),
-            "testPlacement",
-            HeliumBannerSize.STANDARD,
-            mockBannerListener
-        )
+        val ad =
+            HeliumBannerAd(
+                mockk(relaxed = true),
+                "testPlacement",
+                HeliumBannerSize.STANDARD,
+                mockBannerListener,
+            )
         setBannerController(ad, mockBannerController)
         val mockChild = mockk<View>()
         every { mockBannerListener.onAdViewAdded(ad.placementName, mockChild) } just runs
@@ -144,12 +148,13 @@ class HeliumBannerAdTest {
     @Test
     fun `destroy sets heliumBannerAdListener to null`() {
         // Given an ad
-        val ad = HeliumBannerAd(
-            mockk(relaxed = true),
-            "testPlacement",
-            HeliumBannerSize.STANDARD,
-            mockBannerListener
-        )
+        val ad =
+            HeliumBannerAd(
+                mockk(relaxed = true),
+                "testPlacement",
+                HeliumBannerSize.STANDARD,
+                mockBannerListener,
+            )
         setBannerController(ad, mockBannerController)
 
         every { mockBannerController.destroy() } just runs
@@ -161,8 +166,10 @@ class HeliumBannerAdTest {
         assertNull(ad.heliumBannerAdListener)
     }
 
-
-    fun setBannerController(ad: HeliumBannerAd, mockBannerController: BannerController) {
+    fun setBannerController(
+        ad: HeliumBannerAd,
+        mockBannerController: BannerController,
+    ) {
         try {
             val field: Field = HeliumBannerAd::class.java.getDeclaredField("bannerController")
             field.isAccessible = true

@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -22,7 +22,7 @@ object NetworkErrorTransformer {
         if (response == null) {
             return NetworkError(
                 code = -1,
-                ChartboostMediationError.CM_INTERNAL_ERROR
+                ChartboostMediationError.CM_INTERNAL_ERROR,
             )
         }
 
@@ -52,5 +52,5 @@ object NetworkErrorTransformer {
  */
 data class NetworkError(
     val code: Int,
-    val chartboostMediationError: ChartboostMediationError
+    val chartboostMediationError: ChartboostMediationError,
 ) : Throwable()

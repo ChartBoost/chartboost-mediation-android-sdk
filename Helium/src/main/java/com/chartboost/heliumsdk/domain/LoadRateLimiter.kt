@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -62,7 +62,10 @@ class LoadRateLimiter {
      * @param placement For the given Helium placement.
      * @param durationSeconds How long to rate limit this placement for.
      */
-    fun setLoadRateLimit(placement: String, durationSeconds: Int) {
+    fun setLoadRateLimit(
+        placement: String,
+        durationSeconds: Int,
+    ) {
         loadRateLimitSecondsMap[placement] = durationSeconds
         uptimeMillisWhenNextLoadIsAllowedMap[placement] =
             SystemClock.uptimeMillis() + durationSeconds * 1000

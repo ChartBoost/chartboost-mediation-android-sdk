@@ -35,36 +35,6 @@
     "bid": [{
       "id": "MEDIATION",
       "impid": "1",
-      "price": 50.0,
-      "ext": {
-        "partner_placement": "240383",
-        "line_item_id": "8baee159-ba47-498a-bdee-7fee3d4edf30",
-        "ilrd": {
-          "network_name": "yahoo",
-          "network_type": "mediation",
-          "precision": "publisher_defined",
-          "line_item_name": "240383",
-          "line_item_id": "8baee159-ba47-498a-bdee-7fee3d4edf30",
-          "network_placement_id": "240383",
-          "ad_revenue": 0.05
-        },
-        "first_look": false,
-        "cpm_price": 50.0,
-        "ad_revenue": 0.05,
-        "bidder": {
-          "helium": {
-            "partner_placement": "240383",
-            "line_item_id": "8baee159-ba47-498a-bdee-7fee3d4edf30"
-          }
-        }
-      }
-    }],
-    "seat": "yahoo",
-    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_yahoo_240383"
-  }, {
-    "bid": [{
-      "id": "MEDIATION",
-      "impid": "1",
       "price": 30.0,
       "ext": {
         "partner_placement": "1638795264987",

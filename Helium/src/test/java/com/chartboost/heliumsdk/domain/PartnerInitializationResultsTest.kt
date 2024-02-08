@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -17,20 +17,21 @@ class PartnerInitializationResultsTest {
     /**
      * A list of public fields that are required to be present in the public (i.e. transformed) payload.
      */
-    private val requiredPublicFields = listOf(
-        "session_id",
-        "success",
-        "failure",
-        "in_progress",
-        "skipped"
-    )
+    private val requiredPublicFields =
+        listOf(
+            "session_id",
+            "success",
+            "failure",
+            "in_progress",
+            "skipped",
+        )
 
     /**
      * A sample payload that is sent to the server. It has been prepared to contain all possible values
      * for the public fields.
      */
     private val internalPayloadRaw =
-        "{ \"result\": \"success_with_cached_config\", \"metrics\": [ { \"partner\": \"adcolony\", \"start\": 1680291225659, \"end\": 1680291225659, \"is_success\": false, \"helium_error\": \"CM_INITIALIZATION_SKIPPED (CM_109). Cause: You explicitly skipped initializing the partner. Resolution: N\\/A.\", \"helium_error_code\": \"CM_109\", \"helium_error_message\": \"Partner initialization was skipped.\" }, { \"partner\": \"admob\", \"start\": 1680291225659, \"end\": 1680291225659, \"is_success\": false, \"helium_error\": \"CM_INITIALIZATION_SKIPPED (CM_109). Cause: You explicitly skipped initializing the partner. Resolution: N\\/A.\", \"helium_error_code\": \"CM_109\", \"helium_error_message\": \"Partner initialization was skipped.\" }, { \"partner\": \"applovin\", \"start\": 1680291225660, \"end\": 1680291227373, \"duration\": 1713, \"is_success\": true, \"partner_sdk_version\": \"11.8.1\", \"partner_adapter_version\": \"4.11.8.1.1\" }, { \"partner\": \"amazon_aps\", \"start\": 1680291225692, \"end\": 1680291225706, \"duration\": 14, \"is_success\": true, \"partner_sdk_version\": \"aps-android-9.7.0-OTHER\", \"partner_adapter_version\": \"4.9.7.0.1\" }, { \"partner\": \"chartboost\", \"start\": 1680291225706, \"end\": 1680291226079, \"duration\": 373, \"is_success\": true, \"partner_sdk_version\": \"9.2.1\", \"partner_adapter_version\": \"4.9.2.1.1\" }, { \"partner\": \"fyber\", \"start\": 1680291225715, \"end\": 1680291226188, \"duration\": 473, \"is_success\": true, \"partner_sdk_version\": \"8.2.2\", \"partner_adapter_version\": \"4.8.2.2.1\" }, { \"partner\": \"facebook\", \"start\": 1680291225732, \"is_success\": false, \"helium_error\": \"CM_INITIALIZATION_FAILURE_TIMEOUT (CM_108). Cause: The initialization operation has taken too long to complete. Resolution: This should not be a critical error. Typically the partner can continue to finish initialization in the background. If this error persists, contact Chartboost Mediation Support and provide a copy of your console logs.\", \"helium_error_code\": \"CM_108\", \"helium_error_message\": \"Partner initialization has failed.\" }, { \"partner\": \"google_googlebidding\", \"start\": 1680291225732, \"end\": 1680291225809, \"duration\": 77, \"is_success\": true, \"partner_sdk_version\": \"21.5.0\", \"partner_adapter_version\": \"4.21.5.0.1\" }, { \"partner\": \"inmobi\", \"start\": 1680291225810, \"end\": 1680291226136, \"duration\": 326, \"is_success\": true, \"partner_sdk_version\": \"10.1.3\", \"partner_adapter_version\": \"4.10.1.3.1\" }, { \"partner\": \"ironsource\", \"start\": 1680291225836, \"end\": 1680291225960, \"duration\": 124, \"is_success\": true, \"partner_sdk_version\": \"7.2.7\", \"partner_adapter_version\": \"4.7.2.7.0.1\" }, { \"partner\": \"mintegral\", \"start\": 1680291225970, \"end\": 1680291225994, \"duration\": 24, \"is_success\": true, \"partner_sdk_version\": \"MAL_16.3.91\", \"partner_adapter_version\": \"4.16.3.91.2\" }, { \"partner\": \"pangle\", \"start\": 1680291225994, \"end\": 1680291226078, \"duration\": 84, \"is_success\": true, \"partner_sdk_version\": \"4.9.1.3\", \"partner_adapter_version\": \"4.4.9.1.3.1\" }, { \"partner\": \"reference\", \"start\": 1680291226005, \"end\": 1680291226508, \"duration\": 503, \"is_success\": true, \"partner_sdk_version\": \"1.0.0\", \"partner_adapter_version\": \"4.1.0.0.1\" }, { \"partner\": \"tapjoy\", \"start\": 1680291226006, \"end\": 1680291226006, \"is_success\": false, \"helium_error\": \"CM_INITIALIZATION_FAILURE_UNKNOWN (CM_100). Cause: There was an error that was not accounted for. Resolution: Try again. If the problem persists, contact Chartboost Mediation Support and provide your console logs.\", \"helium_error_code\": \"CM_100\", \"helium_error_message\": \"Chartboost Mediation initialization has failed.\" }, { \"partner\": \"unity\", \"start\": 1680291226006, \"end\": 1680291227126, \"duration\": 1120, \"is_success\": true, \"partner_sdk_version\": \"4.6.0\", \"partner_adapter_version\": \"4.4.6.0.1\" }, { \"partner\": \"vungle\", \"start\": 1680291226017, \"end\": 1680291226467, \"duration\": 450, \"is_success\": true, \"partner_sdk_version\": \"6.12.1\", \"partner_adapter_version\": \"4.6.12.1.1\" }, { \"partner\": \"yahoo\", \"start\": 1680291226051, \"end\": 1680291226068, \"duration\": 17, \"is_success\": true, \"partner_sdk_version\": \"1.4.0\", \"partner_adapter_version\": \"4.1.4.0.1\" } ] }"
+        "{ \"result\": \"success_with_cached_config\", \"metrics\": [ { \"partner\": \"adcolony\", \"start\": 1680291225659, \"end\": 1680291225659, \"is_success\": false, \"helium_error\": \"CM_INITIALIZATION_SKIPPED (CM_109). Cause: You explicitly skipped initializing the partner. Resolution: N\\/A.\", \"helium_error_code\": \"CM_109\", \"helium_error_message\": \"Partner initialization was skipped.\" }, { \"partner\": \"admob\", \"start\": 1680291225659, \"end\": 1680291225659, \"is_success\": false, \"helium_error\": \"CM_INITIALIZATION_SKIPPED (CM_109). Cause: You explicitly skipped initializing the partner. Resolution: N\\/A.\", \"helium_error_code\": \"CM_109\", \"helium_error_message\": \"Partner initialization was skipped.\" }, { \"partner\": \"applovin\", \"start\": 1680291225660, \"end\": 1680291227373, \"duration\": 1713, \"is_success\": true, \"partner_sdk_version\": \"11.8.1\", \"partner_adapter_version\": \"4.11.8.1.1\" }, { \"partner\": \"amazon_aps\", \"start\": 1680291225692, \"end\": 1680291225706, \"duration\": 14, \"is_success\": true, \"partner_sdk_version\": \"aps-android-9.7.0-OTHER\", \"partner_adapter_version\": \"4.9.7.0.1\" }, { \"partner\": \"chartboost\", \"start\": 1680291225706, \"end\": 1680291226079, \"duration\": 373, \"is_success\": true, \"partner_sdk_version\": \"9.2.1\", \"partner_adapter_version\": \"4.9.2.1.1\" }, { \"partner\": \"fyber\", \"start\": 1680291225715, \"end\": 1680291226188, \"duration\": 473, \"is_success\": true, \"partner_sdk_version\": \"8.2.2\", \"partner_adapter_version\": \"4.8.2.2.1\" }, { \"partner\": \"facebook\", \"start\": 1680291225732, \"is_success\": false, \"helium_error\": \"CM_INITIALIZATION_FAILURE_TIMEOUT (CM_108). Cause: The initialization operation has taken too long to complete. Resolution: This should not be a critical error. Typically the partner can continue to finish initialization in the background. If this error persists, contact Chartboost Mediation Support and provide a copy of your console logs.\", \"helium_error_code\": \"CM_108\", \"helium_error_message\": \"Partner initialization has failed.\" }, { \"partner\": \"google_googlebidding\", \"start\": 1680291225732, \"end\": 1680291225809, \"duration\": 77, \"is_success\": true, \"partner_sdk_version\": \"21.5.0\", \"partner_adapter_version\": \"4.21.5.0.1\" }, { \"partner\": \"inmobi\", \"start\": 1680291225810, \"end\": 1680291226136, \"duration\": 326, \"is_success\": true, \"partner_sdk_version\": \"10.1.3\", \"partner_adapter_version\": \"4.10.1.3.1\" }, { \"partner\": \"ironsource\", \"start\": 1680291225836, \"end\": 1680291225960, \"duration\": 124, \"is_success\": true, \"partner_sdk_version\": \"7.2.7\", \"partner_adapter_version\": \"4.7.2.7.0.1\" }, { \"partner\": \"mintegral\", \"start\": 1680291225970, \"end\": 1680291225994, \"duration\": 24, \"is_success\": true, \"partner_sdk_version\": \"MAL_16.3.91\", \"partner_adapter_version\": \"4.16.3.91.2\" }, { \"partner\": \"pangle\", \"start\": 1680291225994, \"end\": 1680291226078, \"duration\": 84, \"is_success\": true, \"partner_sdk_version\": \"4.9.1.3\", \"partner_adapter_version\": \"4.4.9.1.3.1\" }, { \"partner\": \"reference\", \"start\": 1680291226005, \"end\": 1680291226508, \"duration\": 503, \"is_success\": true, \"partner_sdk_version\": \"1.0.0\", \"partner_adapter_version\": \"4.1.0.0.1\" }, { \"partner\": \"tapjoy\", \"start\": 1680291226006, \"end\": 1680291226006, \"is_success\": false, \"helium_error\": \"CM_INITIALIZATION_FAILURE_UNKNOWN (CM_100). Cause: There was an error that was not accounted for. Resolution: Try again. If the problem persists, contact Chartboost Mediation Support and provide your console logs.\", \"helium_error_code\": \"CM_100\", \"helium_error_message\": \"Chartboost Mediation initialization has failed.\" }, { \"partner\": \"unity\", \"start\": 1680291226006, \"end\": 1680291227126, \"duration\": 1120, \"is_success\": true, \"partner_sdk_version\": \"4.6.0\", \"partner_adapter_version\": \"4.4.6.0.1\" }, { \"partner\": \"vungle\", \"start\": 1680291226017, \"end\": 1680291226467, \"duration\": 450, \"is_success\": true, \"partner_sdk_version\": \"6.12.1\", \"partner_adapter_version\": \"4.6.12.1.1\" } ] }"
 
     private lateinit var getPublicPayloadMethod: Method
 
@@ -49,13 +50,15 @@ class PartnerInitializationResultsTest {
         getPublicPayloadMethod =
             PartnerInitializationResults::class.java.getDeclaredMethod(
                 "getPublicPayload",
-                JSONObject::class.java
+                JSONObject::class.java,
             ).apply { isAccessible = true }
 
         internalPayload = JSONObject(internalPayloadRaw)
-        publicPayload = getPublicPayloadMethod.invoke(
-            PartnerInitializationResults(), internalPayload
-        ) as JSONObject
+        publicPayload =
+            getPublicPayloadMethod.invoke(
+                PartnerInitializationResults(),
+                internalPayload,
+            ) as JSONObject
     }
 
     @After
@@ -157,7 +160,7 @@ class PartnerInitializationResultsTest {
 
         assertEquals(
             allPartners.size,
-            success.length() + failure.length() + inProgress.length() + skipped.length()
+            success.length() + failure.length() + inProgress.length() + skipped.length(),
         )
     }
 

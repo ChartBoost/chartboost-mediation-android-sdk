@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -26,11 +26,15 @@ class PartnerLogController {
          * @param event The [PartnerAdapterEvents] event to log.
          * @param message An optional message to log for added clarity.
          */
-        fun log(event: PartnerAdapterEvents, message: String = "") {
-            val messageFromTemplate = LogController.buildLogMsg(
-                LogController.getClassAndMethod(STACK_TRACE_LEVEL),
-                "${event.message}. $message"
-            )
+        fun log(
+            event: PartnerAdapterEvents,
+            message: String = "",
+        ) {
+            val messageFromTemplate =
+                LogController.buildLogMsg(
+                    LogController.getClassAndMethod(STACK_TRACE_LEVEL),
+                    "${event.message}. $message",
+                )
 
             if (debugMode) Log.d(LogController.TAG, messageFromTemplate)
         }
@@ -83,6 +87,6 @@ class PartnerLogController {
         COPPA_NOT_SUBJECT("$PRIVACY_TAG User is not subject to COPPA"),
 
         // Other events
-        CUSTOM("");
+        CUSTOM(""),
     }
 }

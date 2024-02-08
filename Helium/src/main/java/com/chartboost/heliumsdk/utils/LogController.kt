@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -28,7 +28,7 @@ object LogController {
         WARNING(1),
         INFO(2),
         DEBUG(3),
-        VERBOSE(4);
+        VERBOSE(4),
     }
 
     /**
@@ -111,7 +111,7 @@ object LogController {
             return if (size > stackTraceLevel) {
                 StackTraceElements(
                     this[stackTraceLevel].className.substringAfterLast('.'),
-                    this[stackTraceLevel].methodName
+                    this[stackTraceLevel].methodName,
                 )
             } else {
                 null
@@ -132,11 +132,14 @@ object LogController {
      */
     internal fun buildLogMsg(
         stackTraceElements: StackTraceElements?,
-        message: String
+        message: String,
     ): String {
         return "${
-            if (stackTraceElements != null) "${stackTraceElements.className}.${stackTraceElements.methodName}():"
-            else ""
+            if (stackTraceElements != null) {
+                "${stackTraceElements.className}.${stackTraceElements.methodName}():"
+            } else {
+                ""
+            }
         } $message"
     }
 }

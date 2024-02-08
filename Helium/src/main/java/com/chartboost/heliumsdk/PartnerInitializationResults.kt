@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -74,8 +74,8 @@ class PartnerInitializationResults {
             observers.forEach { observer ->
                 observer.onPartnerInitializationResultsReady(
                     PartnerInitializationResultsData(
-                        getPublicPayload(results.data)
-                    )
+                        getPublicPayload(results.data),
+                    ),
                 )
 
                 // Since initialization is a one time event per app session, we can unsubscribe the
@@ -97,36 +97,53 @@ class PartnerInitializationResults {
             put(SESSION_ID_KEY, Environment.sessionId)
 
             val metrics = payload.getJSONArray(METRICS_NODE_KEY)
-            val groupedMetrics = (0 until metrics.length())
-                .map { metrics.getJSONObject(it) }
-                .groupBy { partnerData ->
-                    when {
-                        partnerData.opt(IS_SUCCESS_KEY) as Boolean -> SUCCESS_GROUP_KEY
-                        partnerData.opt(HELIUM_ERROR_CODE_KEY) == ChartboostMediationError.CM_INITIALIZATION_FAILURE_TIMEOUT.code -> IN_PROGRESS_GROUP_KEY
-                        partnerData.opt(HELIUM_ERROR_CODE_KEY) == ChartboostMediationError.CM_INITIALIZATION_SKIPPED.code -> SKIPPED_GROUP_KEY
-                        else -> FAILURE_GROUP_KEY
+            val groupedMetrics =
+                (0 until metrics.length())
+                    .map { metrics.getJSONObject(it) }
+                    .groupBy { partnerData ->
+                        when {
+                            partnerData.opt(IS_SUCCESS_KEY) as Boolean -> SUCCESS_GROUP_KEY
+                            partnerData.opt(
+                                HELIUM_ERROR_CODE_KEY,
+                            ) == ChartboostMediationError.CM_INITIALIZATION_FAILURE_TIMEOUT.code -> IN_PROGRESS_GROUP_KEY
+                            partnerData.opt(
+                                HELIUM_ERROR_CODE_KEY,
+                            ) == ChartboostMediationError.CM_INITIALIZATION_SKIPPED.code -> SKIPPED_GROUP_KEY
+                            else -> FAILURE_GROUP_KEY
+                        }
                     }
-                }
 
-            put(SUCCESS_GROUP_KEY, createJsonArray(groupedMetrics, SUCCESS_GROUP_KEY) {
-                createSuccessJson(it)
-            })
-            put(IN_PROGRESS_GROUP_KEY, createJsonArray(groupedMetrics, IN_PROGRESS_GROUP_KEY) {
-                createInProgressJson(it)
-            })
-            put(SKIPPED_GROUP_KEY, createJsonArray(groupedMetrics, SKIPPED_GROUP_KEY) {
-                it.optString(PARTNER_KEY)
-            })
-            put(FAILURE_GROUP_KEY, createJsonArray(groupedMetrics, FAILURE_GROUP_KEY) {
-                createFailureJson(it, it.opt(HELIUM_ERROR_CODE_KEY) as String)
-            })
+            put(
+                SUCCESS_GROUP_KEY,
+                createJsonArray(groupedMetrics, SUCCESS_GROUP_KEY) {
+                    createSuccessJson(it)
+                },
+            )
+            put(
+                IN_PROGRESS_GROUP_KEY,
+                createJsonArray(groupedMetrics, IN_PROGRESS_GROUP_KEY) {
+                    createInProgressJson(it)
+                },
+            )
+            put(
+                SKIPPED_GROUP_KEY,
+                createJsonArray(groupedMetrics, SKIPPED_GROUP_KEY) {
+                    it.optString(PARTNER_KEY)
+                },
+            )
+            put(
+                FAILURE_GROUP_KEY,
+                createJsonArray(groupedMetrics, FAILURE_GROUP_KEY) {
+                    createFailureJson(it, it.opt(HELIUM_ERROR_CODE_KEY) as String)
+                },
+            )
         }
     }
 
     private fun <T> createJsonArray(
         groupedMetrics: Map<String, List<JSONObject>>,
         key: String,
-        transform: (JSONObject) -> T
+        transform: (JSONObject) -> T,
     ): JSONArray {
         return JSONArray().apply {
             putAll(groupedMetrics[key]?.map(transform) ?: emptyList())
@@ -159,7 +176,10 @@ class PartnerInitializationResults {
         }
     }
 
-    private fun createFailureJson(partnerData: JSONObject, heliumErrorCode: String): JSONObject {
+    private fun createFailureJson(
+        partnerData: JSONObject,
+        heliumErrorCode: String,
+    ): JSONObject {
         return createCommonJson(partnerData).apply {
             put(END_KEY, partnerData.optLong(END_KEY))
             put(DURATION_KEY, partnerData.optInt(DURATION_KEY))

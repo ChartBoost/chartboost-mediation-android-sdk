@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -11,6 +11,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Size
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.chartboost.heliumsdk.Ilrd
 import com.chartboost.heliumsdk.ad.ChartboostMediationAdShowResult
 import com.chartboost.heliumsdk.domain.*
@@ -21,6 +22,7 @@ import com.chartboost.heliumsdk.network.ChartboostMediationNetworking.RATE_LIMIT
 import com.chartboost.heliumsdk.network.Endpoints
 import com.chartboost.heliumsdk.network.model.ChartboostMediationNetworkingResult
 import com.chartboost.heliumsdk.network.model.MetricsRequestBody
+import com.chartboost.heliumsdk.utils.BackgroundTimeMonitoring
 import com.chartboost.heliumsdk.utils.Environment
 import com.chartboost.heliumsdk.utils.HeliumJson
 import com.chartboost.heliumsdk.utils.LogController
@@ -41,7 +43,8 @@ class AdController(
     private val partnerController: PartnerController,
     private val privacyController: PrivacyController,
     private val loadRateLimiter: LoadRateLimiter,
-    private val ilrd: Ilrd
+    private val backgroundTimeMonitor: BackgroundTimeMonitoring,
+    private val ilrd: Ilrd,
 ) {
     companion object {
         /**
@@ -72,81 +75,99 @@ class AdController(
     suspend fun load(
         context: Context,
         adLoadParams: AdLoadParams,
-        metricsSet: MutableSet<Metrics>
+        metricsSet: MutableSet<Metrics>,
     ): Result<CachedAd> {
         val millisUntilNextLoadIsAllowed =
             loadRateLimiter.millisUntilNextLoadIsAllowed(adLoadParams.adIdentifier.placementName)
         if (millisUntilNextLoadIsAllowed > 0 && AppConfigStorage.getEnableRateLimiting()) {
-            LogController.w("${adLoadParams.adIdentifier.placementName} has been rate limited. Please try again in ${millisUntilNextLoadIsAllowed / 1000}.${millisUntilNextLoadIsAllowed % 1000} seconds")
+            LogController.w(
+                "${adLoadParams.adIdentifier.placementName} has been rate limited. Please try again in ${millisUntilNextLoadIsAllowed / 1000}.${millisUntilNextLoadIsAllowed % 1000} seconds",
+            )
             return Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_RATE_LIMITED))
         }
 
         // height must be at least 50dp and no more than 1800dp. 0dp is the exception to this.
         adLoadParams.bannerSize?.height?.takeIf { (it < 50 && it != 0) || it > 1800 }?.let { height ->
-            LogController.w("Banner height must be at least 50 and no more than 1800. Banner height is ${height}.")
+            LogController.w("Banner height must be at least 50 and no more than 1800. Banner height is $height.")
             return Result.failure(ChartboostMediationAdException(ChartboostMediationError.CM_LOAD_FAILURE_INVALID_BANNER_SIZE))
         }
+
+        val backgroundMonitorOperation = backgroundTimeMonitor.startMonitoringOperation()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(backgroundMonitorOperation)
 
         if (AppConfigStorage.shouldNotifyLoads) {
             sendLoadId(adLoadParams.adIdentifier, adLoadParams.loadId)
         }
 
-        val result = withContext(IO) {
-            ChartboostMediationNetworking.makeBidRequest(
-                privacyController = privacyController,
-                partnerController = partnerController,
-                adLoadParams = adLoadParams,
-                bidTokens = partnerController.routeGetBidderInformation(
-                    context,
-                    PreBidRequest(
-                        adLoadParams.adIdentifier.placementName,
-                        adTypeToAdFormat(adLoadParams.adIdentifier.adType),
-                        adLoadParams.loadId
-                    )
-                ),
-                rateLimitHeaderValue = loadRateLimiter.getLoadRateLimitSeconds(adLoadParams.adIdentifier.placementName)
-                    .toString(),
-                impressionDepth = getImpressionDepth(adLoadParams.adIdentifier.adType)
-            )
-        }
+        val result =
+            withContext(IO) {
+                ChartboostMediationNetworking.makeBidRequest(
+                    privacyController = privacyController,
+                    partnerController = partnerController,
+                    adLoadParams = adLoadParams,
+                    bidTokens =
+                        partnerController.routeGetBidderInformation(
+                            context,
+                            PreBidRequest(
+                                adLoadParams.adIdentifier.placementName,
+                                adTypeToAdFormat(adLoadParams.adIdentifier.adType),
+                                adLoadParams.loadId,
+                            ),
+                        ),
+                    rateLimitHeaderValue =
+                        loadRateLimiter.getLoadRateLimitSeconds(adLoadParams.adIdentifier.placementName)
+                            .toString(),
+                    impressionDepth = getImpressionDepth(adLoadParams.adIdentifier.adType),
+                )
+            }
+
+        ProcessLifecycleOwner.get().lifecycle.removeObserver(backgroundMonitorOperation)
 
         when (result) {
             is ChartboostMediationNetworkingResult.Success -> {
                 updateLoadRateLimiter(
                     adLoadParams.adIdentifier.placementName,
-                    result.headers.toMultimap()
+                    result.headers.toMultimap(),
                 )
-                val auctionResult = AuctionResult(
-                    bids = Bids(
-                        adLoadParams,
-                        result.body ?: BidsResponse.EMPTY_BIDS_RESPONSE,
-                    ),
-                    headers = result.headers.toMultimap(),
-                    chartboostMediationError = null
-                )
+                val auctionResult =
+                    AuctionResult(
+                        bids =
+                            Bids(
+                                adLoadParams,
+                                result.body ?: BidsResponse.EMPTY_BIDS_RESPONSE,
+                            ),
+                        headers = result.headers.toMultimap(),
+                        chartboostMediationError = null,
+                    )
                 val cachedAd = CachedAd(auctionResult.bids.auctionId)
-                val partnerAdResult = bidController.loadBids(
-                    context = context,
-                    bids = auctionResult.bids,
-                    bannerSize = adLoadParams.bannerSize,
-                    adInteractionListener = createInteractionListener(
-                        auctionResult.bids, adLoadParams.adInteractionListener, cachedAd
-                    ),
-                    loadMetricsSet = metricsSet
-                )
+                val partnerAdResult =
+                    bidController.loadBids(
+                        context = context,
+                        bids = auctionResult.bids,
+                        bannerSize = adLoadParams.bannerSize,
+                        adInteractionListener =
+                            createInteractionListener(
+                                auctionResult.bids,
+                                adLoadParams.adInteractionListener,
+                                cachedAd,
+                            ),
+                        loadMetricsSet = metricsSet,
+                    )
                 MetricsManager.postMetricsData(
                     metricsSet,
                     loadId = adLoadParams.loadId,
-                    eventResult = if (partnerAdResult.isSuccess) {
-                        EventResult.AdLoadResult.AdLoadSuccess
-                    } else {
-                        EventResult.AdLoadResult.AdLoadPartnerFailure(
-                            MetricsError.SimpleError(
-                                (partnerAdResult.exceptionOrNull() as? ChartboostMediationAdException)?.chartboostMediationError
-                                    ?: ChartboostMediationError.CM_LOAD_FAILURE_UNKNOWN
+                    backgroundDurationMs = backgroundMonitorOperation.backgroundTimeUntilNow(),
+                    eventResult =
+                        if (partnerAdResult.isSuccess) {
+                            EventResult.AdLoadResult.AdLoadSuccess
+                        } else {
+                            EventResult.AdLoadResult.AdLoadPartnerFailure(
+                                MetricsError.SimpleError(
+                                    (partnerAdResult.exceptionOrNull() as? ChartboostMediationAdException)?.chartboostMediationError
+                                        ?: ChartboostMediationError.CM_LOAD_FAILURE_UNKNOWN,
+                                ),
                             )
-                        )
-                    }
+                        },
                 )
                 partnerAdResult.fold({
                     cachedAd.partnerAd = it
@@ -160,8 +181,8 @@ class AdController(
                 })
             }
             is ChartboostMediationNetworkingResult.Failure -> {
-                if (result.error != ChartboostMediationError.CM_LOAD_FAILURE_AUCTION_NO_BID
-                    && result.error != ChartboostMediationError.CM_LOAD_FAILURE_RATE_LIMITED
+                if (result.error != ChartboostMediationError.CM_LOAD_FAILURE_AUCTION_NO_BID &&
+                    result.error != ChartboostMediationError.CM_LOAD_FAILURE_RATE_LIMITED
                 ) {
                     LogController.e(result.error.message)
                 }
@@ -173,36 +194,45 @@ class AdController(
                     chartboostMediationError = result.error,
                     chartboostMediationErrorMessage = result.error.message,
                     placementType = adLoadParams.adIdentifier.placementType,
-                    size = if (adLoadParams.bannerSize?.isAdaptive == true) {
-                        Size(adLoadParams.bannerSize.width, adLoadParams.bannerSize.height)
-                    } else null,
+                    backgroundDuration = backgroundMonitorOperation.backgroundTimeUntilNow(),
+                    size =
+                        if (adLoadParams.bannerSize?.isAdaptive == true) {
+                            Size(adLoadParams.bannerSize.width, adLoadParams.bannerSize.height)
+                        } else {
+                            null
+                        },
                     loadId = adLoadParams.loadId,
-                    eventResult = EventResult.AdLoadResult.AdLoadUnspecifiedFailure(
-                        MetricsError.SimpleError(result.error)
-                    )
+                    eventResult =
+                        EventResult.AdLoadResult.AdLoadUnspecifiedFailure(
+                            MetricsError.SimpleError(result.error),
+                        ),
                 )
 
                 return Result.failure(ChartboostMediationAdException(result.error))
             }
             is ChartboostMediationNetworkingResult.JsonParsingFailure -> {
                 val cmError = ChartboostMediationError.CM_LOAD_FAILURE_INVALID_BID_RESPONSE
-                val exceptionMessage = result.exception.message?.split('\n', limit = 2)?.let {
-                    it[0]
-                } ?: ""
+                val exceptionMessage =
+                    result.exception.message?.split('\n', limit = 2)?.let {
+                        it[0]
+                    } ?: ""
 
                 val malformedJson =
                     result.exception.message?.substring(exceptionMessage.length)?.let {
                         if (it.startsWith("\nJSON input: ")) {
                             it.substring("\nJSON input: ".length)
-                        } else it
+                        } else {
+                            it
+                        }
                     } ?: ""
 
-                val jsonParseError = MetricsError.JsonParseError(
-                    cmError,
-                    result.exception,
-                    exceptionMessage,
-                    malformedJson
-                )
+                val jsonParseError =
+                    MetricsError.JsonParseError(
+                        cmError,
+                        result.exception,
+                        exceptionMessage,
+                        malformedJson,
+                    )
 
                 MetricsManager.postMetricsDataForFailedEvent(
                     partner = null,
@@ -211,11 +241,15 @@ class AdController(
                     chartboostMediationError = cmError,
                     chartboostMediationErrorMessage = cmError.message,
                     placementType = adLoadParams.adIdentifier.placementType,
-                    size = if (adLoadParams.bannerSize?.isAdaptive == true) {
-                        Size(adLoadParams.bannerSize.width, adLoadParams.bannerSize.height)
-                    } else null,
+                    backgroundDuration = backgroundMonitorOperation.backgroundTimeUntilNow(),
+                    size =
+                        if (adLoadParams.bannerSize?.isAdaptive == true) {
+                            Size(adLoadParams.bannerSize.width, adLoadParams.bannerSize.height)
+                        } else {
+                            null
+                        },
                     loadId = adLoadParams.loadId,
-                    eventResult = EventResult.AdLoadResult.AdLoadJsonFailure(jsonParseError)
+                    eventResult = EventResult.AdLoadResult.AdLoadJsonFailure(jsonParseError),
                 )
 
                 return Result.failure(ChartboostMediationAdException(result.error))
@@ -224,7 +258,9 @@ class AdController(
     }
 
     private fun createInteractionListener(
-        bids: Bids, adInteractionListener: AdInteractionListener, cachedAd: CachedAd
+        bids: Bids,
+        adInteractionListener: AdInteractionListener,
+        cachedAd: CachedAd,
     ): AdInteractionListener {
         return object : AdInteractionListener {
             override fun onImpressionTracked(partnerAd: PartnerAd) {
@@ -234,7 +270,7 @@ class AdController(
                         Environment.sessionId ?: "",
                         Environment.appSetId ?: "",
                         bids.auctionId,
-                        cachedAd.loadId
+                        cachedAd.loadId,
                     )
                 }
             }
@@ -243,7 +279,7 @@ class AdController(
                 CoroutineScope(IO).launch {
                     ChartboostMediationNetworking.trackClick(
                         bids.auctionId,
-                        cachedAd.loadId
+                        cachedAd.loadId,
                     )
                 }
                 adInteractionListener.onClicked(partnerAd)
@@ -258,7 +294,7 @@ class AdController(
                 CoroutineScope(IO).launch {
                     ChartboostMediationNetworking.trackReward(
                         bids.auctionId,
-                        cachedAd.loadId
+                        cachedAd.loadId,
                     )
                     val activeBid = bids.activeBid
                     if (activeBid != null) {
@@ -266,7 +302,7 @@ class AdController(
                             ChartboostMediationNetworking.makeRewardedCallbackRequest(
                                 activeBid,
                                 cachedAd.customData,
-                                rewardedCallbackData
+                                rewardedCallbackData,
                             )
                         }
                     }
@@ -275,7 +311,10 @@ class AdController(
                 adInteractionListener.onRewarded(partnerAd)
             }
 
-            override fun onDismissed(partnerAd: PartnerAd, error: ChartboostMediationAdException?) {
+            override fun onDismissed(
+                partnerAd: PartnerAd,
+                error: ChartboostMediationAdException?,
+            ) {
                 adInteractionListener.onDismissed(partnerAd, error)
             }
 
@@ -285,13 +324,16 @@ class AdController(
         }
     }
 
-    private fun sendLoadId(adIdentifier: AdIdentifier, loadId: String) {
+    private fun sendLoadId(
+        adIdentifier: AdIdentifier,
+        loadId: String,
+    ) {
         CoroutineScope(IO).launch {
             ChartboostMediationNetworking.trackAdLoad(
                 adIdentifier.placementName,
                 adIdentifier.placementType,
                 loadId,
-                "new"
+                "new",
             )
         }
     }
@@ -299,20 +341,22 @@ class AdController(
     @OptIn(InternalSerializationApi::class)
     suspend fun show(
         context: Context,
-        cachedAd: CachedAd
+        cachedAd: CachedAd,
     ): ChartboostMediationAdShowResult {
-        val internalShowResult = partnerController.routeShow(
-            context,
-            cachedAd.partnerAd,
-            cachedAd.auctionId,
-            cachedAd.loadId
-        )
+        val internalShowResult =
+            partnerController.routeShow(
+                context,
+                cachedAd.partnerAd,
+                cachedAd.auctionId,
+                cachedAd.loadId,
+            )
         val showSucceeded = internalShowResult.metrics.first().isSuccess
         val metricsRequestBody = MetricsManager.buildMetricsDataRequestBody(internalShowResult.metrics)
-        val payloadJson = HeliumJson.writeJson(
-            metricsRequestBody,
-            MetricsRequestBody.serializer()
-        ).jsonObject.toJSONObject()
+        val payloadJson =
+            HeliumJson.writeJson(
+                metricsRequestBody,
+                MetricsRequestBody.serializer(),
+            ).jsonObject.toJSONObject()
 
         if (showSucceeded) {
             internalShowResult.partnerAd?.let { partnerAd ->
@@ -332,14 +376,14 @@ class AdController(
             } ?: run {
                 return ChartboostMediationAdShowResult(
                     payloadJson,
-                    ChartboostMediationError.CM_SHOW_FAILURE_AD_NOT_READY
+                    ChartboostMediationError.CM_SHOW_FAILURE_AD_NOT_READY,
                 )
             }
         } else {
             return ChartboostMediationAdShowResult(
                 payloadJson,
                 internalShowResult.metrics.first().chartboostMediationError
-                    ?: ChartboostMediationError.CM_SHOW_FAILURE_UNKNOWN
+                    ?: ChartboostMediationError.CM_SHOW_FAILURE_UNKNOWN,
             )
         }
     }
@@ -353,19 +397,25 @@ class AdController(
         bannerImpressionDepth++
     }
 
-    private fun updateLoadRateLimiter(placement: String, headers: Map<String, List<String>>) {
+    private fun updateLoadRateLimiter(
+        placement: String,
+        headers: Map<String, List<String>>,
+    ) {
         headers[RATE_LIMIT_HEADER_KEY]?.firstOrNull()?.let { rateLimit ->
             try {
                 loadRateLimiter.setLoadRateLimit(placement, rateLimit.toInt())
             } catch (e: NumberFormatException) {
                 LogController.w(
-                    "Unable to retrieve rate limit on $placement due to number format exception."
+                    "Unable to retrieve rate limit on $placement due to number format exception.",
                 )
             }
         }
     }
 
-    private fun sendAuctionWinnerRequest(bids: Bids, loadId: String) {
+    private fun sendAuctionWinnerRequest(
+        bids: Bids,
+        loadId: String,
+    ) {
         CoroutineScope(IO).launch {
             ChartboostMediationNetworking.logAuctionWinner(bids, loadId)
         }

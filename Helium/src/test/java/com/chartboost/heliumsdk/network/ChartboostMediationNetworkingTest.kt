@@ -1,6 +1,6 @@
 /*
- * Copyright 2023 Chartboost, Inc.
- * 
+ * Copyright 2023-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -31,12 +31,10 @@ import java.lang.reflect.Modifier
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE)
 class ChartboostMediationNetworkingTest {
-
     val mockWebServer = MockWebServer()
 
     @Before
     fun setup() {
-
         setFinalStatic(Build.VERSION::class.java.getField("RELEASE"), BUILD_RELEASE)
 
         Endpoints.SDK_DOMAIN = getMockServerUrl()
@@ -50,59 +48,49 @@ class ChartboostMediationNetworkingTest {
         Helium Impression
      */
     @Test
-    fun trackChartboostImpression_success() =
-        `verify result for chartboost ("helium") impression success`()
+    fun trackChartboostImpression_success() = `verify result for chartboost ("helium") impression success`()
+
     @Test
-    fun trackChartboostImpression_failure() =
-        `verify result for chartboost ("helium") impression failure`()
+    fun trackChartboostImpression_failure() = `verify result for chartboost ("helium") impression failure`()
 
     /*
         Partner Impression
      */
     @Test
-    fun trackPartnerImpression_success() =
-        `verify result for partner impression success`()
+    fun trackPartnerImpression_success() = `verify result for partner impression success`()
+
     @Test
-    fun trackPartnerImpression_failure() =
-        `verify result for partner impression failure`()
+    fun trackPartnerImpression_failure() = `verify result for partner impression failure`()
 
     /*
         App Config
      */
     @Test
-    fun `getAppConfig new config success`() =
-        `verify result for sdk_init success with new config`()
+    fun `getAppConfig new config success`() = `verify result for sdk_init success with new config`()
 
     @Test
-    fun `getAppConfig no new config success`() =
-        `verify result for sdk_init success with no new config`()
+    fun `getAppConfig no new config success`() = `verify result for sdk_init success with no new config`()
 
     @Test
-    fun `getAppConfig json parsing failure`() =
-        `verify result for sdk_init failure due to JSON parsing`()
+    fun `getAppConfig json parsing failure`() = `verify result for sdk_init failure due to JSON parsing`()
 
     @Test
-    fun `getAppConfig http code failure`() =
-        `verify result for sdk_init failure due to http code`()
+    fun `getAppConfig http code failure`() = `verify result for sdk_init failure due to http code`()
 
     /*
         Make Bid Request
      */
     @Test
-    fun `makeBidRequest with banner bid info success`() =
-        `verify banner bid request success`()
+    fun `makeBidRequest with banner bid info success`() = `verify banner bid request success`()
 
     @Test
-    fun `makeBidRequest with banner bid info failure due to json failure`() =
-        `verify banner bid request failure due to json parsing`()
+    fun `makeBidRequest with banner bid info failure due to json failure`() = `verify banner bid request failure due to json parsing`()
 
     @Test
-    fun `makeBidRequest with banner bid info failure due to http code`() =
-        `verify banner bid request failure due to http code`()
+    fun `makeBidRequest with banner bid info failure due to http code`() = `verify banner bid request failure due to http code`()
 
     @Test
-    fun `makeBidRequest with interstitial bid info success`() =
-        `verify interstitial bid request success`()
+    fun `makeBidRequest with interstitial bid info success`() = `verify interstitial bid request success`()
 
     @Test
     fun `makeBidRequest with interstitial bid info failure due to json failure`() =
@@ -113,24 +101,19 @@ class ChartboostMediationNetworkingTest {
         `verify interstitial bid request failure due to http code`()
 
     @Test
-    fun `makeBidRequest with rewarded bid info success`() =
-        `verify rewarded bid request success`()
+    fun `makeBidRequest with rewarded bid info success`() = `verify rewarded bid request success`()
 
     @Test
-    fun `makeBidRequest with rewarded bid info failure due to json failure`() =
-        `verify rewarded bid request failure due to json parsing`()
+    fun `makeBidRequest with rewarded bid info failure due to json failure`() = `verify rewarded bid request failure due to json parsing`()
 
     @Test
-    fun `makeBidRequest with rewarded bid info failure due to http code`() =
-        `verify rewarded bid request failure due to http code`()
+    fun `makeBidRequest with rewarded bid info failure due to http code`() = `verify rewarded bid request failure due to http code`()
 
     @Test
-    fun `makeRewardedCallbackRequest with GET rewarded callback info success`() =
-        `verify rewarded callback GET request success`()
+    fun `makeRewardedCallbackRequest with GET rewarded callback info success`() = `verify rewarded callback GET request success`()
 
     @Test
-    fun `makeRewardedCallbackRequest with POST rewarded callback info success`() =
-        `verify rewarded callback POST request success`()
+    fun `makeRewardedCallbackRequest with POST rewarded callback info success`() = `verify rewarded callback POST request success`()
 
     /*
         Log Auction Winner
@@ -166,7 +149,10 @@ class ChartboostMediationNetworkingTest {
     }
 
     @Throws(Exception::class)
-    fun setFinalStatic(field: Field, newValue: Any?) {
+    fun setFinalStatic(
+        field: Field,
+        newValue: Any?,
+    ) {
         field.isAccessible = true
         val modifiersField: Field = Field::class.java.getDeclaredField("modifiers")
         modifiersField.isAccessible = true
@@ -180,7 +166,7 @@ class ChartboostMediationNetworkingTest {
             keywords = Keywords(),
             loadId = BANNER_LOAD_ID,
             bannerSize = HeliumBannerAd.HeliumBannerSize.STANDARD,
-            adInteractionListener = mockk()
+            adInteractionListener = mockk(),
         )
     }
 
@@ -190,7 +176,7 @@ class ChartboostMediationNetworkingTest {
             keywords = Keywords(),
             loadId = INTERSTITIAL_LOAD_ID,
             bannerSize = null,
-            adInteractionListener = mockk()
+            adInteractionListener = mockk(),
         )
     }
 
@@ -200,7 +186,7 @@ class ChartboostMediationNetworkingTest {
             keywords = Keywords(),
             loadId = REWARDED_LOAD_ID,
             bannerSize = null,
-            adInteractionListener = mockk()
+            adInteractionListener = mockk(),
         )
     }
 
@@ -227,12 +213,14 @@ class ChartboostMediationNetworkingTest {
 
     fun setupPartnerController(): PartnerController {
         return PartnerController().apply {
-            adapters = mutableMapOf<String, PartnerAdapter>().also {
-                it["admob"] = mockk()
-            }
-            initStatuses = mutableMapOf<String, PartnerController.PartnerInitializationStatus>().also {
-                it["admob"] = PartnerController.PartnerInitializationStatus.INITIALIZED
-            }
+            adapters =
+                mutableMapOf<String, PartnerAdapter>().also {
+                    it["admob"] = mockk()
+                }
+            initStatuses =
+                mutableMapOf<String, PartnerController.PartnerInitializationStatus>().also {
+                    it["admob"] = PartnerController.PartnerInitializationStatus.INITIALIZED
+                }
         }
     }
 

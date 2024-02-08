@@ -1,6 +1,6 @@
 /*
- * Copyright 2022-2023 Chartboost, Inc.
- * 
+ * Copyright 2022-2024 Chartboost, Inc.
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -32,18 +32,21 @@ class PrivacyController(context: Context, private val partnerConsents: PartnerCo
     }
 
     init {
-        partnerConsents.addPartnerConsentsObserver(object :
-            PartnerConsents.PartnerConsentsObserver {
-            override fun onPartnerConsentsUpdated() {
-                savePartnerConsentsToDisk()
-            }
-        })
+        partnerConsents.addPartnerConsentsObserver(
+            object :
+                PartnerConsents.PartnerConsentsObserver {
+                override fun onPartnerConsentsUpdated() {
+                    savePartnerConsentsToDisk()
+                }
+            },
+        )
     }
 
-    private val sharedPreferences = context.getSharedPreferences(
-        heliumPrivacyIdentifier,
-        Context.MODE_PRIVATE
-    )
+    private val sharedPreferences =
+        context.getSharedPreferences(
+            heliumPrivacyIdentifier,
+            Context.MODE_PRIVATE,
+        )
 
     /**
      * Whether or not the disk fetch for PrivacyConsents has happened.
@@ -56,7 +59,7 @@ class PrivacyController(context: Context, private val partnerConsents: PartnerCo
     enum class PrivacySetting(val value: Int) {
         TRUE(1),
         FALSE(0),
-        UNSET(-1)
+        UNSET(-1),
     }
 
     /**
@@ -100,12 +103,13 @@ class PrivacyController(context: Context, private val partnerConsents: PartnerCo
      * TODO: What if user consent is not set?
      */
     var userConsent: Boolean?
-        get() = intToBoolean(
-            sharedPreferences.getInt(
-                heliumUserConsentKey,
-                PrivacySetting.FALSE.value
+        get() =
+            intToBoolean(
+                sharedPreferences.getInt(
+                    heliumUserConsentKey,
+                    PrivacySetting.FALSE.value,
+                ),
             )
-        )
         set(value) {
             val editor = sharedPreferences.edit()
             editor.putInt(heliumUserConsentKey, booleanToInt(value ?: return))
@@ -118,9 +122,12 @@ class PrivacyController(context: Context, private val partnerConsents: PartnerCo
      * Only set if CCPA consent is true/false. If null, return.
      */
     var ccpaConsent: Boolean?
-        get() = if (sharedPreferences.contains(heliumCcpaConsentKey)) {
-            sharedPreferences.getBoolean(heliumCcpaConsentKey, false)
-        } else null
+        get() =
+            if (sharedPreferences.contains(heliumCcpaConsentKey)) {
+                sharedPreferences.getBoolean(heliumCcpaConsentKey, false)
+            } else {
+                null
+            }
         set(value) {
             val editor = sharedPreferences.edit()
             editor.putBoolean(heliumCcpaConsentKey, value ?: return)
@@ -134,7 +141,7 @@ class PrivacyController(context: Context, private val partnerConsents: PartnerCo
         val editor = sharedPreferences.edit()
         editor.putString(
             HELIUM_PARTNER_CONSENTS_MAP_KEY,
-            JSONObject(partnerConsents.getPartnerIdToConsentGivenMapCopy()).toString()
+            JSONObject(partnerConsents.getPartnerIdToConsentGivenMapCopy()).toString(),
         )
         editor.apply()
     }
