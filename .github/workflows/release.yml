@@ -12,12 +12,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Check for Semver in Commit Message
+      # Only make a GitHub release if the commit message contains a simple semver string (e.g., '1.2.3')
+      - name: Check for Simple Semver in Commit Message
         run: |
           commit_message=$(git log --format=%B -n 1 ${{ github.sha }})
-          semver_pattern="^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-((0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(\+([0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*))?$"
-          if ! [[ "$commit_message" =~ $semver_pattern ]]; then
-            echo "Commit message does not contain a valid semver string. Aborting..."
+          simple_semver_pattern="^v?[0-9]+\.[0-9]+\.[0-9]+$"
+          if ! [[ "$commit_message" =~ $simple_semver_pattern ]]; then
+            echo "Commit message does not contain a simple semver string (e.g., '1.2.3'). This probably is not a release. Aborting..."
             exit 1
           fi
       
