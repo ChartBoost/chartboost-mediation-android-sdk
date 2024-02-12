@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Check for Semver in Commit Message
         run: |
           commit_message=$(git log --format=%B -n 1 ${{ github.sha }})
