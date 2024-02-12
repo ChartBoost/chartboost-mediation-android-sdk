@@ -1,0 +1,5 @@
+.gradle/
+buildSrc
+**/.class
+buildSrc/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at
+*.class

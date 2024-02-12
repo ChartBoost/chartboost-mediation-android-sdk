@@ -1,0 +1,31 @@
+name: Create GitHub Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for Semver in Commit Message
+        run: |
+          commit_message=$(git log --format=%B -n 1 ${{ github.sha }})
+          semver_pattern="^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-((0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(\+([0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*))?$"
+          if ! [[ "$commit_message" =~ $semver_pattern ]]; then
+            echo "Commit message does not contain a valid semver string. Aborting..."
+            exit 1
+          fi
+      
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.ref }}
+          commit: ${{ github.sha }}
+          name: ${{ github.ref_name }}
+          body: "New release of the public repository"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
