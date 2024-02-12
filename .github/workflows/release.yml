@@ -1,0 +1,34 @@
+name: Create GitHub Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check and extract semver from commit message
+        run: |
+          # Extracting first line of commit message
+          commit_title=$(git log --format=%s -n 1 ${{ github.sha }})
+
+          if [[ "$commit_title" =~ ^v?([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            echo "SEMVER=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+          else
+            echo "Commit title/message does not contain a simple semver string (e.g., '1.2.3'). This probably is not a release. Exiting..."
+            exit 1
+          fi
+
+      - name: Create GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.SEMVER }}
+          commit: ${{ github.sha }}
+          name: ${{ env.SEMVER }}
+          draft: false
+          prerelease: false
