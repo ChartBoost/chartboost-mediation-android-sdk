@@ -14,13 +14,14 @@ jobs:
 
       - name: Check and extract semver from commit message
         run: |
-          commit_message=$(git log --format=%B -n 1 ${{ github.sha }})
-          echo "Commit message: $commit_message"
+          # Extracting the commit title (first line of commit message)
+          commit_title=$(git log --format=%s -n 1 ${{ github.sha }})
+          echo "Commit title: $commit_title"
 
-          if [[ "$commit_message" =~ ^v?([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+          if [[ "$commit_title" =~ ^v?([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
             echo "SEMVER=${BASH_REMATCH[1]}" >> $GITHUB_ENV
           else
-            echo "Commit message does not contain a simple semver string (e.g., '1.2.3'). This probably is not a release. Aborting..."
+            echo "Commit title does not contain a simple semver string (e.g., '1.2.3'). This probably is not a release. Aborting..."
             exit 1
           fi
 
