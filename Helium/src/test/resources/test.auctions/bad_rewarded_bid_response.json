@@ -281,36 +281,6 @@
     "bid": [{
       "id": "MEDIATION",
       "impid": "1",
-      "price": 20.0,
-      "ext": {
-        "partner_placement": "TJNonProRewardedHigh",
-        "line_item_id": "6e91619e-db83-497b-8eec-b5608c71e240",
-        "ilrd": {
-          "network_name": "tapjoy",
-          "network_type": "mediation",
-          "precision": "publisher_defined",
-          "line_item_name": "TJNonProRewardedHigh",
-          "line_item_id": "6e91619e-db83-497b-8eec-b5608c71e240",
-          "network_placement_id": "TJNonProRewardedHigh",
-          "ad_revenue": 0.02
-        },
-        "first_look": false,
-        "cpm_price": 20.0,
-        "ad_revenue": 0.02,
-        "bidder": {
-          "helium": {
-            "partner_placement": "TJNonProRewardedHigh",
-            "line_item_id": "6e91619e-db83-497b-8eec-b5608c71e240"
-          }
-        }
-      }
-    }],
-    "seat": "tapjoy",
-    "helium_bid_id": "39cac5b150c5264b798aa05aef31f5fd48e21f8f_tapjoy_TJNonProRewardedHigh"
-  }, {
-    "bid": [{
-      "id": "MEDIATION",
-      "impid": "1",
       "price": 15.0,
       "ext": {
         "partner_placement": "Android CBNonProRewardedMed",
@@ -521,36 +491,6 @@
     "bid": [{
       "id": "MEDIATION",
       "impid": "1",
-      "price": 11.0,
-      "ext": {
-        "partner_placement": "TJNonProRewardedMed",
-        "line_item_id": "4011f55c-1034-45ac-ab08-cbd198c77e29",
-        "ilrd": {
-          "network_name": "tapjoy",
-          "network_type": "mediation",
-          "precision": "publisher_defined",
-          "line_item_name": "TJNonProRewardedMed",
-          "line_item_id": "4011f55c-1034-45ac-ab08-cbd198c77e29",
-          "network_placement_id": "TJNonProRewardedMed",
-          "ad_revenue": 0.011
-        },
-        "first_look": false,
-        "cpm_price": 11.0,
-        "ad_revenue": 0.011,
-        "bidder": {
-          "helium": {
-            "partner_placement": "TJNonProRewardedMed",
-            "line_item_id": "4011f55c-1034-45ac-ab08-cbd198c77e29"
-          }
-        }
-      }
-    }],
-    "seat": "tapjoy",
-    "helium_bid_id": "39cac5b150c5264b798aa05aef31f5fd48e21f8f_tapjoy_TJNonProRewardedMed"
-  }, {
-    "bid": [{
-      "id": "MEDIATION",
-      "impid": "1",
       "price": 10.25,
       "ext": {
         "partner_placement": "UANonProRewardedMed",
@@ -667,36 +607,6 @@
     }],
     "seat": "applovin",
     "helium_bid_id": "39cac5b150c5264b798aa05aef31f5fd48e21f8f_applovin_a5c29e3dd2de9f18"
-  }, {
-    "bid": [{
-      "id": "MEDIATION",
-      "impid": "1",
-      "price": 4.0,
-      "ext": {
-        "partner_placement": "TJNonProgRewarded",
-        "line_item_id": "aad84345-644b-401a-92e3-6770a2e88838",
-        "ilrd": {
-          "network_name": "tapjoy",
-          "network_type": "mediation",
-          "precision": "publisher_defined",
-          "line_item_name": "TJNonProRewardedLow",
-          "line_item_id": "aad84345-644b-401a-92e3-6770a2e88838",
-          "network_placement_id": "TJNonProgRewarded",
-          "ad_revenue": 0.004
-        },
-        "first_look": false,
-        "cpm_price": 4.0,
-        "ad_revenue": 0.004,
-        "bidder": {
-          "helium": {
-            "partner_placement": "TJNonProgRewarded",
-            "line_item_id": "aad84345-644b-401a-92e3-6770a2e88838"
-          }
-        }
-      }
-    }],
-    "seat": "tapjoy",
-    "helium_bid_id": "39cac5b150c5264b798aa05aef31f5fd48e21f8f_tapjoy_TJNonProgRewarded"
   }, {
     "bid": [{
       "id": "MEDIATION",

@@ -126,6 +126,7 @@ class AppConfigController(
                         return@withContext true
                     }
                 }
+
                 is ChartboostMediationNetworkingResult.JsonParsingFailure -> {
                     val cmError = ChartboostMediationError.CM_INITIALIZATION_FAILURE_INTERNAL_ERROR
                     val exceptionMessage =
@@ -155,6 +156,7 @@ class AppConfigController(
                         result.exception,
                     )
                 }
+
                 is ChartboostMediationNetworkingResult.Failure -> {
                     failServerConfig(result.error)
                 }

@@ -8,6 +8,7 @@
 package com.chartboost.heliumsdk.domain
 
 import android.content.Context
+import com.chartboost.heliumsdk.ChartboostMediationInternal
 import com.chartboost.heliumsdk.HeliumInitializationOptions
 import com.chartboost.heliumsdk.controllers.PartnerController
 import com.chartboost.heliumsdk.domain.EventResult.SdkInitializationResult.InitResult1B
@@ -43,6 +44,7 @@ class ChartboostMediationAppConfigurationHandler(
                     LogController.e("Failed to initialize mediation partners. Context is null.")
                     return ChartboostMediationError.CM_INITIALIZATION_FAILURE_ABORTED
                 }
+            updateServerLogLevelOverride(context)
 
             val initializationOptions = chartboostMediationInitializationOptions
             val skippedPartnerIds = initializationOptions?.skippedPartnerIds.orEmpty()
@@ -115,6 +117,26 @@ class ChartboostMediationAppConfigurationHandler(
                     continuation.resumeWith(Result.success(error))
                 },
             )
+        }
+    }
+
+    /**
+     * If the server log level exists, set the log level. If not, remove the entry from shared preferences.
+     * @param context The app Context to get shared preferences
+     */
+    private fun updateServerLogLevelOverride(context: Context) {
+        val preferences =
+            context.getSharedPreferences(
+                ChartboostMediationInternal.CHARTBOOST_MEDIATION_INTERNAL_SHARED_PREFS,
+                Context.MODE_PRIVATE,
+            ).edit()
+        AppConfigStorage.serverLogLevelOverride?.let {
+            LogController.serverLogLevelOverride = it
+            preferences.putString(ChartboostMediationInternal.SERVER_LOG_LEVEL_OVERRIDE, it.name)
+                .apply()
+        } ?: run {
+            LogController.serverLogLevelOverride = null
+            preferences.remove(ChartboostMediationInternal.SERVER_LOG_LEVEL_OVERRIDE).apply()
         }
     }
 }

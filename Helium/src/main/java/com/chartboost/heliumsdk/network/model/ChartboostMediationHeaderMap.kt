@@ -18,12 +18,20 @@ sealed class ChartboostMediationHeaderMap : HashMap<String, String?>() {
     data class ChartboostMediationAdLifecycleHeaderMap(
         val loadId: String?,
         val appSetId: String,
+        val queueId: String? = null,
     ) : ChartboostMediationHeaderMap() {
         init {
             mapOf<String, String>().let {
                 put(ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY, appSetId)
-                put(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY, Environment.sessionId)
+                put(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY, Environment.sessionId ?: "")
                 loadId?.let { put(ChartboostMediationNetworking.MEDIATION_LOAD_ID_HEADER_KEY, it) }
+                queueId?.let { put(ChartboostMediationNetworking.QUEUE_ID_HEADER_KEY, it) }
+                if (HeliumSdk.chartboostMediationInternal.testMode) {
+                    put(
+                        ChartboostMediationNetworking.DEBUG_HEADER_KEY,
+                        HeliumSdk.chartboostMediationInternal.appId,
+                    )
+                }
             }
         }
     }
@@ -35,12 +43,20 @@ sealed class ChartboostMediationHeaderMap : HashMap<String, String?>() {
         init {
             mapOf(
                 ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY to appSetId,
-                ChartboostMediationNetworking.SESSION_ID_HEADER_KEY to Environment.sessionId,
+                ChartboostMediationNetworking.SESSION_ID_HEADER_KEY to (Environment.sessionId ?: ""),
                 ChartboostMediationNetworking.SDK_VERSION_HEADER_KEY to HeliumSdk.getVersion(),
                 ChartboostMediationNetworking.DEVICE_OS_HEADER_KEY to Environment.operatingSystem,
                 ChartboostMediationNetworking.DEVICE_OS_VERSION_HEADER_KEY to Environment.operatingSystemVersion,
                 ChartboostMediationNetworking.INIT_HASH_HEADER_KEY to initHash,
-            ).let { putAll(it) }
+            ).let {
+                putAll(it)
+                if (HeliumSdk.chartboostMediationInternal.testMode) {
+                    put(
+                        ChartboostMediationNetworking.DEBUG_HEADER_KEY,
+                        HeliumSdk.chartboostMediationInternal.appId,
+                    )
+                }
+            }
         }
     }
 
@@ -51,11 +67,40 @@ sealed class ChartboostMediationHeaderMap : HashMap<String, String?>() {
     ) : ChartboostMediationHeaderMap() {
         init {
             mapOf(
-                "X-Helium-SessionID" to Environment.sessionId,
+                "X-Helium-SessionID" to (Environment.sessionId ?: ""),
                 ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY to appSetId,
                 ChartboostMediationNetworking.MEDIATION_LOAD_ID_HEADER_KEY to loadId,
                 ChartboostMediationNetworking.RATE_LIMIT_HEADER_KEY to rateLimit,
-            ).let { putAll(it) }
+            ).let {
+                putAll(it)
+                if (HeliumSdk.chartboostMediationInternal.testMode) {
+                    put(
+                        ChartboostMediationNetworking.DEBUG_HEADER_KEY,
+                        HeliumSdk.chartboostMediationInternal.appId,
+                    )
+                }
+            }
+        }
+    }
+
+    data class ChartboostQueueRequestMediationHeaderMap(
+        val queueId: String,
+        val appSetId: String,
+    ) : ChartboostMediationHeaderMap() {
+        init {
+            mapOf(
+                ChartboostMediationNetworking.SESSION_ID_HEADER_KEY to (Environment.sessionId ?: ""),
+                ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY to appSetId,
+                ChartboostMediationNetworking.QUEUE_ID_HEADER_KEY to queueId,
+            ).let {
+                putAll(it)
+                if (HeliumSdk.chartboostMediationInternal.testMode) {
+                    put(
+                        ChartboostMediationNetworking.DEBUG_HEADER_KEY,
+                        HeliumSdk.chartboostMediationInternal.appId,
+                    )
+                }
+            }
         }
     }
 }

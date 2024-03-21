@@ -7,22 +7,31 @@
 
 import java.time.Instant
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.TimeZone
 
 plugins {
-    kotlin("jvm") version "1.7.20"
-    kotlin("plugin.serialization") version "1.7.20"
+    kotlin("jvm") version "1.8.10"
+    kotlin("plugin.serialization") version "1.8.10"
     id("com.jfrog.artifactory") version "4.32.0"
     id("maven-publish")
 
 }
 
 buildscript {
-    val kotlin_version by extra("1.7.20")
+    val kotlinVersion by extra("1.8.10")
+
     repositories {
         gradlePluginPortal()
         google()
         mavenCentral()
+
+        maven("https://cboost.jfrog.io/artifactory/private-chartboost-core/") {
+            credentials {
+                username = System.getenv("JFROG_USER")
+                password = System.getenv("JFROG_PASS")
+            }
+        }
+        maven("https://cboost.jfrog.io/artifactory/chartboost-core/")
     }
 
     dependencies {
@@ -35,10 +44,11 @@ buildscript {
         classpath("com.google.firebase:firebase-appdistribution-gradle:3.1.1")
         classpath("org.jfrog.buildinfo:build-info-extractor-gradle:4.31.9")
         classpath("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 
     }
 }
+
 
 
 allprojects {

@@ -10,7 +10,7 @@ package com.chartboost.heliumsdk.utils
 /**
  * An implementation of `BackgroundTimeMonitoring`
  */
-internal class BackgroundTimeMonitor: BackgroundTimeMonitoring {
+internal class BackgroundTimeMonitor : BackgroundTimeMonitoring {
     override fun startMonitoringOperation(): BackgroundTimeMonitorOperator {
         return BackgroundTimeMonitorOperation()
     }

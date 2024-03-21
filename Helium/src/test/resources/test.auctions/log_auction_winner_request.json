@@ -44,10 +44,6 @@
       "price":20.25
     },
     {
-      "seat":"tapjoy",
-      "price":20.0
-    },
-    {
       "seat":"chartboost",
       "price":15.0
     },
@@ -72,10 +68,6 @@
       "price":11.5
     },
     {
-      "seat":"tapjoy",
-      "price":11.0
-    },
-    {
       "seat":"unity",
       "price":10.25
     },
@@ -98,10 +90,6 @@
     {
       "seat":"applovin",
       "price":4.5
-    },
-    {
-      "seat":"tapjoy",
-      "price":4.0
     },
     {
       "seat":"admob",

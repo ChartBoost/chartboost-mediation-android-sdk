@@ -50,12 +50,14 @@ fun ChartboostMediationNetworkingTest.`verify result for sdk_init success with n
 
             val actualRequestUrl = request?.requestUrl.toString()
             val actualRequestInitHashHeaderValue = request?.getHeader(ChartboostMediationNetworking.INIT_HASH_HEADER_KEY)
+            val actualRequestDebugHeaderValue = request?.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY)
 
             Assert.assertEquals(expectedRequestUrl, actualRequestUrl)
             Assert.assertEquals(
                 expectedRequestInitHashHeaderValue,
                 actualRequestInitHashHeaderValue,
             )
+            Assert.assertEquals(ChartboostMediationNetworkingTest.APP_ID, actualRequestDebugHeaderValue)
 
             Assert.assertNotNull(response)
             Assert.assertTrue(response is ChartboostMediationNetworkingResult.Success)
@@ -98,12 +100,14 @@ fun ChartboostMediationNetworkingTest.`verify result for sdk_init success with n
 
             val actualRequestUrl = request?.requestUrl.toString()
             val actualRequestInitHashHeaderValue = request?.getHeader(ChartboostMediationNetworking.INIT_HASH_HEADER_KEY)
+            val actualRequestDebugHeaderValue = request?.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY)
 
             Assert.assertEquals(expectedRequestUrl, actualRequestUrl)
             Assert.assertEquals(
                 expectedRequestInitHashHeaderValue,
                 actualRequestInitHashHeaderValue,
             )
+            Assert.assertEquals(ChartboostMediationNetworkingTest.APP_ID, actualRequestDebugHeaderValue)
 
             Assert.assertNotNull(response)
             Assert.assertTrue(response is ChartboostMediationNetworkingResult.Success)
@@ -147,12 +151,14 @@ fun ChartboostMediationNetworkingTest.`verify result for sdk_init failure due to
 
             val actualRequestUrl = request?.requestUrl.toString()
             val actualRequestInitHashHeaderValue = request?.getHeader(ChartboostMediationNetworking.INIT_HASH_HEADER_KEY)
+            val actualRequestDebugHeaderValue = request?.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY)
 
             Assert.assertEquals(expectedRequestUrl, actualRequestUrl)
             Assert.assertEquals(
                 expectedRequestInitHashHeaderValue,
                 actualRequestInitHashHeaderValue,
             )
+            Assert.assertEquals(ChartboostMediationNetworkingTest.APP_ID, actualRequestDebugHeaderValue)
 
             Assert.assertNotNull(response)
             Assert.assertTrue(response is ChartboostMediationNetworkingResult.JsonParsingFailure)
@@ -185,12 +191,14 @@ fun ChartboostMediationNetworkingTest.`verify result for sdk_init failure due to
 
             val actualRequestUrl = request?.requestUrl.toString()
             val actualRequestInitHashHeaderValue = request?.getHeader(ChartboostMediationNetworking.INIT_HASH_HEADER_KEY)
+            val actualRequestDebugHeaderValue = request?.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY)
 
             Assert.assertEquals(expectedRequestUrl, actualRequestUrl)
             Assert.assertEquals(
                 expectedRequestInitHashHeaderValue,
                 actualRequestInitHashHeaderValue,
             )
+            Assert.assertEquals(ChartboostMediationNetworkingTest.APP_ID, actualRequestDebugHeaderValue)
 
             Assert.assertNotNull(response)
             Assert.assertTrue(response is ChartboostMediationNetworkingResult.Failure)

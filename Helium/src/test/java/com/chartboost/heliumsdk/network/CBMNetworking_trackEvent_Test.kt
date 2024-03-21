@@ -12,6 +12,7 @@ import com.chartboost.heliumsdk.domain.EventResult
 import com.chartboost.heliumsdk.domain.Metrics
 import com.chartboost.heliumsdk.domain.MetricsError
 import com.chartboost.heliumsdk.network.ChartboostMediationNetworkingTest.Companion.LOAD_ID
+import com.chartboost.heliumsdk.network.ChartboostMediationNetworkingTest.Companion.QUEUE_ID
 import com.chartboost.heliumsdk.network.model.ChartboostMediationNetworkingResult
 import com.chartboost.heliumsdk.network.model.MetricsData
 import com.chartboost.heliumsdk.network.model.MetricsRequestBody
@@ -34,9 +35,11 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization succ
             ChartboostMediationNetworking.trackEvent(
                 event = Endpoints.Sdk.Event.INITIALIZATION,
                 loadId = LOAD_ID,
+                queueId = QUEUE_ID,
                 metricsRequestBody =
                     MetricsRequestBody(
                         auctionId = null,
+                        queueId = null,
                         result = EventResult.SdkInitializationResult.InitResult2A.initResultCode,
                         metrics =
                             mutableSetOf<MetricsData>().apply {
@@ -105,9 +108,11 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization with
             ChartboostMediationNetworking.trackEvent(
                 event = Endpoints.Sdk.Event.INITIALIZATION,
                 loadId = LOAD_ID,
+                queueId = QUEUE_ID,
                 metricsRequestBody =
                     MetricsRequestBody(
                         auctionId = null,
+                        queueId = null,
                         result = EventResult.SdkInitializationResult.InitResult2B(metricsError).initResultCode,
                         metrics =
                             mutableSetOf<MetricsData>().apply {
@@ -148,6 +153,10 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization with
             LOAD_ID,
             request.getHeader(ChartboostMediationNetworking.MEDIATION_LOAD_ID_HEADER_KEY).toString(),
         )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
+        )
         Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 
         Assert.assertTrue(response is ChartboostMediationNetworkingResult.Success)
@@ -177,9 +186,11 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization fail
             ChartboostMediationNetworking.trackEvent(
                 event = Endpoints.Sdk.Event.INITIALIZATION,
                 loadId = LOAD_ID,
+                queueId = QUEUE_ID,
                 metricsRequestBody =
                     MetricsRequestBody(
                         auctionId = null,
+                        queueId = null,
                         result = EventResult.SdkInitializationResult.InitResult1B(metricsError).initResultCode,
                         metrics = emptySet(),
                         error = metricsError,
@@ -196,6 +207,10 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization fail
         Assert.assertEquals(
             LOAD_ID,
             request.getHeader(ChartboostMediationNetworking.MEDIATION_LOAD_ID_HEADER_KEY).toString(),
+        )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
         )
         val expectedRequestJson =
             NetworkTestJsonObjects.TRACK_EVENT_INITIALIZATION_FAILURE_REQUEST.minifiedJsonString

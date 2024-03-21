@@ -13,7 +13,6 @@
 | ironSource            | Android 7.2.1   |    🚫   |      ✅      |     ✅    |
 | Meta Audience Network | Android 6.8.0   |    ✅   |      ✅      |     ✅    |
 | Mintegral             | Android 16.0.31 |    ✅   |      ✅      |     ✅    |
-| Tapjoy                | Android 12.9.1  |    🚫   |      ✅      |     ✅    |
 | Unity Ads             | Android 4.2.1   |    ✅   |      ✅      |     ✅    |
 | Vungle                | Android 6.10.5  |    ✅   |      ✅      |     ✅    |
 
@@ -33,10 +32,6 @@ repositories {
       name "ironSource's maven repo"
       url "https://android-sdk.is.com/"
   }
-  maven {
-      name "Tapjoy's maven repo"
-      url "https://sdk.tapjoy.com/"
-  }
   ...
 }
   
@@ -50,7 +45,6 @@ implementation 'com.chartboost:helium-googlebidding:3.3.1.0'
 implementation 'com.chartboost:helium-inmobi:3.3.1.0'
 implementation 'com.chartboost:helium-ironsource:3.3.1.0'
 implementation 'com.chartboost:helium-mintegral:3.3.1.0'
-implementation 'com.chartboost:helium-tapjoy:3.3.1.0'
 implementation 'com.chartboost:helium-unityads:3.3.1.0'
 implementation 'com.chartboost:helium-vungle:3.3.1.0'
 ```
@@ -117,12 +111,6 @@ For more information on Facebook network security configuration check [Network S
 To integrate with Mintegral Android SDK, simply follow the Mintegral instructions for adding the Mintegral SDK ([Mintegral Android SDK documentation](https://cdn-adn.rayjump.com/cdn-adn/v2/markdown_v2/index.html?file=sdk-m_sdk-android&lang=en)).
 
 >_Note: Mintegral does not use Maven Central for distributing their SDKs, since they provide their own Maven Repository. See the above example for where it can be found._
-
-## Tapjoy
-
-To integrate with Tapjoy Android SDK, simply follow Tapjoy’s instructions for adding the Tapjoy SDK via gradle ([Tapjoy Android SDK documentation](https://dev.tapjoy.com/sdk-integration/android/getting-started-guide-publishers-android)).
-
->_Note: Tapjoy does not use Maven Central for distributing their SDKs, since they provide their own Maven Repository. See the above example for where it can be found._
 
 ## Unity Ads
 

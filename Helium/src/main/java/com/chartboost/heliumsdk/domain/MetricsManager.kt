@@ -92,15 +92,18 @@ object MetricsManager {
      *
      * @param data The metrics data payload for a specific ad lifecycle event.
      * @param loadId The load ID for the ad lifecycle event.
+     * @param loadStart The start time, in milliseconds, of a load.
      * @param backgroundDurationMs The amount of time, in milliseconds, that a load was being performed while the app was in the background.
      * @param eventResult The result of the ad lifecycle event.
      */
     @OptIn(InternalSerializationApi::class)
     fun postMetricsData(
-            data: Set<Metrics>,
-            loadId: String? = null,
-            backgroundDurationMs: Long? = null,
-            eventResult: EventResult? = null,
+        data: Set<Metrics>,
+        loadId: String? = null,
+        queueId: String? = null,
+        loadStart: Long? = null,
+        backgroundDurationMs: Long? = null,
+        eventResult: EventResult? = null,
     ) {
         // No need to send empty/invalid/corrupted data since it's not going to be useful.
         // This is not the same as checking for partial data, which is actually valid and which could
@@ -109,9 +112,19 @@ object MetricsManager {
             return
         }
 
+        // `loadEnd` and `loadDuration` only applicable if `loadStart` is supplied.
+        var loadEnd: Long? = null
+        var loadDuration: Long? = null
+        loadStart?.let {
+            val endMs = System.currentTimeMillis()
+            loadEnd = endMs
+            loadDuration = endMs - it
+        }
+
         // Build the payload early so we can also log it before sending it to the server.
         // This ensures what's logged is what's sent.
-        val metricsRequestBody = buildMetricsDataRequestBody(data, backgroundDurationMs, eventResult)
+        val metricsRequestBody =
+            buildMetricsDataRequestBody(data, queueId, loadStart, loadEnd, loadDuration, backgroundDurationMs, eventResult)
         val event = data.first().event
 
         val payload =
@@ -145,6 +158,7 @@ object MetricsManager {
                 ChartboostMediationNetworking.trackEvent(
                     event,
                     loadId = loadId,
+                    queueId = queueId,
                     metricsRequestBody,
                 )
             CoroutineScope(Dispatchers.Main).launch {
@@ -181,6 +195,7 @@ object MetricsManager {
      * @param chartboostMediationErrorMessage The Helium error message.
      * @param placementType The placement type.
      * @param size The ad size.
+     * @param loadStart The start time, in milliseconds, of a load.
      * @param backgroundDuration The amount of time, in milliseconds, that a load was being performed while the app was in the background.
      * @param loadId The load ID.
      * @param eventResult The result of the ad lifecycle event.
@@ -196,6 +211,7 @@ object MetricsManager {
         chartboostMediationErrorMessage: String?,
         placementType: String? = null,
         size: Size? = null,
+        loadStart: Long? = null,
         backgroundDuration: Long? = null,
         loadId: String? = null,
         eventResult: EventResult? = null,
@@ -204,25 +220,27 @@ object MetricsManager {
         partnerPlacement: String? = null,
     ) {
         postMetricsData(
-            setOf(
-                Metrics(partner, event).apply {
-                    start = System.currentTimeMillis()
-                    end = System.currentTimeMillis()
-                    duration = 0
-                    auctionId = auctionIdentifier
-                    this.placementType = placementType
-                    this.networkType = networkType
-                    this.lineItemId = lineItemId
-                    this.partnerPlacement = partnerPlacement
-                    this.size = size
-                    isSuccess = false
-                    this.chartboostMediationError = chartboostMediationError
-                    this.chartboostMediationErrorMessage = chartboostMediationErrorMessage
-                },
-            ),
-            loadId,
-            backgroundDuration,
-            eventResult,
+            data =
+                setOf(
+                    Metrics(partner, event).apply {
+                        start = System.currentTimeMillis()
+                        end = System.currentTimeMillis()
+                        duration = 0
+                        auctionId = auctionIdentifier
+                        this.placementType = placementType
+                        this.networkType = networkType
+                        this.lineItemId = lineItemId
+                        this.partnerPlacement = partnerPlacement
+                        this.size = size
+                        isSuccess = false
+                        this.chartboostMediationError = chartboostMediationError
+                        this.chartboostMediationErrorMessage = chartboostMediationErrorMessage
+                    },
+                ),
+            loadId = loadId,
+            loadStart = loadStart,
+            backgroundDurationMs = backgroundDuration,
+            eventResult = eventResult,
         )
     }
 
@@ -267,6 +285,10 @@ object MetricsManager {
      */
     internal fun buildMetricsDataRequestBody(
         data: Set<Metrics>,
+        queueId: String? = "",
+        start: Long? = null,
+        end: Long? = null,
+        duration: Long? = null,
         backgroundDuration: Long? = null,
         eventResult: EventResult? = null,
     ): MetricsRequestBody {
@@ -306,8 +328,12 @@ object MetricsManager {
             is EventResult.AdLoadResult.AdLoadSuccess -> {
                 MetricsRequestBody(
                     auctionId = data.firstOrNull()?.auctionId,
+                    queueId = queueId,
                     placementType = data.firstOrNull()?.placementType,
                     size = getBannerAdDimensions(data),
+                    start = start,
+                    end = end,
+                    duration = duration,
                     backgroundDurationMs = backgroundDuration,
                     metrics = data.map { MetricsData(it) }.toSet(),
                 )
@@ -318,6 +344,9 @@ object MetricsManager {
                     auctionId = data.firstOrNull()?.auctionId,
                     placementType = data.firstOrNull()?.placementType,
                     size = getBannerAdDimensions(data),
+                    start = start,
+                    end = end,
+                    duration = duration,
                     backgroundDurationMs = backgroundDuration,
                     metrics = emptySet(),
                     error = eventResult.jsonParseError,
@@ -329,6 +358,9 @@ object MetricsManager {
                     auctionId = data.firstOrNull()?.auctionId,
                     placementType = data.firstOrNull()?.placementType,
                     size = getBannerAdDimensions(data),
+                    start = start,
+                    end = end,
+                    duration = duration,
                     backgroundDurationMs = backgroundDuration,
                     metrics = data.map { MetricsData(it) }.toSet(),
                     error = eventResult.metricsError,
@@ -340,6 +372,9 @@ object MetricsManager {
                     auctionId = data.firstOrNull()?.auctionId,
                     placementType = data.firstOrNull()?.placementType,
                     size = getBannerAdDimensions(data),
+                    start = start,
+                    end = end,
+                    duration = duration,
                     backgroundDurationMs = backgroundDuration,
                     metrics = emptySet(),
                     error = eventResult.metricsError,

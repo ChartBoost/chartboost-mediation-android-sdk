@@ -58,6 +58,7 @@ class ChartboostMediationFullscreenAd(
             request: ChartboostMediationAdLoadRequest,
             adController: AdController?,
             listener: ChartboostMediationFullscreenAdListener,
+            queueId: String? = null,
         ): ChartboostMediationFullscreenAdLoadResult =
             withContext(Main) {
                 val loadId = generateLoadId()
@@ -69,7 +70,7 @@ class ChartboostMediationFullscreenAd(
                         createPayloadJson(mutableSetOf()),
                         ChartboostMediationError.CM_LOAD_FAILURE_UNSUPPORTED_AD_FORMAT,
                     )
-                val adLoadParams = createAdLoadParams(ad, request, loadId, adFormat)
+                val adLoadParams = createAdLoadParams(ad, request, loadId, queueId, adFormat)
                 val (metricsSet, loadResult) = performAdLoad(context, adLoadParams, adController)
                 val payloadJson = createPayloadJson(metricsSet)
                 val error = getError(loadResult)
@@ -112,12 +113,14 @@ class ChartboostMediationFullscreenAd(
             ad: ChartboostMediationFullscreenAd,
             request: ChartboostMediationAdLoadRequest,
             loadId: String,
+            queueId: String?,
             adFormat: AdFormat,
         ): AdLoadParams {
             return AdLoadParams(
                 adIdentifier = AdIdentifier(AdFormat.toAdType(adFormat), request.placementName),
                 keywords = request.keywords,
                 loadId = loadId,
+                queueId = queueId,
                 bannerSize = null,
                 adInteractionListener = createAdInteractionListener(ad),
             )
@@ -158,6 +161,7 @@ class ChartboostMediationFullscreenAd(
         private fun getError(loadResult: Result<CachedAd>?): ChartboostMediationError? {
             return when (loadResult) {
                 null -> ChartboostMediationError.CM_LOAD_FAILURE_CHARTBOOST_MEDIATION_NOT_INITIALIZED
+
                 else ->
                     loadResult.fold({ null }, { throwable ->
                         if (throwable is ChartboostMediationAdException) {

@@ -16,6 +16,7 @@ data class AdLoadParams(
     val adIdentifier: AdIdentifier,
     val keywords: Keywords,
     val loadId: String,
+    val queueId: String? = null,
     val bannerSize: HeliumBannerAd.HeliumBannerSize?,
     val adInteractionListener: AdInteractionListener,
 )

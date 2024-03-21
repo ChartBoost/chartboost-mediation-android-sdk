@@ -386,6 +386,7 @@ object Environment {
             return when (networkType) {
                 // WIFI
                 TelephonyManager.NETWORK_TYPE_IWLAN -> 2
+
                 // 2G
                 TelephonyManager.NETWORK_TYPE_GPRS,
                 TelephonyManager.NETWORK_TYPE_GSM,
@@ -394,6 +395,7 @@ object Environment {
                 TelephonyManager.NETWORK_TYPE_1xRTT,
                 TelephonyManager.NETWORK_TYPE_IDEN,
                 -> 4
+
                 // 3G
                 TelephonyManager.NETWORK_TYPE_UMTS,
                 TelephonyManager.NETWORK_TYPE_EVDO_0,
@@ -406,12 +408,16 @@ object Environment {
                 TelephonyManager.NETWORK_TYPE_HSPAP,
                 TelephonyManager.NETWORK_TYPE_TD_SCDMA,
                 -> 5
+
                 // 4G
                 TelephonyManager.NETWORK_TYPE_LTE -> 6
+
                 // 5G
                 TelephonyManager.NETWORK_TYPE_NR -> 7
+
                 // Unknown connection type
                 TelephonyManager.NETWORK_TYPE_UNKNOWN -> 3
+
                 else -> 3
             }
         }

@@ -10,11 +10,7 @@ package com.chartboost.heliumsdk
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.chartboost.heliumsdk.ad.ChartboostMediationAdLoadRequest
-import com.chartboost.heliumsdk.ad.ChartboostMediationFullscreenAd
-import com.chartboost.heliumsdk.ad.ChartboostMediationFullscreenAdListener
-import com.chartboost.heliumsdk.ad.ChartboostMediationFullscreenAdLoadListener
-import com.chartboost.heliumsdk.ad.ChartboostMediationFullscreenAdLoadResult
+import com.chartboost.heliumsdk.ad.*
 import com.chartboost.heliumsdk.domain.AdapterInfo
 import com.chartboost.heliumsdk.domain.ChartboostMediationAdException
 import com.chartboost.heliumsdk.domain.ChartboostMediationError
@@ -171,9 +167,25 @@ class HeliumSdk private constructor() {
         @JvmStatic
         fun getAppSignature() = chartboostMediationInternal.appSignature
 
+        @Deprecated(message = "Use setLogLevel instead.", replaceWith = ReplaceWith("setLogLevel(logLevel)"))
         @JvmStatic
         fun setDebugMode(debugMode: Boolean) {
-            LogController.debugMode = debugMode
+            if (debugMode) {
+                LogController.logLevel = LogController.LogLevel.VERBOSE
+            } else {
+                LogController.logLevel = LogController.LogLevel.INFO
+            }
+        }
+
+        /**
+         * Sets the log level. Anything of that log level and lower will be emitted.
+         * Set this to [LogController.LogLevel.NONE] for no logs
+         *
+         * @param logLevel The target log level.
+         */
+        @JvmStatic
+        fun setLogLevel(logLevel: LogController.LogLevel) {
+            LogController.logLevel = logLevel
         }
 
         @JvmStatic
@@ -185,7 +197,9 @@ class HeliumSdk private constructor() {
 
             when {
                 appContext == null -> w("setTestMode() failed. Initialize the SDK first.")
+
                 !isDebuggable(appContext) -> w("Set the application to debug mode to use setTestMode().")
+
                 else -> {
                     chartboostMediationInternal.testMode = mode
                     w("The Chartboost Mediation SDK is set to ONLY be requesting ${if (mode) "test" else "live"} ads.")

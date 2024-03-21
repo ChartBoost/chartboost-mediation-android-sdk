@@ -204,7 +204,7 @@ class BannerController(
                             null,
                             getCreativeSizeFromPartnerAdDetails(
                                 partnerAd,
-                                partnerAd.request.size ?: STANDARD.asSize()
+                                partnerAd.request.size ?: STANDARD.asSize(),
                             ),
                         )
                             ?: LogController.e("The Helium SDK Banner listener is detached on onHeliumAdLoaded for onAdCached.")
@@ -313,7 +313,7 @@ class BannerController(
                     currentlyShowingAd?.partnerAd?.let {
                         getCreativeSizeFromPartnerAdDetails(
                             it,
-                            bannerSize.asSize()
+                            bannerSize.asSize(),
                         )
                     }
             }
@@ -371,7 +371,7 @@ class BannerController(
                                     currentlyShowingAd?.partnerAd?.let {
                                         getCreativeSizeFromPartnerAdDetails(
                                             it,
-                                            it.request.size ?: STANDARD.asSize()
+                                            it.request.size ?: STANDARD.asSize(),
                                         )
                                     } ?: STANDARD.asSize(),
                                 )
@@ -455,7 +455,7 @@ class BannerController(
                                 currentlyShowingAd?.partnerAd?.let {
                                     getCreativeSizeFromPartnerAdDetails(
                                         it,
-                                        it.request.size ?: STANDARD.asSize()
+                                        it.request.size ?: STANDARD.asSize(),
                                     )
                                 } ?: STANDARD.asSize(),
                             )
@@ -486,7 +486,7 @@ class BannerController(
                     currentlyShowingAd?.partnerAd?.let {
                         getCreativeSizeFromPartnerAdDetails(
                             it,
-                            it.request.size ?: STANDARD.asSize()
+                            it.request.size ?: STANDARD.asSize(),
                         )
                     } ?: STANDARD.asSize(),
                 )
@@ -519,7 +519,7 @@ class BannerController(
                     currentlyShowingAd?.partnerAd?.let {
                         getCreativeSizeFromPartnerAdDetails(
                             it,
-                            it.request.size ?: STANDARD.asSize()
+                            it.request.size ?: STANDARD.asSize(),
                         )
                     } ?: STANDARD.asSize(),
                 )
@@ -616,12 +616,14 @@ class BannerController(
                         (getCreativeSizeDips(bannerSize).height * density).toInt(),
                     )
                 }
+
                 bannerSize != null -> {
                     FrameLayout.LayoutParams(
                         (bannerSize.width * density).toInt(),
                         (bannerSize.height * density).toInt(),
                     )
                 }
+
                 else -> {
                     FrameLayout.LayoutParams(
                         (STANDARD.width * density).toInt(),

@@ -18,9 +18,7 @@ import org.robolectric.RobolectricTestRunner
 import kotlin.random.Random
 
 @RunWith(RobolectricTestRunner::class)
-class BackgroundTimeMonitorOperationTest: LifecycleOwner {
-
-
+class BackgroundTimeMonitorOperationTest : LifecycleOwner {
     @Test
     fun uneventful_monitoring() {
         val monitor = BackgroundTimeMonitor()

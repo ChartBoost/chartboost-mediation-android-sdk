@@ -16,8 +16,11 @@ object PlacementStorage {
     private const val MINIMUM_REFRESH_TIME_SECONDS = 10
     private const val MAXIMUM_REFRESH_TIME_SECONDS = 240
     private const val MAXIMUM_FAILURES_BEFORE_PENALTY_REFRESH_TIME = 3
+    private const val MINIMUM_QUEUE_SIZE = 1
 
+    private val defaultQueueSize = AppConfigStorage.defaultQueueSize
     private val refreshTimes = HashMap<String, Int>().withDefault { DEFAULT_REFRESH_TIME_SECONDS }
+    private val placementQueueSize = HashMap<String, Int>().withDefault { defaultQueueSize }
 
     fun shouldRefresh(placement: String): Boolean {
         if (!refreshTimes.containsKey(placement)) {
@@ -36,14 +39,17 @@ object PlacementStorage {
             0 -> {
                 refreshTimes[placement] = 0
             }
+
             else -> {
                 when {
                     refreshTime < MINIMUM_REFRESH_TIME_SECONDS -> {
                         refreshTimes[placement] = MINIMUM_REFRESH_TIME_SECONDS
                     }
+
                     refreshTime > MAXIMUM_REFRESH_TIME_SECONDS -> {
                         refreshTimes[placement] = MAXIMUM_REFRESH_TIME_SECONDS
                     }
+
                     else -> {
                         refreshTimes[placement] = refreshTime
                     }
@@ -65,5 +71,21 @@ object PlacementStorage {
 
     fun getMaxTriesUntilPenaltyTime(): Int {
         return MAXIMUM_FAILURES_BEFORE_PENALTY_REFRESH_TIME
+    }
+
+    fun addQueueSize(
+        placement: String,
+        queueSize: Int,
+        maxQueueSize: Int,
+    ) {
+        val safeMaxQueueSize = maxQueueSize.coerceAtLeast(MINIMUM_QUEUE_SIZE)
+        placementQueueSize[placement] = queueSize.coerceIn(MINIMUM_QUEUE_SIZE, safeMaxQueueSize)
+    }
+
+    fun getQueueSize(placement: String): Int {
+        if (!placementQueueSize.containsKey(placement)) {
+            return MINIMUM_QUEUE_SIZE
+        }
+        return placementQueueSize.getValue(placement)
     }
 }

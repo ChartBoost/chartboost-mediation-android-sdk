@@ -126,11 +126,6 @@
         "version": "1.0.0",
         "adapter_version": "4.1.0.0.0"
       },
-      "tapjoy": {
-        "token": "YnJpZGdlX3ZlcnNpb249MS4wLjE5JnZlcj0xMi4xMC4wJm9zX3Zlcj0xMiZvcz1hbmRyb2lkJmRpc3BsYXlfZD00NTAmaWRmYT1kNjg4YTFmZDk1NjY0YzhkOTE3OWFmNmZhNzk4NmM3YyZkaXNwbGF5X2g9MjE5MCZ2b2x1bWU9MC4zMyZjb3VudHJ5X2NvZGU9VVMmYXBwX3Zlcj00LjAuMCZtb2RlbD1TTS1HOTk4VSZkaXNwbGF5X3c9MTA4MCZ1ZGlkPXRqaWQuMjNmZDA0N2EyNGJiNDU2YjhmMDUyNzBmMDU5NDA2NzYmbWFrZT1zYW1zdW5nJmFwcF9pZD1iYWNmM2IyOS1hNGI3LTQxYzAtYmI1My1lNzJhZDM3Njg0NmM=",
-        "version": "12.10.0",
-        "adapter_version": "4.12.10.0.0"
-      },
       "unity": {
         "version": "4.6.0",
         "adapter_version": "4.4.6.0.0"

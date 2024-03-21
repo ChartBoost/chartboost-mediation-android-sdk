@@ -82,6 +82,7 @@ sealed class ChartboostMediationNetworkingResult<out T> {
                             throwable = throwable,
                         )
                     }
+
                 else ->
                     Failure(
                         code = response.code(),

@@ -7,10 +7,9 @@
 package com.chartboost.heliumsdk.utils
 
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ProcessLifecycleOwner
 import java.util.Date
 
-internal class BackgroundTimeMonitorOperation: BackgroundTimeMonitorOperator {
+internal class BackgroundTimeMonitorOperation : BackgroundTimeMonitorOperator {
     private var lastBackgroundedDate: Date? = null
     private var totalBackgroundedMs: Long = 0
 

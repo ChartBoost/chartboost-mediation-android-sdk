@@ -47,7 +47,7 @@ interface HeliumBannerAdListener {
         loadId: String,
         winningBidInfo: Map<String, String>,
         error: ChartboostMediationAdException?,
-        bannerSize: Size
+        bannerSize: Size,
     ) {
         onAdCached(
             placementName = placementName,

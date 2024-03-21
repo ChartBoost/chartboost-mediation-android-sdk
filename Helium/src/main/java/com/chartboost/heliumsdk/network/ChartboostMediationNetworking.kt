@@ -24,8 +24,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.internal.platform.Platform
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -37,7 +39,7 @@ import java.net.UnknownHostException
  */
 internal object ChartboostMediationNetworking {
     const val APP_SET_ID_HEADER_KEY = "x-mediation-idfv"
-    const val AUCTION_ID_HEADERY_KEY = "x-mediation-auction-id"
+    const val AUCTION_ID_HEADER_KEY = "x-mediation-auction-id"
     const val INIT_HASH_HEADER_KEY = "x-helium-sdk-init-hash"
     const val RATE_LIMIT_HEADER_KEY = "X-Helium-Ratelimit-Reset"
     const val SESSION_ID_HEADER_KEY = "X-Helium-SessionID"
@@ -45,6 +47,13 @@ internal object ChartboostMediationNetworking {
     const val DEVICE_OS_HEADER_KEY = "X-Helium-Device-OS"
     const val DEVICE_OS_VERSION_HEADER_KEY = "X-Helium-Device-OS-Version"
     const val MEDIATION_LOAD_ID_HEADER_KEY = "X-Mediation-Load-ID"
+    const val DEBUG_HEADER_KEY = "X-Helium-Debug"
+    const val QUEUE_ID_HEADER_KEY = "X-Mediation-Queue-ID"
+
+    /**
+     * Custom interceptor that is settable via reflection for debugging purposes
+     */
+    private var customInterceptor: Interceptor? = null
 
     private const val REWARDED_CALLBACK_DELAY_MS = 1000L
 
@@ -54,12 +63,25 @@ internal object ChartboostMediationNetworking {
             "application/json; charset=utf-8".toMediaType(),
         )
 
-    private val interceptor: HttpLoggingInterceptor =
-        HttpLoggingInterceptor().apply {
+    private val defaultInterceptor: HttpLoggingInterceptor =
+        HttpLoggingInterceptor(
+            HttpLoggingInterceptor.Logger {
+                if (LogController.logLevel.value < LogController.LogLevel.INFO.value) {
+                    return@Logger
+                }
+                Platform.get().log(it)
+            },
+        ).apply {
             setLevel(HttpLoggingInterceptor.Level.BODY)
         }
 
-    private val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
+    private val client: OkHttpClient by lazy {
+        val builder = OkHttpClient.Builder().addInterceptor(defaultInterceptor)
+
+        // Apply custom interceptor if it's provided
+        customInterceptor?.let { builder.addInterceptor(it) }
+        builder.build()
+    }
 
     // by lazy is necessary for changing the url for testing
     @VisibleForTesting
@@ -104,7 +126,6 @@ internal object ChartboostMediationNetworking {
     }
 
     suspend fun trackPartnerImpression(
-        sessionId: String,
         appSetId: String,
         auctionID: String?,
         loadId: String,
@@ -113,9 +134,7 @@ internal object ChartboostMediationNetworking {
             ImpressionRequestBody(auctionID).let {
                 api.trackPartnerImpression(
                     url = Event.PARTNER_IMPRESSION.endpoint,
-                    sessionId = sessionId,
-                    appSetId = appSetId,
-                    loadId = loadId,
+                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
                     body = it,
                 )
             }
@@ -160,15 +179,16 @@ internal object ChartboostMediationNetworking {
         placementName: String,
         adType: String,
         loadId: String,
+        queueId: String? = null,
         status: String,
     ): ChartboostMediationNetworkingResult<Unit?> {
         val appSetId = Environment.fetchAppSetId()
 
         return safeApiCall {
-            AdLoadNotificationRequestBody(placementName, adType, loadId, status).let {
+            AdLoadNotificationRequestBody(placementName, adType, loadId, queueId, status).let {
                 api.trackAdLoad(
                     url = Event.ADLOAD.endpoint,
-                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
+                    headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId, queueId),
                     body = it,
                 )
             }
@@ -178,6 +198,7 @@ internal object ChartboostMediationNetworking {
     suspend fun trackEvent(
         event: Event,
         loadId: String?,
+        queueId: String?,
         metricsRequestBody: MetricsRequestBody,
     ): ChartboostMediationNetworkingResult<Unit?> {
         val appSetId = Environment.fetchAppSetId()
@@ -185,7 +206,7 @@ internal object ChartboostMediationNetworking {
         return safeApiCall {
             api.trackEvent(
                 url = event.endpoint,
-                headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId),
+                headers = ChartboostMediationAdLifecycleHeaderMap(loadId, appSetId, queueId),
                 body = metricsRequestBody,
             )
         }
@@ -304,6 +325,37 @@ internal object ChartboostMediationNetworking {
                     ),
                 body = bidRequestBody,
             )
+        }
+    }
+
+    suspend fun makeQueueRequest(
+        isRunning: Boolean,
+        placementName: String,
+        queueCapacity: Int,
+        actualMaxQueueSize: Int? = null,
+        queueDepth: Int,
+        queueId: String,
+    ): ChartboostMediationNetworkingResult<Unit?> {
+        val appSetId = Environment.fetchAppSetId()
+
+        return safeApiCall {
+            QueueRequestBody(
+                placementName = placementName,
+                queueCapacity = queueCapacity,
+                actualMaxQueueSize = actualMaxQueueSize,
+                currentQueueDepth = queueDepth,
+                queueId = queueId,
+            ).let {
+                api.trackQueueRequest(
+                    url =
+                        when (isRunning) {
+                            true -> Endpoints.Sdk.Event.START_QUEUE.endpoint
+                            false -> Endpoints.Sdk.Event.END_QUEUE.endpoint
+                        },
+                    headers = ChartboostQueueRequestMediationHeaderMap(queueId, appSetId),
+                    body = it,
+                )
+            }
         }
     }
 

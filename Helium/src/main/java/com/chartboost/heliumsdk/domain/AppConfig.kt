@@ -63,6 +63,14 @@ data class AppConfig(
     val credentials: JsonObject = buildJsonObject { },
     @SerialName("placements")
     val placements: List<Placement>? = null,
+    @SerialName("log_level")
+    val logLevelString: String? = null,
+    @SerialName("max_queue_size")
+    val maxQueueSize: Int = 5,
+    @SerialName("queued_ad_ttl")
+    val queueAdTtlSeconds: Long = 3600L,
+    @SerialName("default_queue_size")
+    val defaultQueueSize: Int = 2,
 ) {
     companion object {
         /**

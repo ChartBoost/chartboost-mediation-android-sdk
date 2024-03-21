@@ -8,6 +8,7 @@
 package com.chartboost.heliumsdk.utils
 
 import android.util.Log
+import com.chartboost.heliumsdk.utils.LogController.STACK_TRACE_LEVEL
 
 /**
  * @suppress
@@ -24,17 +25,43 @@ object LogController {
      * Collection of all supported log levels.
      */
     enum class LogLevel(val value: Int) {
-        ERROR(0),
-        WARNING(1),
-        INFO(2),
-        DEBUG(3),
-        VERBOSE(4),
+        NONE(0),
+        ERROR(1),
+        WARNING(2),
+        INFO(3),
+        DEBUG(4),
+        VERBOSE(5),
+        ;
+
+        companion object {
+            /**
+             * Get the log level corresponding to the integer value or VERBOSE if nothing matches.
+             *
+             * @param logLevelInt Integer representation of the log level.
+             */
+            fun fromInt(logLevelInt: Int?): LogLevel {
+                return values().find { it.value == logLevelInt } ?: VERBOSE
+            }
+        }
     }
 
     /**
-     * Specify whether debug mode is enabled.
+     * Specify whether debug mode is enabled. This flag does nothing.
      */
+    @Deprecated("Use logLevel instead")
     var debugMode = false
+
+    /**
+     * Only see logs of this log level and more severe. This will suppress all logs with a higher
+     * ordinal [LogLevel]. If set to [LogLevel.NONE], all logs are suppressed.
+     */
+    var logLevel: LogLevel = LogLevel.INFO
+        get() = serverLogLevelOverride ?: field
+
+    /**
+     * The server log override of the log level.
+     */
+    internal var serverLogLevelOverride: LogLevel? = null
 
     /**
      * Prefix for all Helium log messages.
@@ -53,6 +80,9 @@ object LogController {
      * @param message The message to log.
      */
     fun e(message: String?) {
+        if (logLevel.value < LogLevel.ERROR.value) {
+            return
+        }
         message?.let { Log.e(TAG, buildLogMsg(getClassAndMethod(), it)) }
     }
 
@@ -62,6 +92,9 @@ object LogController {
      * @param message The message to log.
      */
     fun w(message: String?) {
+        if (logLevel.value < LogLevel.WARNING.value) {
+            return
+        }
         message?.let { Log.w(TAG, buildLogMsg(getClassAndMethod(), it)) }
     }
 
@@ -71,9 +104,10 @@ object LogController {
      * @param message The message to log.
      */
     fun i(message: String?) {
-        if (debugMode) {
-            message?.let { Log.i(TAG, buildLogMsg(getClassAndMethod(), it)) }
+        if (logLevel.value < LogLevel.INFO.value) {
+            return
         }
+        message?.let { Log.i(TAG, buildLogMsg(getClassAndMethod(), it)) }
     }
 
     /**
@@ -82,9 +116,10 @@ object LogController {
      * @param message The message to log.
      */
     fun d(message: String?) {
-        if (debugMode) {
-            message?.let { Log.d(TAG, buildLogMsg(getClassAndMethod(), it)) }
+        if (logLevel.value < LogLevel.DEBUG.value) {
+            return
         }
+        message?.let { Log.d(TAG, buildLogMsg(getClassAndMethod(), it)) }
     }
 
     /**
@@ -93,9 +128,10 @@ object LogController {
      * @param message The message to log.
      */
     fun v(message: String?) {
-        if (debugMode) {
-            message?.let { Log.v(TAG, buildLogMsg(getClassAndMethod(), it)) }
+        if (logLevel.value < LogLevel.VERBOSE.value) {
+            return
         }
+        message?.let { Log.v(TAG, buildLogMsg(getClassAndMethod(), it)) }
     }
 
     /**
