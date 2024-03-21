@@ -9,16 +9,9 @@ package com.chartboost.heliumsdk
 
 import android.app.Activity
 import android.content.Context
-import com.chartboost.heliumsdk.controllers.AdController
-import com.chartboost.heliumsdk.controllers.AppConfigController
-import com.chartboost.heliumsdk.controllers.BidController
-import com.chartboost.heliumsdk.controllers.PartnerController
-import com.chartboost.heliumsdk.controllers.PrivacyController
-import com.chartboost.heliumsdk.domain.ChartboostMediationAdException
-import com.chartboost.heliumsdk.domain.ChartboostMediationAppConfigurationHandler
-import com.chartboost.heliumsdk.domain.ChartboostMediationError
-import com.chartboost.heliumsdk.domain.GdprConsentStatus
-import com.chartboost.heliumsdk.domain.LoadRateLimiter
+import com.chartboost.heliumsdk.ad.ChartboostMediationFullscreenAdQueueManager
+import com.chartboost.heliumsdk.controllers.*
+import com.chartboost.heliumsdk.domain.*
 import com.chartboost.heliumsdk.utils.BackgroundTimeMonitor
 import com.chartboost.heliumsdk.utils.Environment
 import com.chartboost.heliumsdk.utils.FullscreenAdShowingState
@@ -48,7 +41,7 @@ internal class ChartboostMediationInternal(internal val partnerController: Partn
     internal val partnerInitializationResults = PartnerInitializationResults()
     internal val partnerConsents = PartnerConsents()
 
-    private var initializationStatus = HeliumSdk.ChartboostMediationInitializationStatus.IDLE
+    internal var initializationStatus = HeliumSdk.ChartboostMediationInitializationStatus.IDLE
 
     /**
      * Stores the pre-init value of GDPR applies until the SDK is initialized.
@@ -77,6 +70,24 @@ internal class ChartboostMediationInternal(internal val partnerController: Partn
         options: HeliumInitializationOptions?,
     ): Result<Unit> {
         return withContext(Main) {
+            try {
+                val preferences =
+                    context.getSharedPreferences(
+                        CHARTBOOST_MEDIATION_INTERNAL_SHARED_PREFS,
+                        Context.MODE_PRIVATE,
+                    )
+                LogController.LogLevel.valueOf(
+                    preferences.getString(
+                        SERVER_LOG_LEVEL_OVERRIDE,
+                        null,
+                    ) ?: "",
+                )
+            } catch (iae: IllegalArgumentException) {
+                null
+            }?.let {
+                LogController.serverLogLevelOverride = it
+            }
+
             if (initializationStatus == HeliumSdk.ChartboostMediationInitializationStatus.INITIALIZED) {
                 this@ChartboostMediationInternal.weakActivityContext =
                     if (context is Activity) WeakReference(context) else weakActivityContext
@@ -133,6 +144,7 @@ internal class ChartboostMediationInternal(internal val partnerController: Partn
 
             if (error != null) {
                 initializationStatus = HeliumSdk.ChartboostMediationInitializationStatus.IDLE
+                ChartboostMediationFullscreenAdQueueManager.autoStartQueues(false)
                 return@withContext Result.failure(ChartboostMediationAdException(error))
             }
 
@@ -142,6 +154,7 @@ internal class ChartboostMediationInternal(internal val partnerController: Partn
             runCcpaConsentTask(context, localPrivacyController)
             runSubjectToCoppaTask(context, localPrivacyController)
             initializationStatus = HeliumSdk.ChartboostMediationInitializationStatus.INITIALIZED
+            ChartboostMediationFullscreenAdQueueManager.autoStartQueues(true)
             Result.success(Unit)
         }
     }
@@ -175,7 +188,9 @@ internal class ChartboostMediationInternal(internal val partnerController: Partn
         val localGdprApplies =
             gdprApplies ?: when (privacyControllerGdprApplies) {
                 PrivacyController.PrivacySetting.TRUE.value -> true
+
                 PrivacyController.PrivacySetting.FALSE.value -> false
+
                 // If unset or null, don't continue setting GDPR consent
                 else -> return
             }
@@ -268,5 +283,10 @@ internal class ChartboostMediationInternal(internal val partnerController: Partn
             return
         }
         function(context, privacyController)
+    }
+
+    companion object {
+        internal const val CHARTBOOST_MEDIATION_INTERNAL_SHARED_PREFS = "CBM_INTERNAL"
+        internal const val SERVER_LOG_LEVEL_OVERRIDE = "cbm_internal_server_log_level_override"
     }
 }

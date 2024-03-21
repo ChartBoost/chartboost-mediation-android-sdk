@@ -27,7 +27,6 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression succ
 
         val response =
             ChartboostMediationNetworking.trackPartnerImpression(
-                ChartboostMediationNetworkingTest.SESSION_ID,
                 APP_SET_ID,
                 ChartboostMediationNetworkingTest.AUCTION_ID,
                 LOAD_ID,
@@ -47,6 +46,10 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression succ
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
         )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
+        )
         Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 
         Assert.assertTrue(response is ChartboostMediationNetworkingResult.Success)
@@ -64,7 +67,6 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression fail
 
         val response =
             ChartboostMediationNetworking.trackPartnerImpression(
-                ChartboostMediationNetworkingTest.SESSION_ID,
                 APP_SET_ID,
                 ChartboostMediationNetworkingTest.AUCTION_ID,
                 LOAD_ID,
@@ -85,6 +87,10 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression fail
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
+        )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
         )
         Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 

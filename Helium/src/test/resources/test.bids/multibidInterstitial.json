@@ -21,21 +21,6 @@
         {
           "id": "MEDIATION",
           "impid": "1",
-          "price": 45,
-          "ext": {
-            "partner_placement": "TJNonProgInterstitial",
-            "line_item_id": "a line item ID"
-          }
-        }
-      ],
-      "seat": "tapjoy",
-      "helium_bid_id": "e256735e73842fd755d01f2d04f6ec3cb16c792c_tapjoy"
-    },
-    {
-      "bid": [
-        {
-          "id": "MEDIATION",
-          "impid": "1",
           "price": 17,
           "ext": {
             "partner_placement": "MoatPublishingInterstitial",
@@ -45,28 +30,6 @@
       ],
       "seat": "chartboost",
       "helium_bid_id": "e256735e73842fd755d01f2d04f6ec3cb16c792c_chartboost"
-    },
-    {
-      "bid": [
-        {
-          "id": "e256735e73842fd755d01f2d04f6ec3cb16c792c_bid",
-          "impid": "e256735e73842fd755d01f2d04f6ec3cb16c792c",
-          "price": 2.05747,
-          "crid": "e256735e73842fd755d01f2d04f6ec3cb16c792c_bid",
-          "ext": {
-            "bidder": {
-              "helium": {
-                "placement_name": "TJAndroidInterstitial"
-              },
-              "tapjoy": {
-                "tj_data": "{\"id\":\"e256735e73842fd755d01f2d04f6ec3cb16c792c\",\"ext_data\":\"78e0fae82ba039f2424210ce7beb477767908a2b5bb52252941ddc7cd095ea66b4cecc68d0ce5c284254fc686ee81043e7d2ca02a1779a980efa1f8be82599a7a2d3e8d89d83b0fbf29bfe24b1a669f5baa1f8d5c56fe356e9a2b8a4d674de2b7b251100eb7ef3b245f4b6e5d693fd5766026d1e51569c6b4cc53c18752aad20fb13cd34c37793af10776746de03481cbbbd2936c37c72a59f6b7159f43de1461e8c9cafc11b7736862e19b8e177fa4bb6dd1c2d9db11fa3271e4544958e59d7aa0bd0e2bb4056155e1e4ef88d8a13c51062e915ea354ccb30da5251aeb07aa389b851be6cfab429de59d8a071a460d644fd3cdf0c2cef6a04e191d4bb8ced2a6a255a4a0db349ac3b9977cc6b022a84531e086a19c3d474cc90bcd6f190c0058590db98eaa03dd0b2e978ecafd9208bbc0f68f2bd88a2342155060288591d5a53d15f44d93d5f3d6638b4649f46a339bbc3c77d57645f4bb0523d633d05d2ad776390b35b5be73b3dd5d7713b797f54\"}"
-              }
-            }
-          }
-        }
-      ],
-      "seat": "tapjoy",
-      "helium_bid_id": "e256735e73842fd755d01f2d04f6ec3cb16c792c_tapjoy"
     },
     {
       "bid": [

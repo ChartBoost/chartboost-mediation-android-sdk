@@ -51,6 +51,11 @@ class Metrics(val partner: String?, val event: Sdk.Event) {
     var auctionId: String? = null
 
     /**
+     * The queue ID, if any.
+     */
+    var queueId: String? = null
+
+    /**
      * The placement type, if any.
      */
     var placementType: String? = null

@@ -28,6 +28,8 @@ data class AdLoadNotificationRequestBody(
     private val adType: String,
     @SerialName("load_id")
     private val loadId: String,
+    @SerialName("queue_id")
+    private val queueId: String?,
     @SerialName("status")
     private val status: String,
 )

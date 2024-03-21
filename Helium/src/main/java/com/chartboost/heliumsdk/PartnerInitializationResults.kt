@@ -103,12 +103,15 @@ class PartnerInitializationResults {
                     .groupBy { partnerData ->
                         when {
                             partnerData.opt(IS_SUCCESS_KEY) as Boolean -> SUCCESS_GROUP_KEY
+
                             partnerData.opt(
                                 HELIUM_ERROR_CODE_KEY,
                             ) == ChartboostMediationError.CM_INITIALIZATION_FAILURE_TIMEOUT.code -> IN_PROGRESS_GROUP_KEY
+
                             partnerData.opt(
                                 HELIUM_ERROR_CODE_KEY,
                             ) == ChartboostMediationError.CM_INITIALIZATION_SKIPPED.code -> SKIPPED_GROUP_KEY
+
                             else -> FAILURE_GROUP_KEY
                         }
                     }

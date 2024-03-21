@@ -1,6 +1,9 @@
-# Android Chartboost Mediation SDK
+# Android Helium SDK
 
 ![badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fchartboost.s3.amazonaws.com%2Fchartboost-mediation%2Fsdk%2Fandroid%2Fcode-coverage%2Fcoverage-percent.json)
+![badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fchartboost.s3.amazonaws.com%2Fchartboost-core%2Fsdk%2Fandroid%2Fcode-coverage%2Fcoverage-percent.json)
+
+[//]: # (TODO [HB-7061]: Migrate Chartboost Core README over)
 
 The Android Chartboost Mediation SDK, by Chartboost, is a Unified-Auction & Mediated solution which helps developers increase their mobile apps' revenue with the inclusion of other supported Programmatic & Mediated SDKs.
 
@@ -17,7 +20,7 @@ To keep our Chartboost Mediation Android SDK documentation consistent with our p
 - [Show Ads](Documentation/ShowAds.md)
 - [Delegate Usage](Documentation/DelegateUsage.md)
 - [Error Codes](Documentation/ErrorCodes.md)
-- [Android Changelog](CHANGELOG.md)
+- [Android Changelog](Helium/CHANGELOG.md)
 
 ----
 
@@ -47,7 +50,7 @@ repositories {
 }
  
 dependencies {
-   implementation 'com.chartboost:chartboost-mediation-sdk:4.8.0'
+   implementation 'com.chartboost:chartboost-mediation-sdk:4.9.0'
 }
 ```
 

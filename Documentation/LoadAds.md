@@ -203,3 +203,101 @@ heliumBannerAd.clearLoaded()
 ```java Helium SDK 2.11.0 & below (Java)
 heliumBannerAd.clearLoaded();
 ```
+
+## Queueing Fullscreen Ads
+
+```kotlin
+// Create a Chartboost Mediation fullscreen ad queue with the ad queue manager. The manager returns a ChartboostMediationFullscreenAdQueue.
+val queue: ChartboostMediationFullscreenAdQueue = ChartboostMediationFullscreenAdQueueManager.queue(context, placementName)
+
+// To listen to ad queue events, you can use the ChartboostMediationFullscreenAdQueueListener
+queue.adQueueListener = object : ChartboostMediationFullscreenAdQueueListener {
+    override fun onFullScreenAdQueueUpdated(
+        adQueue: ChartboostMediationFullscreenAdQueue,
+        result: AdLoadResult,
+        numberOfAdsReady: Int,
+    ) {
+        println(
+            "Fullscreen ad queue updated${
+                if (result.error != null) {
+                    " with error: ${result.error?.cause}"
+                } else {
+                    ""
+                }
+            }. Number of ads ready: $numberOfAdsReady",
+        )
+    }
+
+    override fun onFullscreenAdQueueExpiredAdRemoved(
+        adQueue: ChartboostMediationFullscreenAdQueue,
+        numberOfAdsReady: Int,
+    ) {
+        println("Fullscreen ad queue removed an expired ad. Number of ads ready: $numberOfAdsReady")
+    }
+}
+
+// To start queueing ads, simply use the `start()` method.
+queue.start()
+
+// To check if the queue is running, query the read-only `isRunning` property.
+queue.isRunning
+
+// To check if there's an ad in the queue, use the `hasNextAd()` method.
+// To get an ad from the queue, use the `getNextAd()` method.
+CoroutineScope(Main).launch {
+  if (queue.hasNextAd) {
+    val ad = queue.nextAd()
+    // Showing an ad needs to be in a suspend function.
+    // Be mindful that ads will need to be reattached to your ChartboostMediationFullscreenAdListener if you are listening to ad cycle events.
+    ad?.listener = fullscreenAdListener()
+    ad?.show(context)
+  }
+}
+
+// To stop the queue, simply use the `stop()` method.
+queue.stop()
+
+```
+
+```java
+// Create a Chartboost Mediation fullscreen ad queue with the ad queue manager. The manager returns a ChartboostMediationFullscreenAdQueue.
+ChartboostMediationFullscreenAdQueue queue = ChartboostMediationFullscreenAdQueueManager.queue(context, placementName)
+
+// To listen to ad queue events, you can use the ChartboostMediationFullscreenAdQueueListener
+final ChartboostMediationFullscreenAdQueueListener fullscreenAdQueueListener = new ChartboostMediationFullscreenAdQueueListener() {
+    @Override
+    public void onFullScreenAdQueueUpdated(@NonNull ChartboostMediationFullscreenAdQueue adQueue, @NonNull AdLoadResult result, int numberOfAdsReady) {
+        System.out.println("Fullscreen ad queue has been updated for placement " + placementName + ". Number of ads ready to show: " + numberOfAdsReady);
+    }
+
+    @Override
+    public void onFullscreenAdQueueExpiredAdRemoved(@NonNull ChartboostMediationFullscreenAdQueue adQueue, int numberOfAdsReady) {
+        System.out.println("Fullscreen ad queue expired ad has been removed for placement " + placementName + ". Number of ads ready to show: " + numberOfAdsReady);
+    }
+};
+
+// Attach the created ChartboostMediationFullscreenAdQueueListener with the setAdQueueListener() method.
+queue.setAdQueueListener(fullscreenAdQueueListener);
+
+// To start queueing ads, simply use the `start()` method.
+queue.start()
+
+// To check if the queue is running, query the `isRunning()` method.
+queue.isRunning()
+
+// To check if there's an ad in the queue, use the `hasNextAd()` method.
+// To get an ad from the queue, use the `getNextAd()` method.
+if (queue.hasNextAd()) {
+  ChartboostMediationFullscreenAd ad = queue.getNextAd()
+  if (ad != null) {
+    // Be mindful that ads will need to be reattached to your ChartboostMediationFullscreenAdListener if you are listening to ad cycle events.
+    ad.setListener(fullscreenAdListener())  
+    ad.showFullscreenAdFromJava(context, result -> {});
+  } else {
+    System.out.println("Fullscreen ad is null. Load an ad first.");
+  }
+}
+
+// To stop the queue, simply use the `stop()` method.
+queue.stop()
+```

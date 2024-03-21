@@ -44,6 +44,10 @@ fun ChartboostMediationNetworkingTest.`verify result for chartboost ("helium") i
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
         )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
+        )
         Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 
         Assert.assertTrue(response is ChartboostMediationNetworkingResult.Success)
@@ -80,6 +84,10 @@ fun ChartboostMediationNetworkingTest.`verify result for chartboost ("helium") i
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
+        )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
         )
         Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 

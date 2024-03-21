@@ -7,15 +7,23 @@
 
 package com.chartboost.heliumsdk.network
 
-import com.chartboost.heliumsdk.domain.*
-import com.chartboost.heliumsdk.network.ChartboostMediationNetworking.APP_SET_ID_HEADER_KEY
-import com.chartboost.heliumsdk.network.ChartboostMediationNetworking.MEDIATION_LOAD_ID_HEADER_KEY
-import com.chartboost.heliumsdk.network.ChartboostMediationNetworking.SESSION_ID_HEADER_KEY
-import com.chartboost.heliumsdk.network.model.*
+import com.chartboost.heliumsdk.network.model.AdLoadNotificationRequestBody
+import com.chartboost.heliumsdk.network.model.AuctionWinnerRequestBody
+import com.chartboost.heliumsdk.network.model.BannerSizeBody
+import com.chartboost.heliumsdk.network.model.BidRequestBody
+import com.chartboost.heliumsdk.network.model.ChartboostMediationHeaderMap
 import com.chartboost.heliumsdk.network.model.ChartboostMediationHeaderMap.ChartboostMediationAppConfigHeaderMap
+import com.chartboost.heliumsdk.network.model.ImpressionRequestBody
+import com.chartboost.heliumsdk.network.model.MetricsRequestBody
+import com.chartboost.heliumsdk.network.model.QueueRequestBody
+import com.chartboost.heliumsdk.network.model.SimpleTrackingRequestBody
 import kotlinx.serialization.json.JsonElement
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.HeaderMap
+import retrofit2.http.POST
+import retrofit2.http.Url
 
 /**
  * @suppress
@@ -38,9 +46,7 @@ interface ChartboostMediationApi {
     @POST
     suspend fun trackPartnerImpression(
         @Url url: String,
-        @Header(SESSION_ID_HEADER_KEY) sessionId: String,
-        @Header(APP_SET_ID_HEADER_KEY) appSetId: String,
-        @Header(MEDIATION_LOAD_ID_HEADER_KEY) loadId: String,
+        @HeaderMap headers: ChartboostMediationHeaderMap.ChartboostMediationAdLifecycleHeaderMap,
         @Body body: ImpressionRequestBody,
     ): Response<String>
 
@@ -88,8 +94,15 @@ interface ChartboostMediationApi {
     @POST
     suspend fun makeBidRequest(
         @Url url: String,
-        @HeaderMap headers: ChartboostMediationHeaderMap,
+        @HeaderMap headers: ChartboostMediationHeaderMap.ChartboostBidRequestMediationHeaderMap,
         @Body body: BidRequestBody,
+    ): Response<String>
+
+    @POST
+    suspend fun trackQueueRequest(
+        @Url url: String,
+        @HeaderMap headers: ChartboostMediationHeaderMap.ChartboostQueueRequestMediationHeaderMap,
+        @Body body: QueueRequestBody,
     ): Response<String>
 
     @GET

@@ -217,9 +217,13 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
     ): HeliumBannerSize {
         return when (this) {
             0 -> STANDARD
+
             1 -> MEDIUM
+
             2 -> LEADERBOARD
+
             4 -> bannerSize(flexibleWidth, flexibleHeight)
+
             else -> {
                 LogController.w("Size not defined, set to STANDARD by default")
                 STANDARD
@@ -275,6 +279,7 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
 
             // Ignore transitions between View.GONE and View.INVISIBLE
             (visibility == View.GONE && lastWindowVisibility == View.INVISIBLE) -> return
+
             (visibility == View.INVISIBLE && lastWindowVisibility == View.GONE) -> return
 
             else -> {
@@ -297,6 +302,7 @@ class HeliumBannerAd : FrameLayout, HeliumAd {
 
             // Ignore transitions between View.GONE and View.INVISIBLE
             (overallVisibility == View.GONE && lastVisibility == View.INVISIBLE) -> return
+
             (overallVisibility == View.INVISIBLE && lastVisibility == View.GONE) -> return
 
             else -> {

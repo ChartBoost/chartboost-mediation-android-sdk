@@ -17,7 +17,7 @@ import com.chartboost.heliumsdk.ad.ChartboostMediationAdShowResult
 import com.chartboost.heliumsdk.domain.*
 import com.chartboost.heliumsdk.domain.Ad.AdType.*
 import com.chartboost.heliumsdk.network.ChartboostMediationNetworking
-import com.chartboost.heliumsdk.network.ChartboostMediationNetworking.AUCTION_ID_HEADERY_KEY
+import com.chartboost.heliumsdk.network.ChartboostMediationNetworking.AUCTION_ID_HEADER_KEY
 import com.chartboost.heliumsdk.network.ChartboostMediationNetworking.RATE_LIMIT_HEADER_KEY
 import com.chartboost.heliumsdk.network.Endpoints
 import com.chartboost.heliumsdk.network.model.ChartboostMediationNetworkingResult
@@ -93,10 +93,11 @@ class AdController(
         }
 
         val backgroundMonitorOperation = backgroundTimeMonitor.startMonitoringOperation()
+        val loadStart = System.currentTimeMillis()
         ProcessLifecycleOwner.get().lifecycle.addObserver(backgroundMonitorOperation)
 
         if (AppConfigStorage.shouldNotifyLoads) {
-            sendLoadId(adLoadParams.adIdentifier, adLoadParams.loadId)
+            sendLoadId(adLoadParams.adIdentifier, adLoadParams.loadId, adLoadParams.queueId)
         }
 
         val result =
@@ -156,6 +157,8 @@ class AdController(
                 MetricsManager.postMetricsData(
                     metricsSet,
                     loadId = adLoadParams.loadId,
+                    queueId = adLoadParams.queueId,
+                    loadStart = loadStart,
                     backgroundDurationMs = backgroundMonitorOperation.backgroundTimeUntilNow(),
                     eventResult =
                         if (partnerAdResult.isSuccess) {
@@ -180,6 +183,7 @@ class AdController(
                     return Result.failure(it)
                 })
             }
+
             is ChartboostMediationNetworkingResult.Failure -> {
                 if (result.error != ChartboostMediationError.CM_LOAD_FAILURE_AUCTION_NO_BID &&
                     result.error != ChartboostMediationError.CM_LOAD_FAILURE_RATE_LIMITED
@@ -190,10 +194,11 @@ class AdController(
                 MetricsManager.postMetricsDataForFailedEvent(
                     partner = null,
                     event = Endpoints.Sdk.Event.LOAD,
-                    auctionIdentifier = result.headers?.get(AUCTION_ID_HEADERY_KEY) ?: "",
+                    auctionIdentifier = result.headers?.get(AUCTION_ID_HEADER_KEY) ?: "",
                     chartboostMediationError = result.error,
                     chartboostMediationErrorMessage = result.error.message,
                     placementType = adLoadParams.adIdentifier.placementType,
+                    loadStart = loadStart,
                     backgroundDuration = backgroundMonitorOperation.backgroundTimeUntilNow(),
                     size =
                         if (adLoadParams.bannerSize?.isAdaptive == true) {
@@ -210,6 +215,7 @@ class AdController(
 
                 return Result.failure(ChartboostMediationAdException(result.error))
             }
+
             is ChartboostMediationNetworkingResult.JsonParsingFailure -> {
                 val cmError = ChartboostMediationError.CM_LOAD_FAILURE_INVALID_BID_RESPONSE
                 val exceptionMessage =
@@ -237,10 +243,11 @@ class AdController(
                 MetricsManager.postMetricsDataForFailedEvent(
                     partner = null,
                     event = Endpoints.Sdk.Event.LOAD,
-                    auctionIdentifier = result.headers[AUCTION_ID_HEADERY_KEY],
+                    auctionIdentifier = result.headers[AUCTION_ID_HEADER_KEY],
                     chartboostMediationError = cmError,
                     chartboostMediationErrorMessage = cmError.message,
                     placementType = adLoadParams.adIdentifier.placementType,
+                    loadStart = loadStart,
                     backgroundDuration = backgroundMonitorOperation.backgroundTimeUntilNow(),
                     size =
                         if (adLoadParams.bannerSize?.isAdaptive == true) {
@@ -267,8 +274,7 @@ class AdController(
                 adInteractionListener.onImpressionTracked(partnerAd)
                 CoroutineScope(IO).launch {
                     ChartboostMediationNetworking.trackPartnerImpression(
-                        Environment.sessionId ?: "",
-                        Environment.appSetId ?: "",
+                        Environment.appSetId,
                         bids.auctionId,
                         cachedAd.loadId,
                     )
@@ -327,12 +333,14 @@ class AdController(
     private fun sendLoadId(
         adIdentifier: AdIdentifier,
         loadId: String,
+        queueId: String?,
     ) {
         CoroutineScope(IO).launch {
             ChartboostMediationNetworking.trackAdLoad(
                 adIdentifier.placementName,
                 adIdentifier.placementType,
                 loadId,
+                queueId,
                 "new",
             )
         }

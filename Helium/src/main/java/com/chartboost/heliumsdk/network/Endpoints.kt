@@ -39,6 +39,7 @@ object Endpoints {
      * Any new versions introduced can be added here.
      */
     enum class Version {
+        V0,
         V1,
         V2,
         V3,
@@ -109,6 +110,8 @@ object Endpoints {
             PARTNER_IMPRESSION(Version.V1),
             PREBID(Version.V1),
             REWARD(Version.V2),
+            START_QUEUE(Version.V1),
+            END_QUEUE(Version.V1),
             SHOW(Version.V1),
             WINNER(Version.V3),
             ;

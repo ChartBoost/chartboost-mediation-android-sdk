@@ -22,4 +22,8 @@ data class Placement(
     @Serializable(with = AdFormatEnumSetSerializer::class)
     @SerialName("format")
     val format: AdFormat,
+    @SerialName("ad_queueing_enabled")
+    val adQueueingEnabled: Boolean = true,
+    @SerialName("queue_size")
+    val queueSize: Int = 2,
 )

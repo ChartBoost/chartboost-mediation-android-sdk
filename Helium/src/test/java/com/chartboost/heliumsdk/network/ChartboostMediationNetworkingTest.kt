@@ -10,6 +10,7 @@ package com.chartboost.heliumsdk.network
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import com.chartboost.heliumsdk.HeliumSdk
 import com.chartboost.heliumsdk.PartnerConsents
 import com.chartboost.heliumsdk.ad.HeliumBannerAd
 import com.chartboost.heliumsdk.controllers.PartnerController
@@ -42,6 +43,9 @@ class ChartboostMediationNetworkingTest {
 
         mockkObject(Environment)
         every { Environment.sessionId } returns SESSION_ID
+
+        HeliumSdk.chartboostMediationInternal.testMode = true
+        HeliumSdk.chartboostMediationInternal.appId = APP_ID
     }
 
     /*
@@ -244,6 +248,7 @@ class ChartboostMediationNetworkingTest {
         const val INIT_HASH_OLD = "inithashnew123"
         const val SESSION_ID = "sessionidabc123"
         const val LOAD_ID = "loadidabc123"
+        const val QUEUE_ID = "queueidabc123"
         const val BUILD_RELEASE = "33"
 
         const val BANNER_LOAD_ID = "bannerloadid123"

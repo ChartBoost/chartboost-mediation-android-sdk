@@ -9,7 +9,6 @@ package com.chartboost.heliumsdk.utils
 
 import android.util.Log
 import com.chartboost.heliumsdk.utils.LogController.STACK_TRACE_LEVEL
-import com.chartboost.heliumsdk.utils.LogController.debugMode
 
 /**
  * @suppress
@@ -30,13 +29,16 @@ class PartnerLogController {
             event: PartnerAdapterEvents,
             message: String = "",
         ) {
+            if (LogController.logLevel.value < LogController.LogLevel.DEBUG.value) {
+                return
+            }
             val messageFromTemplate =
                 LogController.buildLogMsg(
                     LogController.getClassAndMethod(STACK_TRACE_LEVEL),
                     "${event.message}. $message",
                 )
 
-            if (debugMode) Log.d(LogController.TAG, messageFromTemplate)
+            Log.d(LogController.TAG, messageFromTemplate)
         }
     }
 

@@ -70,13 +70,16 @@ fun ChartboostMediationNetworkingTest.`verify rewarded callback GET request succ
 
         val request = mockWebServer.takeRequest()
 
-        val actualUrl = request.requestUrl.toString()
+        request.let {
+            val actualUrl = request.requestUrl.toString()
 
-        Assert.assertEquals(expectedUrl, actualUrl)
+            Assert.assertEquals(expectedUrl, actualUrl)
 
-        Assert.assertTrue(response is ChartboostMediationNetworkingResult.Success)
-        val httpCode = (response as ChartboostMediationNetworkingResult.Success).httpCode
-        Assert.assertEquals(expectedResponseHttpCode, httpCode)
+            Assert.assertTrue(response is ChartboostMediationNetworkingResult.Success)
+            val httpCode = (response as ChartboostMediationNetworkingResult.Success).httpCode
+            Assert.assertEquals(expectedResponseHttpCode, httpCode)
+            Assert.assertNull(request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY))
+        }
     }
 
 fun ChartboostMediationNetworkingTest.`verify rewarded callback POST request success`() =
@@ -144,4 +147,5 @@ fun ChartboostMediationNetworkingTest.`verify rewarded callback POST request suc
             request.body.readUtf8(),
             true,
         )
+        Assert.assertNull(request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY))
     }

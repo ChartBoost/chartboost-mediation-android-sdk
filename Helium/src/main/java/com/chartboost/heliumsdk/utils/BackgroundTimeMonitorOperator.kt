@@ -13,9 +13,10 @@ import androidx.lifecycle.DefaultLifecycleObserver
  * An interface to define the controllable behavior of an object that is responsible for monitoring
  * when the application migrates between the background and foreground.
  **/
+
 /**
  * @suppress
  */
-interface BackgroundTimeMonitorOperator: DefaultLifecycleObserver {
+interface BackgroundTimeMonitorOperator : DefaultLifecycleObserver {
     fun backgroundTimeUntilNow(): Long
 }

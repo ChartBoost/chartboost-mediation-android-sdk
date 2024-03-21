@@ -8,6 +8,11 @@
 include(
     ":Helium",
     ":HeliumCanary",
+    ":HeliumJavaValidator",
+    ":ChartboostCore",
+    ":ChartboostCoreCanary",
+    ":ChartboostCoreJavaValidator",
+    ":UsercentricsAdapter",
     ":AdMobAdapter",
     ":AmazonPublisherServicesAdapter",
     ":AppLovinAdapter",
@@ -23,7 +28,6 @@ include(
     ":MobileFuseAdapter",
     ":PangleAdapter",
     ":ReferenceAdapter",
-    ":TapjoyAdapter",
     ":UnityAdsAdapter",
     ":VerveAdapter",
     ":VungleAdapter",
@@ -91,10 +95,6 @@ project(":ReferenceAdapter").projectDir =
     File(
         "${commonNamedRepoPrefix}reference/ReferenceAdapter",
     )
-project(":TapjoyAdapter").projectDir =
-    File(
-        "${commonNamedRepoPrefix}tapjoy/TapjoyAdapter",
-    )
 project(":UnityAdsAdapter").projectDir =
     File(
         "${commonNamedRepoPrefix}unity-ads/UnityAdsAdapter",
@@ -107,4 +107,7 @@ project(":VungleAdapter").projectDir =
     File(
         "${commonNamedRepoPrefix}vungle/VungleAdapter",
     )
-include(":JavaValidator")
+project(":UsercentricsAdapter").projectDir =
+    File(
+        "./chartboost-core-android-consent-adapter-usercentrics/UsercentricsAdapter",
+    )

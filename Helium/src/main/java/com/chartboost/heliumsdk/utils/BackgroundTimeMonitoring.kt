@@ -10,6 +10,7 @@ package com.chartboost.heliumsdk.utils
 /**
  * An interface to define the means of providing a new instance of a `BackgroundTimeMonitorOperation`.
  */
+
 /**
  * @suppress
  */

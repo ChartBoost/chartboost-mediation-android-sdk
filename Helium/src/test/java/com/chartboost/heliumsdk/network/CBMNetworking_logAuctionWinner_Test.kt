@@ -65,6 +65,10 @@ fun ChartboostMediationNetworkingTest.`verify log auction winner request success
             ChartboostMediationNetworkingTest.LOAD_ID,
             request.getHeader(ChartboostMediationNetworking.MEDIATION_LOAD_ID_HEADER_KEY).toString(),
         )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
+        )
         Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 
         Assert.assertTrue(response is ChartboostMediationNetworkingResult.Success)

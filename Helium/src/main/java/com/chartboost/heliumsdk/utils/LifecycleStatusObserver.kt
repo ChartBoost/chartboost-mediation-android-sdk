@@ -1,6 +1,6 @@
 /*
  * Copyright 2024 Chartboost, Inc.
- * 
+ *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
  */
@@ -15,8 +15,7 @@ import androidx.lifecycle.LifecycleOwner
  * Upon initialization, the status variable is set to UNKNOWN.  It changes to
  * BACKGROUND and FOREGROUND upon execution of the appropriate event.
  */
-internal class LifecycleStatusObserver: DefaultLifecycleObserver {
-
+internal class LifecycleStatusObserver : DefaultLifecycleObserver {
     companion object {
         var status: LifecycleStatus = LifecycleStatus.UNKNOWN
     }

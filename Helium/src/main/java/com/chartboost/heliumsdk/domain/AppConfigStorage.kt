@@ -56,12 +56,7 @@ object AppConfigStorage {
             }
 
     /**
-     * Log level for the Helium SDK.
-     * ERROR = 0;
-     * WARNING = 1;
-     * INFO = 2;
-     * DEBUG = 3;
-     * VERBOSE = 4;
+     * Log level for the Helium SDK. This is no longer used.
      */
     var logLevel: Int = 0
         private set
@@ -180,6 +175,35 @@ object AppConfigStorage {
      */
     var validCachedConfigExists: Boolean = true
 
+    val serverLogLevelOverride: LogController.LogLevel?
+        get() =
+            try {
+                LogController.LogLevel.valueOf((appConfig.logLevelString ?: "").uppercase())
+            } catch (iae: IllegalArgumentException) {
+                null
+            }
+
+    /**
+     * Maximum queue size.
+     */
+    var maxQueueSize: Int = 5
+        private set
+        get() = appConfig.maxQueueSize
+
+    /**
+     * Time to live of a queued ad. The default time is one hour.
+     */
+    var queueAdTtlSeconds: Long = 3600L
+        private set
+        get() = appConfig.queueAdTtlSeconds
+
+    /**
+     * The default queue size when no size is specified by the publisher in the dashboard.
+     * The default is 2.
+     */
+    val defaultQueueSize: Int
+        get() = appConfig.defaultQueueSize
+
     fun getEnableRateLimiting(): Boolean {
         return HeliumSdk.context?.let {
             val preferences =
@@ -221,6 +245,7 @@ object AppConfigStorage {
 
         appConfig.placements?.forEach {
             PlacementStorage.addRefreshTime(it.chartboostPlacement, it.autoRefreshRate)
+            PlacementStorage.addQueueSize(it.chartboostPlacement, it.queueSize, maxQueueSize)
         }
     }
 

@@ -101,7 +101,7 @@ dependencies {
         exclude(group = "com.squareup.okio", module = "okio")
     }
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")

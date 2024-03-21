@@ -31,15 +31,19 @@ object NetworkErrorTransformer {
 
         return when {
             code == HTTP_OK -> null
+
             code == HTTP_NO_CONTENT -> null
+
             code == HTTP_NO_RESPONSE ->
                 ChartboostMediationError.CM_LOAD_FAILURE_INVALID_BID_RESPONSE
+
             code < HTTP_OK || code >= HTTP_MULT_CHOICE ->
                 if (body == null) {
                     ChartboostMediationError.CM_LOAD_FAILURE_INVALID_BID_RESPONSE
                 } else {
                     ChartboostMediationError.CM_AD_SERVER_ERROR
                 }
+
             else -> ChartboostMediationError.CM_LOAD_FAILURE_INVALID_BID_RESPONSE
         }?.let {
             NetworkError(code, it)

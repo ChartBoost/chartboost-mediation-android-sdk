@@ -7,7 +7,6 @@
 
 package com.chartboost.heliumsdk.network
 
-import com.chartboost.heliumsdk.domain.*
 import com.chartboost.heliumsdk.network.ChartboostMediationNetworkingTest.Companion.BANNER_IMPRESSION_DEPTH
 import com.chartboost.heliumsdk.network.ChartboostMediationNetworkingTest.Companion.INTERSTITIAL_IMPRESSION_DEPTH
 import com.chartboost.heliumsdk.network.ChartboostMediationNetworkingTest.Companion.RATE_LIMIT_HEADER_VALUE
@@ -60,6 +59,10 @@ fun ChartboostMediationNetworkingTest.`verify banner bid request success`() =
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
         )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
+        )
 //    Commented out until we can figure out why the robolectric tests are non-deterministic
 //    Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 
@@ -109,6 +112,10 @@ fun ChartboostMediationNetworkingTest.`verify banner bid request failure due to 
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
         )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
+        )
 //    Commented out until we can figure out why the robolectric tests are non-deterministic
 //    Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 
@@ -153,6 +160,10 @@ fun ChartboostMediationNetworkingTest.`verify banner bid request failure due to 
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
+        )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
         )
 //    Commented out until we can figure out why the robolectric tests are non-deterministic
 //    Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
@@ -203,6 +214,10 @@ fun ChartboostMediationNetworkingTest.`verify interstitial bid request success`(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
         )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
+        )
 //    Commented out until we can figure out why the robolectric tests are non-deterministic
 //    Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 
@@ -252,6 +267,10 @@ fun ChartboostMediationNetworkingTest.`verify interstitial bid request failure d
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
         )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
+        )
 //    Commented out until we can figure out why the robolectric tests are non-deterministic
 //    Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 
@@ -296,6 +315,10 @@ fun ChartboostMediationNetworkingTest.`verify interstitial bid request failure d
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
+        )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
         )
 //    Commented out until we can figure out why the robolectric tests are non-deterministic
 //    Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
@@ -346,6 +369,10 @@ fun ChartboostMediationNetworkingTest.`verify rewarded bid request success`() =
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
         )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
+        )
 //    Commented out until we can figure out why the robolectric tests are non-deterministic
 //    Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 
@@ -395,6 +422,10 @@ fun ChartboostMediationNetworkingTest.`verify rewarded bid request failure due t
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
         )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
+        )
 //    Commented out until we can figure out why the robolectric tests are non-deterministic
 //    Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 
@@ -439,6 +470,10 @@ fun ChartboostMediationNetworkingTest.`verify rewarded bid request failure due t
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
+        )
+        Assert.assertEquals(
+            ChartboostMediationNetworkingTest.APP_ID,
+            request.getHeader(ChartboostMediationNetworking.DEBUG_HEADER_KEY),
         )
 //    Commented out until we can figure out why the robolectric tests are non-deterministic
 //    Assert.assertEquals(expectedRequestJson, request.body.readUtf8())

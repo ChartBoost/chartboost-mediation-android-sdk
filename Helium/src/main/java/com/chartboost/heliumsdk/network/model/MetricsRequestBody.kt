@@ -21,10 +21,18 @@ import kotlin.math.sign
 class MetricsRequestBody constructor(
     @SerialName("auction_id")
     val auctionId: String? = null,
+    @SerialName("queue_id")
+    val queueId: String? = null,
     @SerialName("placement_type")
     val placementType: String? = null,
     @SerialName("size")
     val size: BannerAdDimensions? = null,
+    @SerialName("start")
+    val start: Long? = null,
+    @SerialName("end")
+    val end: Long? = null,
+    @SerialName("duration")
+    val duration: Long? = null,
     @SerialName("background_duration")
     val backgroundDurationMs: Long? = null,
     @Contextual

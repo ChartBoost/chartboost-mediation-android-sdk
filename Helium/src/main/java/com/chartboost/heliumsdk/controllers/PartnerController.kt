@@ -860,7 +860,9 @@ class PartnerController {
     private fun getLoadTimeoutMs(format: AdFormat): Long {
         return when (format) {
             AdFormat.BANNER, AdFormat.ADAPTIVE_BANNER -> AppConfigStorage.bannerLoadTimeoutSeconds * 1000L
+
             AdFormat.INTERSTITIAL, AdFormat.REWARDED, AdFormat.REWARDED_INTERSTITIAL -> AppConfigStorage.fullscreenLoadTimeoutSeconds * 1000L
+
             else -> {
                 LogController.e("Unknown ad format: $format. Using default timeout.")
                 AppConfigStorage.fullscreenLoadTimeoutSeconds * 1000L
@@ -952,9 +954,11 @@ class PartnerController {
                 is Collection<*> -> {
                     it.isNotEmpty()
                 }
+
                 is String -> {
                     it.trim().isNotEmpty()
                 }
+
                 else -> {
                     it != null
                 }
