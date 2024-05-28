@@ -80,7 +80,7 @@ class PartnerController {
     /**
      * Store adapters keyed by their partner IDs.
      */
-    var adapters: MutableMap<String, PartnerAdapter> = mutableMapOf()
+    var adapters: MutableMap<String, PartnerAdapter> = ConcurrentHashMap()
 
     /**
      * Return adapterInfo as a List

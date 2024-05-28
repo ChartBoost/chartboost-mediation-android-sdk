@@ -10,6 +10,9 @@ package com.chartboost.heliumsdk.controllers
 import android.content.Context
 import com.chartboost.heliumsdk.PartnerConsents
 import com.chartboost.heliumsdk.utils.LogController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -154,22 +157,24 @@ class PrivacyController(context: Context, private val partnerConsents: PartnerCo
             return
         }
         hasUpdatedFromDisk = true
-        val partnerConsentsMapString =
-            sharedPreferences.getString(HELIUM_PARTNER_CONSENTS_MAP_KEY, "")
-        if (partnerConsentsMapString.isNullOrEmpty()) {
-            LogController.d("No partner consents map saved.")
-            return
-        }
-        try {
-            val jsonObject = JSONObject(partnerConsentsMapString)
-            val consentMap: MutableMap<String, Boolean> = mutableMapOf()
-            jsonObject.keys().forEach {
-                consentMap[it] = jsonObject.getBoolean(it)
+        CoroutineScope(Dispatchers.IO).launch {
+            val partnerConsentsMapString =
+                sharedPreferences.getString(HELIUM_PARTNER_CONSENTS_MAP_KEY, "")
+            if (partnerConsentsMapString.isNullOrEmpty()) {
+                LogController.d("No partner consents map saved.")
+            } else {
+                try {
+                    val jsonObject = JSONObject(partnerConsentsMapString)
+                    val consentMap: MutableMap<String, Boolean> = mutableMapOf()
+                    jsonObject.keys().forEach {
+                        consentMap[it] = jsonObject.getBoolean(it)
+                    }
+                    partnerConsents.mergePartnerConsentsFromDisk(consentMap)
+                    savePartnerConsentsToDisk()
+                } catch (e: JSONException) {
+                    LogController.d("Unable to recreate partner consents map.")
+                }
             }
-            partnerConsents.mergePartnerConsentsFromDisk(consentMap)
-            savePartnerConsentsToDisk()
-        } catch (e: JSONException) {
-            LogController.d("Unable to recreate partner consents map.")
         }
     }
 

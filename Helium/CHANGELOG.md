@@ -2,6 +2,10 @@ Android Change Log
 ==================
 Check for the latest Chartboost Mediation SDK at the Chartboost Mediation website.
 
+### Version 4.9.1 *(2024-05-23)*
+Bug Fixes:
+- Eliminated a "ConcurrentModificationException" that could occur when setting GDPR.
+
 ### Version 4.9.0 *(2024-03-21)*
 Improvements:
 - Added support for ad queueing, a new feature that builds upon the existing fullscreen ad experience that allows publishers to queue up multiple fullscreen ads and show them in succession.
