@@ -1,4 +1,4 @@
-name: Create GitHub Release
+name: Release
 
 on:
   push:
@@ -12,23 +12,28 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Check and extract semver from commit message
+      - name: Check release eligibility
+        id: release_check
         run: |
           # Extracting first line of commit message
           commit_title=$(git log --format=%s -n 1 ${{ github.sha }})
+          echo "Commit title detected: $commit_title"
 
-          if [[ "$commit_title" =~ ^v?([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
-            echo "SEMVER=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+          if [[ "$commit_title" =~ ([0-9]+\.[0-9]+\.[0-9]+) ]]; then
+            echo "RELEASE_VERSION=${BASH_REMATCH[1]}" >> $GITHUB_ENV
+            echo "Release version parsed from commit title: ${BASH_REMATCH[1]}. Proceeding with release."
+            echo "::set-output name=should_release::true"
           else
-            echo "Commit title/message does not contain a simple semver string (e.g., '1.2.3'). This probably is not a release. Exiting..."
-            exit 1
+            echo "Commit title/message does not contain a valid release version (e.g., '1.2.3'). This probably is not a release. Skipping subsequent steps."
+            echo "::set-output name=should_release::false"
           fi
 
       - name: Create GitHub release
+        if: steps.release_check.outputs.should_release == 'true'
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ env.SEMVER }}
+          tag: ${{ env.RELEASE_VERSION }}
           commit: ${{ github.sha }}
-          name: ${{ env.SEMVER }}
+          name: ${{ env.RELEASE_VERSION }}
           draft: false
           prerelease: false
