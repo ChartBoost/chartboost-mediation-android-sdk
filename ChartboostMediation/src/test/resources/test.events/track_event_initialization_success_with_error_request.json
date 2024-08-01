@@ -1,0 +1,23 @@
+{
+  "result":"success_with_cached_config_and_error",
+  "metrics":[
+    {
+      "partner":"chartboost",
+      "start":1681763389528,
+      "end":1681763390021,
+      "duration":493,
+      "is_success":true,
+      "partner_sdk_version":"9.2.1",
+      "partner_adapter_version":"4.9.2.1.1"
+    }
+  ],
+  "error":{
+    "type":"com.chartboost.chartboostmediationsdk.domain.MetricsError.JsonParseError",
+    "cm_code":"CM_115",
+    "details":{
+      "type":"class java.lang.Exception",
+      "description":"Expected start of the object '{', but had 'EOF' instead at path: $",
+      "data_as_string":"XGF7In0="
+    }
+  }
+}

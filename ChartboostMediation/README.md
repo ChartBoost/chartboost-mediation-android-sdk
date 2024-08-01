@@ -1,22 +1,10 @@
-# Android Chartboost Core & Mediation SDKs
-
-![badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fchartboost.s3.amazonaws.com%2Fchartboost-mediation%2Fsdk%2Fandroid%2Fcode-coverage%2Fcoverage-percent.json)
-![badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fchartboost.s3.amazonaws.com%2Fchartboost-core%2Fsdk%2Fandroid%2Fcode-coverage%2Fcoverage-percent.json)
+# Android Chartboost Mediation SDK
 
 The Android Chartboost Mediation SDK, by Chartboost, is a Unified-Auction & Mediated solution which helps developers increase their mobile apps' revenue with the inclusion of other supported Programmatic & Mediated SDKs.
 
-Chartboost Core Android SDK is designed as an entry point to manage and facilitate different modules for your Android application/game. Each module can be individually initialized with metrics collected and reported to offer detailed insights into the module’s performance and potential issues.
-
-The main functionalities provided by the SDK are:
-
-1. Initialization of individual or a set of modules.
-2. Performance metrics collection during the module initialization process.
-3. Detailed error tracking and reporting with categorized error codes.
-4. Centralized logging system with multiple log levels and output options.
-
 ## Get Started on Android
 
-See [Developer Docs](https://developers.chartboost.com) for detailed instructions.
+See [Developer Docs](https://docs.chartboost.com/en/mediation/integrate/android/initialize-mediation/) for detailed instructions.
 
 ----
 
@@ -33,7 +21,7 @@ See [Developer Docs](https://developers.chartboost.com) for detailed instruction
 | Android Studio | 2020.3.1+           |
 | Android OS     | 5.0+ (API level 21) |
 
-## Add the Chartboost Core SDK and the Chartboost Mediation SDK to your project
+## Add the Chartboost Mediation SDK to your project
 
 For `build.gradle`
 
@@ -47,10 +35,10 @@ repositories {
       name "Chartboost Core's maven repo"
       url "https://cboost.jfrog.io/artifactory/chartboost-core"
     }
+
 }
 
 dependencies {
-    implementation("com.chartboost:chartboost-core-sdk:1.0.0")
     implementation("com.chartboost:chartboost-mediation-sdk:5.0.0")
 }
 ```

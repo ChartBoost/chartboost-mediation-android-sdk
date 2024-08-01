@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Copyright 2022-2024 Chartboost, Inc.
+  
+  Use of this source code is governed by an MIT-style
+  license that can be found in the LICENSE file.
+-->
+
+<resources>
+    <declare-styleable name="ChartboostMediationBannerAd">
+        <attr name="chartboostMediationPlacement" format="string"/>
+        <attr name="chartboostMediationBannerSize" format="enum">
+            <enum name="STANDARD" value="0"/>
+            <enum name="MEDIUM" value="1"/>
+            <enum name="LEADERBOARD" value="2"/>
+            <enum name="ADAPTIVE" value="3"/>
+        </attr>
+        <attr name="chartboostMediationBannerFlexibleWidth" format="dimension"/>
+        <attr name="chartboostMediationBannerFlexibleHeight" format="dimension"/>
+    </declare-styleable>
+</resources>
