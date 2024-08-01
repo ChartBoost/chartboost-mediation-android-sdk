@@ -1,0 +1,15 @@
+{
+  "bid": [
+    {
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 17,
+      "ext": {
+        "partner_placement": "MoatPublishingInterstitial",
+        "line_item_id": "a line item ID"
+      }
+    }
+  ],
+  "seat": "chartboost",
+  "helium_bid_id": "67350c70e406c5e9ca33e83c261d0faa0bf6f23e_chartboost"
+}

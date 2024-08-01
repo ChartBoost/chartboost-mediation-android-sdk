@@ -1,0 +1,830 @@
+{
+  "id": "602802717ee37fe8683953869db8db9f654ab2f7",
+  "seatbid": [{
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 100.0,
+      "ext": {
+        "partner_placement": "490251",
+        "line_item_id": "c9151458-c03b-442d-8e9b-f8729fad9c04",
+        "ilrd": {
+          "network_name": "fyber",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "FNonProAndroidInterstitialTest",
+          "line_item_id": "c9151458-c03b-442d-8e9b-f8729fad9c04",
+          "network_placement_id": "490251",
+          "ad_revenue": 0.1
+        },
+        "first_look": false,
+        "cpm_price": 100.0,
+        "ad_revenue": 0.1,
+        "bidder": {
+          "helium": {
+            "partner_placement": "490251",
+            "line_item_id": "c9151458-c03b-442d-8e9b-f8729fad9c04"
+          }
+        }
+      }
+    }],
+    "seat": "fyber",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_fyber_490251"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 30.0,
+      "ext": {
+        "partner_placement": "1638795264987",
+        "line_item_id": "68c525e7-bef5-4c42-b544-56bae814703c",
+        "ilrd": {
+          "network_name": "inmobi",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "IMNonProAndroidInterstitialHigh",
+          "line_item_id": "68c525e7-bef5-4c42-b544-56bae814703c",
+          "network_placement_id": "1638795264987",
+          "ad_revenue": 0.03
+        },
+        "first_look": false,
+        "cpm_price": 30.0,
+        "ad_revenue": 0.03,
+        "bidder": {
+          "helium": {
+            "partner_placement": "1638795264987",
+            "line_item_id": "68c525e7-bef5-4c42-b544-56bae814703c"
+          }
+        }
+      }
+    }],
+    "seat": "inmobi",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_inmobi_1638795264987"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 25.0,
+      "ext": {
+        "partner_placement": "Android CBNonProInterstitialHigh",
+        "line_item_id": "2331e2c8-d18b-4820-9b1b-debd1cbd6048",
+        "ilrd": {
+          "network_name": "chartboost",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "CBNonProInterstitialHigh",
+          "line_item_id": "2331e2c8-d18b-4820-9b1b-debd1cbd6048",
+          "network_placement_id": "Android CBNonProInterstitialHigh",
+          "ad_revenue": 0.025
+        },
+        "first_look": false,
+        "cpm_price": 25.0,
+        "ad_revenue": 0.025,
+        "bidder": {
+          "helium": {
+            "partner_placement": "Android CBNonProInterstitialHigh",
+            "line_item_id": "2331e2c8-d18b-4820-9b1b-debd1cbd6048"
+          }
+        }
+      }
+    }],
+    "seat": "chartboost",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_chartboost_Android CBNonProInterstitialHigh"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 25.0,
+      "ext": {
+        "partner_placement": "360263",
+        "line_item_id": "31927b0a-63ab-4494-9f2d-5d4444b1f987",
+        "ilrd": {
+          "network_name": "mintegral",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "MIInterstitial-test",
+          "line_item_id": "31927b0a-63ab-4494-9f2d-5d4444b1f987",
+          "network_placement_id": "360263",
+          "ad_revenue": 0.025
+        },
+        "first_look": false,
+        "cpm_price": 25.0,
+        "ad_revenue": 0.025,
+        "bidder": {
+          "helium": {
+            "partner_placement": "360263",
+            "line_item_id": "31927b0a-63ab-4494-9f2d-5d4444b1f987",
+            "mintegral_unit_id": "1604101",
+            "unit_id": "1604101"
+          }
+        },
+        "partner_details": {
+          "mintegral_unit_id": "1604101",
+          "unit_id": "1604101"
+        }
+      }
+    }],
+    "seat": "mintegral",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_mintegral_360263"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 24.5,
+      "ext": {
+        "partner_placement": "fdde88c7f48b6adc",
+        "line_item_id": "c4efe3de-9d5d-44d2-8968-8b8378771ac5",
+        "ilrd": {
+          "network_name": "applovin",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "ALNonProInterstitialAndroidHigh",
+          "line_item_id": "c4efe3de-9d5d-44d2-8968-8b8378771ac5",
+          "network_placement_id": "fdde88c7f48b6adc",
+          "ad_revenue": 0.0245
+        },
+        "first_look": false,
+        "cpm_price": 24.5,
+        "ad_revenue": 0.0245,
+        "bidder": {
+          "helium": {
+            "partner_placement": "fdde88c7f48b6adc",
+            "line_item_id": "c4efe3de-9d5d-44d2-8968-8b8378771ac5"
+          }
+        }
+      }
+    }],
+    "seat": "applovin",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_applovin_fdde88c7f48b6adc"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 23.5,
+      "ext": {
+        "partner_placement": "ca-app-pub-6548817822928201/6752711386",
+        "line_item_id": "68d83ae9-3c9e-4737-9371-6c09a99f6e89",
+        "ilrd": {
+          "network_name": "admob",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "AMNonProInterstitialAndroidHigh",
+          "line_item_id": "68d83ae9-3c9e-4737-9371-6c09a99f6e89",
+          "network_placement_id": "ca-app-pub-6548817822928201/6752711386",
+          "ad_revenue": 0.0235
+        },
+        "first_look": false,
+        "cpm_price": 23.5,
+        "ad_revenue": 0.0235,
+        "bidder": {
+          "helium": {
+            "partner_placement": "ca-app-pub-6548817822928201/6752711386",
+            "line_item_id": "68d83ae9-3c9e-4737-9371-6c09a99f6e89"
+          }
+        }
+      }
+    }],
+    "seat": "admob",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_admob_ca-app-pub-6548817822928201/6752711386"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 22.5,
+      "ext": {
+        "partner_placement": "VNONPROINTERSTITIALHIGH-9128317",
+        "line_item_id": "649b4927-cc88-450c-9de0-c664f944ebed",
+        "ilrd": {
+          "network_name": "vungle",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "VNonProInterstitalAndroidHigh",
+          "line_item_id": "649b4927-cc88-450c-9de0-c664f944ebed",
+          "network_placement_id": "VNONPROINTERSTITIALHIGH-9128317",
+          "ad_revenue": 0.0225
+        },
+        "first_look": false,
+        "cpm_price": 22.5,
+        "ad_revenue": 0.0225,
+        "bidder": {
+          "helium": {
+            "partner_placement": "VNONPROINTERSTITIALHIGH-9128317",
+            "line_item_id": "649b4927-cc88-450c-9de0-c664f944ebed"
+          }
+        }
+      }
+    }],
+    "seat": "vungle",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_vungle_VNONPROINTERSTITIALHIGH-9128317"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 22.0,
+      "ext": {
+        "partner_placement": "vz7fac55ce347b4f75a2",
+        "line_item_id": "59f5906f-5d06-438f-aa9b-8450a40cadf4",
+        "ilrd": {
+          "network_name": "adcolony",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "ACNonProInterstitialHigh",
+          "line_item_id": "59f5906f-5d06-438f-aa9b-8450a40cadf4",
+          "network_placement_id": "vz7fac55ce347b4f75a2",
+          "ad_revenue": 0.022
+        },
+        "first_look": false,
+        "cpm_price": 22.0,
+        "ad_revenue": 0.022,
+        "bidder": {
+          "helium": {
+            "partner_placement": "vz7fac55ce347b4f75a2",
+            "line_item_id": "59f5906f-5d06-438f-aa9b-8450a40cadf4"
+          }
+        }
+      }
+    }],
+    "seat": "adcolony",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_adcolony_vz7fac55ce347b4f75a2"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 20.25,
+      "ext": {
+        "partner_placement": "UANonProInterstitialHigh",
+        "line_item_id": "063c743c-1c40-45af-8b84-58abc7165078",
+        "ilrd": {
+          "network_name": "unity",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "UANonProInterstitialHigh",
+          "line_item_id": "063c743c-1c40-45af-8b84-58abc7165078",
+          "network_placement_id": "UANonProInterstitialHigh",
+          "ad_revenue": 0.02025
+        },
+        "first_look": false,
+        "cpm_price": 20.25,
+        "ad_revenue": 0.02025,
+        "bidder": {
+          "helium": {
+            "partner_placement": "UANonProInterstitialHigh",
+            "line_item_id": "063c743c-1c40-45af-8b84-58abc7165078"
+          }
+        }
+      }
+    }],
+    "seat": "unity",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_unity_UANonProInterstitialHigh"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 15.0,
+      "ext": {
+        "partner_placement": "Android CBNonProInterstitialMed",
+        "line_item_id": "58c5d4fa-5043-4bc5-88c9-34a8d504f312",
+        "ilrd": {
+          "network_name": "chartboost",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "CBNonProInterstitialMed",
+          "line_item_id": "58c5d4fa-5043-4bc5-88c9-34a8d504f312",
+          "network_placement_id": "Android CBNonProInterstitialMed",
+          "ad_revenue": 0.015
+        },
+        "first_look": false,
+        "cpm_price": 15.0,
+        "ad_revenue": 0.015,
+        "bidder": {
+          "helium": {
+            "partner_placement": "Android CBNonProInterstitialMed",
+            "line_item_id": "58c5d4fa-5043-4bc5-88c9-34a8d504f312"
+          }
+        }
+      }
+    }],
+    "seat": "chartboost",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_chartboost_Android CBNonProInterstitialMed"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 14.5,
+      "ext": {
+        "partner_placement": "VNONPROINTERSTITIALMED-7428579",
+        "line_item_id": "4638207a-90fe-4f58-9b1a-d9bece25092e",
+        "ilrd": {
+          "network_name": "vungle",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "VNonProInterstitialAndroidMed",
+          "line_item_id": "4638207a-90fe-4f58-9b1a-d9bece25092e",
+          "network_placement_id": "VNONPROINTERSTITIALMED-7428579",
+          "ad_revenue": 0.0145
+        },
+        "first_look": false,
+        "cpm_price": 14.5,
+        "ad_revenue": 0.0145,
+        "bidder": {
+          "helium": {
+            "partner_placement": "VNONPROINTERSTITIALMED-7428579",
+            "line_item_id": "4638207a-90fe-4f58-9b1a-d9bece25092e"
+          }
+        }
+      }
+    }],
+    "seat": "vungle",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_vungle_VNONPROINTERSTITIALMED-7428579"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 14.0,
+      "ext": {
+        "partner_placement": "vz1c0da919394b4073a9",
+        "line_item_id": "8842afb0-4186-4159-ae09-b1f2a0e1caf2",
+        "ilrd": {
+          "network_name": "adcolony",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "ACNonProInterstitialMed",
+          "line_item_id": "8842afb0-4186-4159-ae09-b1f2a0e1caf2",
+          "network_placement_id": "vz1c0da919394b4073a9",
+          "ad_revenue": 0.014
+        },
+        "first_look": false,
+        "cpm_price": 14.0,
+        "ad_revenue": 0.014,
+        "bidder": {
+          "helium": {
+            "partner_placement": "vz1c0da919394b4073a9",
+            "line_item_id": "8842afb0-4186-4159-ae09-b1f2a0e1caf2"
+          }
+        }
+      }
+    }],
+    "seat": "adcolony",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_adcolony_vz1c0da919394b4073a9"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 13.5,
+      "ext": {
+        "partner_placement": "89e9abc15833699d",
+        "line_item_id": "dfbf00a4-c1ce-4a39-b859-2e50705c2b1c",
+        "ilrd": {
+          "network_name": "applovin",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "ALNonProInterstitialAndroidMed",
+          "line_item_id": "dfbf00a4-c1ce-4a39-b859-2e50705c2b1c",
+          "network_placement_id": "89e9abc15833699d",
+          "ad_revenue": 0.0135
+        },
+        "first_look": false,
+        "cpm_price": 13.5,
+        "ad_revenue": 0.0135,
+        "bidder": {
+          "helium": {
+            "partner_placement": "89e9abc15833699d",
+            "line_item_id": "dfbf00a4-c1ce-4a39-b859-2e50705c2b1c"
+          }
+        }
+      }
+    }],
+    "seat": "applovin",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_applovin_89e9abc15833699d"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 12.25,
+      "ext": {
+        "partner_placement": "3131500",
+        "line_item_id": "d60a3064-60f8-4e1f-a02f-0b39866c7dce",
+        "ilrd": {
+          "network_name": "ironsource",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "DefaultInterstitial",
+          "line_item_id": "d60a3064-60f8-4e1f-a02f-0b39866c7dce",
+          "network_placement_id": "3131500",
+          "ad_revenue": 0.01225
+        },
+        "first_look": false,
+        "cpm_price": 12.25,
+        "ad_revenue": 0.01225,
+        "bidder": {
+          "helium": {
+            "partner_placement": "3131500",
+            "line_item_id": "d60a3064-60f8-4e1f-a02f-0b39866c7dce"
+          }
+        }
+      }
+    }],
+    "seat": "ironsource",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_ironsource_3131500"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 11.5,
+      "ext": {
+        "partner_placement": "ca-app-pub-6548817822928201/9792676458",
+        "line_item_id": "323e76e3-88eb-4fe9-8408-d090cc2cbdb2",
+        "ilrd": {
+          "network_name": "admob",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "AMNonProInterstitialAndroidMed",
+          "line_item_id": "323e76e3-88eb-4fe9-8408-d090cc2cbdb2",
+          "network_placement_id": "ca-app-pub-6548817822928201/9792676458",
+          "ad_revenue": 0.0115
+        },
+        "first_look": false,
+        "cpm_price": 11.5,
+        "ad_revenue": 0.0115,
+        "bidder": {
+          "helium": {
+            "partner_placement": "ca-app-pub-6548817822928201/9792676458",
+            "line_item_id": "323e76e3-88eb-4fe9-8408-d090cc2cbdb2"
+          }
+        }
+      }
+    }],
+    "seat": "admob",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_admob_ca-app-pub-6548817822928201/9792676458"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 10.25,
+      "ext": {
+        "partner_placement": "UANonProInterstitialMed",
+        "line_item_id": "e86c671b-e7d2-4025-87d6-5c8d4e428a30",
+        "ilrd": {
+          "network_name": "unity",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "UANonProInterstitialMed",
+          "line_item_id": "e86c671b-e7d2-4025-87d6-5c8d4e428a30",
+          "network_placement_id": "UANonProInterstitialMed",
+          "ad_revenue": 0.01025
+        },
+        "first_look": false,
+        "cpm_price": 10.25,
+        "ad_revenue": 0.01025,
+        "bidder": {
+          "helium": {
+            "partner_placement": "UANonProInterstitialMed",
+            "line_item_id": "e86c671b-e7d2-4025-87d6-5c8d4e428a30"
+          }
+        }
+      }
+    }],
+    "seat": "unity",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_unity_UANonProInterstitialMed"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 10.25,
+      "ext": {
+        "partner_placement": "1636164644810",
+        "line_item_id": "b68eb1ad-e2c1-47b0-b34b-933948b56e58",
+        "ilrd": {
+          "network_name": "inmobi",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "IMNonProAndroidInterstitialMed",
+          "line_item_id": "b68eb1ad-e2c1-47b0-b34b-933948b56e58",
+          "network_placement_id": "1636164644810",
+          "ad_revenue": 0.01025
+        },
+        "first_look": false,
+        "cpm_price": 10.25,
+        "ad_revenue": 0.01025,
+        "bidder": {
+          "helium": {
+            "partner_placement": "1636164644810",
+            "line_item_id": "b68eb1ad-e2c1-47b0-b34b-933948b56e58"
+          }
+        }
+      }
+    }],
+    "seat": "inmobi",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_inmobi_1636164644810"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 10.0,
+      "ext": {
+        "partner_placement": "980087797",
+        "line_item_id": "adf49b2f-1f6a-4d71-83be-c38cb06173f3",
+        "ilrd": {
+          "network_name": "pangle",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "PNonProInterstitial",
+          "line_item_id": "adf49b2f-1f6a-4d71-83be-c38cb06173f3",
+          "network_placement_id": "980087797",
+          "ad_revenue": 0.01
+        },
+        "first_look": false,
+        "cpm_price": 10.0,
+        "ad_revenue": 0.01,
+        "bidder": {
+          "helium": {
+            "partner_placement": "980087797",
+            "line_item_id": "adf49b2f-1f6a-4d71-83be-c38cb06173f3"
+          }
+        }
+      }
+    }],
+    "seat": "pangle",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_pangle_980087797"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 7.25,
+      "ext": {
+        "partner_placement": "3131502",
+        "line_item_id": "0de1b5eb-85fb-45e1-8f23-85e58eb1fed7",
+        "ilrd": {
+          "network_name": "ironsource",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "ISNonProInterstitialAndroidMed",
+          "line_item_id": "0de1b5eb-85fb-45e1-8f23-85e58eb1fed7",
+          "network_placement_id": "3131502",
+          "ad_revenue": 0.00725
+        },
+        "first_look": false,
+        "cpm_price": 7.25,
+        "ad_revenue": 0.00725,
+        "bidder": {
+          "helium": {
+            "partner_placement": "3131502",
+            "line_item_id": "0de1b5eb-85fb-45e1-8f23-85e58eb1fed7"
+          }
+        }
+      }
+    }],
+    "seat": "ironsource",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_ironsource_3131502"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 5.0,
+      "ext": {
+        "partner_placement": "MoatPublishingInterstitial",
+        "line_item_id": "158a8c90-bb61-44cf-8b25-7a966ee86813",
+        "ilrd": {
+          "network_name": "chartboost",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "CBNonProInterstitialLow",
+          "line_item_id": "158a8c90-bb61-44cf-8b25-7a966ee86813",
+          "network_placement_id": "MoatPublishingInterstitial",
+          "ad_revenue": 0.005
+        },
+        "first_look": false,
+        "cpm_price": 5.0,
+        "ad_revenue": 0.005,
+        "bidder": {
+          "helium": {
+            "partner_placement": "MoatPublishingInterstitial",
+            "line_item_id": "158a8c90-bb61-44cf-8b25-7a966ee86813"
+          }
+        }
+      }
+    }],
+    "seat": "chartboost",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_chartboost_MoatPublishingInterstitial"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 4.5,
+      "ext": {
+        "partner_placement": "ee7dc3a6d98ad28d",
+        "line_item_id": "0bd49ad4-8122-466e-b713-e67921d81c01",
+        "ilrd": {
+          "network_name": "applovin",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "ALNonProInterstitialAndroidLow",
+          "line_item_id": "0bd49ad4-8122-466e-b713-e67921d81c01",
+          "network_placement_id": "ee7dc3a6d98ad28d",
+          "ad_revenue": 0.0045
+        },
+        "first_look": false,
+        "cpm_price": 4.5,
+        "ad_revenue": 0.0045,
+        "bidder": {
+          "helium": {
+            "partner_placement": "ee7dc3a6d98ad28d",
+            "line_item_id": "0bd49ad4-8122-466e-b713-e67921d81c01"
+          }
+        }
+      }
+    }],
+    "seat": "applovin",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_applovin_ee7dc3a6d98ad28d"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 3.5,
+      "ext": {
+        "partner_placement": "ca-app-pub-6548817822928201/4025448022",
+        "line_item_id": "d1fb16e8-6fcd-42c4-8095-9dddd18a1542",
+        "ilrd": {
+          "network_name": "admob",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "AMNonProInterstitialAndroidLow",
+          "line_item_id": "d1fb16e8-6fcd-42c4-8095-9dddd18a1542",
+          "network_placement_id": "ca-app-pub-6548817822928201/4025448022",
+          "ad_revenue": 0.0035
+        },
+        "first_look": false,
+        "cpm_price": 3.5,
+        "ad_revenue": 0.0035,
+        "bidder": {
+          "helium": {
+            "partner_placement": "ca-app-pub-6548817822928201/4025448022",
+            "line_item_id": "d1fb16e8-6fcd-42c4-8095-9dddd18a1542"
+          }
+        }
+      }
+    }],
+    "seat": "admob",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_admob_ca-app-pub-6548817822928201/4025448022"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 3.25,
+      "ext": {
+        "partner_placement": "3131504",
+        "line_item_id": "8658148d-fe80-44f4-8443-46b6a6dd4d5a",
+        "ilrd": {
+          "network_name": "ironsource",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "ISNonProInterstitialAndroidLow",
+          "line_item_id": "8658148d-fe80-44f4-8443-46b6a6dd4d5a",
+          "network_placement_id": "3131504",
+          "ad_revenue": 0.00325
+        },
+        "first_look": false,
+        "cpm_price": 3.25,
+        "ad_revenue": 0.00325,
+        "bidder": {
+          "helium": {
+            "partner_placement": "3131504",
+            "line_item_id": "8658148d-fe80-44f4-8443-46b6a6dd4d5a"
+          }
+        }
+      }
+    }],
+    "seat": "ironsource",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_ironsource_3131504"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 2.5,
+      "ext": {
+        "partner_placement": "DEFAULT-6649915",
+        "line_item_id": "984722a8-402b-4735-87e0-a8eea33dd3db",
+        "ilrd": {
+          "network_name": "vungle",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "VNonProInterstitialAndroidLow",
+          "line_item_id": "984722a8-402b-4735-87e0-a8eea33dd3db",
+          "network_placement_id": "DEFAULT-6649915",
+          "ad_revenue": 0.0025
+        },
+        "first_look": false,
+        "cpm_price": 2.5,
+        "ad_revenue": 0.0025,
+        "bidder": {
+          "helium": {
+            "partner_placement": "DEFAULT-6649915",
+            "line_item_id": "984722a8-402b-4735-87e0-a8eea33dd3db"
+          }
+        }
+      }
+    }],
+    "seat": "vungle",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_vungle_DEFAULT-6649915"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 2.0,
+      "ext": {
+        "partner_placement": "vza9843f8559964f23af",
+        "line_item_id": "ca95aeff-3473-4734-ad58-be5b101eb5f9",
+        "ilrd": {
+          "network_name": "adcolony",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "ACNonProInterstitialLow",
+          "line_item_id": "ca95aeff-3473-4734-ad58-be5b101eb5f9",
+          "network_placement_id": "vza9843f8559964f23af",
+          "ad_revenue": 0.002
+        },
+        "first_look": false,
+        "cpm_price": 2.0,
+        "ad_revenue": 0.002,
+        "bidder": {
+          "helium": {
+            "partner_placement": "vza9843f8559964f23af",
+            "line_item_id": "ca95aeff-3473-4734-ad58-be5b101eb5f9"
+          }
+        }
+      }
+    }],
+    "seat": "adcolony",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_adcolony_vza9843f8559964f23af"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 1.25,
+      "ext": {
+        "partner_placement": "UANonProInterstitialLow",
+        "line_item_id": "960fc171-03b3-47ae-888d-91af9106f47c",
+        "ilrd": {
+          "network_name": "unity",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "UANonProInterstitialLow",
+          "line_item_id": "960fc171-03b3-47ae-888d-91af9106f47c",
+          "network_placement_id": "UANonProInterstitialLow",
+          "ad_revenue": 0.00125
+        },
+        "first_look": false,
+        "cpm_price": 1.25,
+        "ad_revenue": 0.00125,
+        "bidder": {
+          "helium": {
+            "partner_placement": "UANonProInterstitialLow",
+            "line_item_id": "960fc171-03b3-47ae-888d-91af9106f47c"
+          }
+        }
+      }
+    }],
+    "seat": "unity",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_unity_UANonProInterstitialLow"
+  }, {
+    "bid": [{
+      "id": "MEDIATION",
+      "impid": "1",
+      "price": 1.25,
+      "ext": {
+        "partner_placement": "1638823327615",
+        "line_item_id": "92aadf60-deb6-465f-ab0b-c6963a62b2eb",
+        "ilrd": {
+          "network_name": "inmobi",
+          "network_type": "mediation",
+          "precision": "publisher_defined",
+          "line_item_name": "IMNonProAndroidInterstitialLow",
+          "line_item_id": "92aadf60-deb6-465f-ab0b-c6963a62b2eb",
+          "network_placement_id": "1638823327615",
+          "ad_revenue": 0.00125
+        },
+        "first_look": false,
+        "cpm_price": 1.25,
+        "ad_revenue": 0.00125,
+        "bidder": {
+          "helium": {
+            "partner_placement": "1638823327615",
+            "line_item_id": "92aadf60-deb6-465f-ab0b-c6963a62b2eb"
+          }
+        }
+      }
+    }],
+    "seat": "inmobi",
+    "helium_bid_id": "602802717ee37fe8683953869db8db9f654ab2f7_inmobi_1638823327615"
+  }],
+  "ext": {
+    "responsetimemillis": {},
+    "ilrd": {
+      "impression_id": "602802717ee37fe8683953869db8db9f654ab2f7",
+      "currency_type": "USD",
+      "country": "USA",
+      "placement_name": "AllNonProInterstitial",
+      "placement_type": "interstitial"
+    }
+  }
+}

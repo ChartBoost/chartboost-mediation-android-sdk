@@ -1,0 +1,81 @@
+{
+  "user":{
+    "ext":{
+      "impdepth":1,
+      "sessionduration":0,
+      "keywords": {}
+    }
+  },
+  "test":0,
+  "imp":[
+    {
+      "displaymanager":"Helium",
+      "displaymanagerver":"4.0.0",
+      "instl":0,
+      "tagid":"AllNonProBanner (Banner)",
+      "secure":1,
+      "video":{
+        "mimes":[
+          "video/mp4"
+        ],
+        "w":50,
+        "h":50,
+        "placement":2,
+        "pos":1,
+        "companiontype":[
+          1,
+          2
+        ],
+        "ext":{
+          "placementtype":"banner"
+        }
+      },
+      "banner":{
+        "w":50,
+        "h":50,
+        "pos":1,
+        "topframe":1,
+        "ext":{
+          "placementtype":"banner"
+        }
+      }
+    }
+  ],
+  "app":{
+
+  },
+  "device":{
+    "ua":"",
+    "make":"robolectric",
+    "model":"robolectric",
+    "os":"Android",
+    "osv":"33",
+    "h":50,
+    "w":50,
+    "language":"en",
+    "connectiontype":3,
+    "geo":{
+      "utcoffset":-300
+    },
+    "ext":{
+      "appsetidscope": 1
+    }
+  },
+  "regs":{
+    "coppa":0,
+    "ext":{
+      "gdpr":0
+    }
+  },
+  "ext":{
+    "bidders":{
+      "admob":{
+
+      }
+    },
+    "inactive_bidders":{
+
+    },
+    "helium_sdk_request_id":"bannerloadid123"
+  }
+}
