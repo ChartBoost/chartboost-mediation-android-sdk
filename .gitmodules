@@ -1,0 +1,3 @@
+[submodule "chartboost-mediation-android-sdk-demo"]
+	path = chartboost-mediation-android-sdk-demo
+	url = git@github.com:ChartBoost/chartboost-mediation-android-sdk-demo.git
