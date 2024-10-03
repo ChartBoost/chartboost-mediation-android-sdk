@@ -436,7 +436,13 @@ class BannerController(
             ) {
                 loadResult = adController?.load(context, adLoadParams, metricsSet)
                     ?: Result.failure(
-                        ChartboostMediationAdException(ChartboostMediationError.LoadError.ChartboostMediationNotInitialized),
+                        ChartboostMediationAdException(
+                            if (AppConfigStorage.shouldDisableSdk) {
+                                ChartboostMediationError.LoadError.Disabled
+                            } else {
+                                ChartboostMediationError.LoadError.ChartboostMediationNotInitialized
+                            },
+                        ),
                     )
             }.also { it.join() }
 
@@ -698,7 +704,7 @@ class BannerController(
                             sendShowMetricsData(
                                 startTime = System.currentTimeMillis(),
                                 partnerName = partnerAd.request.partnerId,
-                                auctionId = nextAd.auctionId,
+                                auctionId = nextAd.bids.auctionId,
                                 loadId = nextAd.loadId,
                             )
                             val placement = getBannerAdPlacement()
@@ -714,7 +720,7 @@ class BannerController(
                             }
                             CoroutineScope(IO).launch {
                                 ChartboostMediationNetworking.trackChartboostImpression(
-                                    nextAd.auctionId,
+                                    nextAd.bids,
                                     nextAd.loadId,
                                     nextAd.partnerAd?.partnerBannerSize?.type
                                         ?: if (bannerSize?.isAdaptive == true) AdFormat.ADAPTIVE_BANNER.key else AdFormat.BANNER.key,
@@ -766,7 +772,7 @@ class BannerController(
                                 ChartboostMediationNetworking.trackAdaptiveBannerSize(
                                     loadId = nextAd.loadId,
                                     BannerSizeBody(
-                                        auctionId = nextAd.auctionId,
+                                        auctionId = nextAd.bids.auctionId,
                                         creativeSize =
                                             BannerAdDimensions(
                                                 width = creativeWidth,

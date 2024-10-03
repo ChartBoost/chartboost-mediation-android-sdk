@@ -99,7 +99,7 @@ class ChartboostMediationFullscreenAdQueue(
                                     ?.partnerId,
                             event = Endpoints.Event.EXPIRATION,
                         ).apply {
-                            auctionId = ad.cachedAd?.auctionId
+                            auctionId = ad.cachedAd?.bids?.auctionId
                             // As expiration events are not technically errors.
                             isSuccess = true
                         },

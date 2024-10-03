@@ -326,6 +326,20 @@ object MetricsManager {
                 )
             }
 
+            is EventResult.SdkInitializationResult.InitResult1C -> {
+                MetricsRequestBody(
+                    result = eventResult.initResultCode,
+                    metrics = emptySet(),
+                )
+            }
+
+            is EventResult.SdkInitializationResult.InitResult2C -> {
+                MetricsRequestBody(
+                    result = eventResult.initResultCode,
+                    metrics = emptySet(),
+                )
+            }
+
             // AdLoadResults
             is EventResult.AdLoadResult.AdLoadSuccess -> {
                 MetricsRequestBody(

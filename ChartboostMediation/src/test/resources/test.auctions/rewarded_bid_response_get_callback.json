@@ -15,7 +15,7 @@
       "ext": {
         "bidder": {
           "helium": {
-            "placement_name": "CBRewarded"
+            "placement_name":"-- PLACEMENT_NAME --"
           },
           "chartboost": {
             "adId": "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",
@@ -37,15 +37,15 @@
           "network_type": "bidding",
           "precision": "exact",
           "ad_revenue": 0.003584071,
-          "network_placement_id": "CBRewarded"
+          "network_placement_id": "-- NETWORK_PLACEMENT --"
         },
         "cpm_price": 3.584071,
         "ad_revenue": 0.003584071,
-        "partner_placement": "CBRewarded"
+        "partner_placement": "-- PARTNER_PLACEMENT --"
       }
     }],
     "seat": "chartboost",
-    "helium_bid_id": "eed862695987036280991b717919ff5752c9508d_chartboost_CBRewarded"
+    "helium_bid_id": "-- HELIUM_BID_ID --"
   }],
   "ext": {
     "responsetimemillis": {
@@ -55,7 +55,7 @@
       "impression_id": "eed862695987036280991b717919ff5752c9508d",
       "currency_type": "USD",
       "country": "USA",
-      "placement_name": "CBRewarded",
+      "placement_name":"-- PLACEMENT_NAME --",
       "placement_type": "rewarded"
     },
     "rewarded_callback": {

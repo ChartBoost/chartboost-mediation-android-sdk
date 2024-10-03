@@ -1,0 +1,26 @@
+artifactory {
+    clientConfig.setIncludeEnvVars(true)
+
+    contextUrl = 'https://cboost.jfrog.io/artifactory'
+    publish {
+        repository {
+            // If this is a release build, push to the public "chartboost-ads" artifactory.
+            // Otherwise, push to the "private-chartboost-ads" artifactory.
+            if (ChartboostMonetizationSdkInfo.isReleaseBuild) {
+                repoKey = 'chartboost-ads'
+            } else {
+                repoKey = 'private-chartboost-ads'
+            }
+            // Set the environment variables for these to be able to push to artifactory.
+            username = System.getenv("JFROG_USER")
+            password = System.getenv("JFROG_PASS")
+        }
+
+        defaults {
+            publications('ChartboostProduction', 'aar')
+            publishArtifacts = true
+
+            publishPom = true
+        }
+    }
+}
