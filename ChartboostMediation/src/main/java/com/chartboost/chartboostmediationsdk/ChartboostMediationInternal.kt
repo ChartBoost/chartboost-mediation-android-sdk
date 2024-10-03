@@ -83,15 +83,6 @@ internal class ChartboostMediationInternal(
             val localPrivacyController = privacyController ?: PrivacyController(context)
             privacyController = localPrivacyController
             val bidController = BidController(partnerController)
-            adController =
-                AdController(
-                    bidController = bidController,
-                    partnerController = partnerController,
-                    privacyController = localPrivacyController,
-                    loadRateLimiter = LoadRateLimiter(),
-                    backgroundTimeMonitor = BackgroundTimeMonitor(),
-                    ilrd = ilrd,
-                )
 
             // Grab the app configuration from the server or from local if server is unavailable
             AppConfigController(context.applicationContext, ioDispatcher).get()
@@ -108,6 +99,16 @@ internal class ChartboostMediationInternal(
                 ChartboostMediationFullscreenAdQueueManager.autoStartQueues(false)
                 return@withContext Result.failure(ChartboostMediationAdException(error))
             }
+
+            adController =
+                AdController(
+                    bidController = bidController,
+                    partnerController = partnerController,
+                    privacyController = localPrivacyController,
+                    loadRateLimiter = LoadRateLimiter(),
+                    backgroundTimeMonitor = BackgroundTimeMonitor(),
+                    ilrd = ilrd,
+                )
 
             initializationStatus = ChartboostMediationSdk.ChartboostMediationInitializationStatus.INITIALIZED
             ChartboostMediationFullscreenAdQueueManager.autoStartQueues(true)

@@ -27,12 +27,16 @@ class BidRequestRegs private constructor(
         isCoppa: Boolean?,
         gdpr: String?,
         usPrivacy: String?,
+        gpp: String?,
+        gppSid: String?,
     ) : this(
         coppa = if (isCoppa == true) 1 else 0,
         ext =
             BidRequestRegsExt(
                 gdpr = if (gdpr == "1") 1 else 0,
                 usPrivacy = usPrivacy,
+                gpp = gpp,
+                gppSid = gppSid,
             ),
     )
 }
@@ -52,4 +56,14 @@ class BidRequestRegsExt(
      */
     @SerialName("us_privacy")
     val usPrivacy: String?,
+    /**
+     * The GPP String.
+     */
+    @SerialName("gpp")
+    val gpp: String?,
+    /**
+     * The GPP Sections String.
+     */
+    @SerialName("gpp_sid")
+    val gppSid: String?,
 )

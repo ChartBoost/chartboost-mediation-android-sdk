@@ -3,7 +3,7 @@
   "credentials": {
     "chartboost": {
       "app_id": "5a4e797538a5f00cf60738d6",
-      "app_signature": "d29d75ce6213c746ba986f464e2b4a510be40399"
+      "app_signature": "-- STRING --"
     }
   },
   "banner_load_timeout": 15,
@@ -16,449 +16,449 @@
   "init_metrics_post_timeout": 5,
   "adapter_classes": ["com.chartboost.mediation.adcolonyadapter.AdColonyAdapter", "com.chartboost.mediation.admobadapter.AdMobAdapter", "com.chartboost.mediation.applovinadapter.AppLovinAdapter", "com.chartboost.mediation.amazonpublisherservicesadapter.AmazonPublisherServicesAdapter", "com.chartboost.mediation.chartboostadapter.ChartboostAdapter", "com.chartboost.mediation.digitalturbineexchangeadapter.DigitalTurbineExchangeAdapter", "com.chartboost.mediation.metaaudiencenetworkadapter.MetaAudienceNetworkAdapter", "com.chartboost.mediation.googlebiddingadapter.GoogleBiddingAdapter", "com.chartboost.mediation.inmobiadapter.InMobiAdapter", "com.chartboost.mediation.ironsourceadapter.IronSourceAdapter", "com.chartboost.mediation.mintegraladapter.MintegralAdapter", "com.chartboost.mediation.pangleadapter.PangleAdapter", "com.chartboost.mediation.referenceadapter.adapter.ReferenceAdapter", "com.chartboost.mediation.unityadsadapter.UnityAdsAdapter", "com.chartboost.mediation.vungleadapter.VungleAdapter"],
   "placements": [{
-    "chartboost_placement": "ACHybridInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "ACNonProInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "ALInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "AllNetworkInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "AllNonProInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "AMInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "CBHybridInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "CBNonProInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "FBNonProInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "FYInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "GBAMInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "GBInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "HMXNonProInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "IMInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "InMobiAllNonProInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "ISInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "ISInterstitial2",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "MGHybridInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "MGNonProInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "PGInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "PGInterstitial2",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "TJNonProInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "UAInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "UAvsIron",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "VHybridInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "VNonProInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "VNonProInterstitialHigh",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "VNonProInterstitialLow",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "VNonProInterstitialMed",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "YInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "ACHybridRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "ACNonProRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "AllNetworkRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "AllNonProRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "ALRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "AMRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "CBHybridRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "CBNonProRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "FBNonProRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "FYRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "GBAMRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "HMXRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "IMRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "ISRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "ISRewarded2",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "MGHybridRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "MGNonProRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "PGRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "PGRewarded2",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "TJNonProRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "UARewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "VHyrbidRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "VNonProRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "VNonProRewardedHigh",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "VNonProRewardedLow",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "VNonProRewardedMed",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "YRewarded",
-    "format": "rewarded"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "ACHybridBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "ADCNonProBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "ALBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "ALBannerTest",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "AllNetworkBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "AllNonProBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "AMBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "CBHybridBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "CBNonProBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "FYBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "FYBannerMREC",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "GBAMBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "HMXNonProBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "IMBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "ISNonProBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "MGHybridBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "MGNonProBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "MintegralBannerTest",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "PGBannerMedium",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "PGBannerStandard",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "UABanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "VHybridBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "VNonProBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "VNonProMRECBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "YBanner",
-    "format": "banner"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "ADCBanner",
-    "format": "banner"
-  }, {
-    "chartboost_placement": "ADCInterstitial",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "ADCInterstitial::B",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "ADCRewarded",
-    "format": "rewarded"
-  }, {
-    "chartboost_placement": "ADCTest",
-    "format": "interstitial"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "AllProBanner",
-    "format": "banner"
-  }, {
-    "chartboost_placement": "AllProInterstitial",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "AllProRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
     "auto_refresh_rate": 30,
-    "chartboost_placement": "APSBannerLeaderboard",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "banner"
   }, {
     "auto_refresh_rate": 30,
-    "chartboost_placement": "APSBannerMedium",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "banner"
   }, {
     "auto_refresh_rate": 30,
-    "chartboost_placement": "APSBannerStandard",
-    "format": "banner"
-  }, {
-    "chartboost_placement": "APSInterstitial",
-    "format": "interstitial"
-  }, {
-    "auto_refresh_rate": 30,
-    "chartboost_placement": "CBBanner",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "banner"
   }, {
     "auto_refresh_rate": 30,
-    "chartboost_placement": "CBBanner-Mock",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "banner"
   }, {
-    "chartboost_placement": "CBInterstitial",
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "CBInterstitial-Mock",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "CBRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "CBRewarded-Mock",
-    "format": "rewarded"
-  }, {
-    "chartboost_placement": "CBTestInterstitial",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "CBvsACInterstitial",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "CBvsACRewarded",
-    "format": "rewarded"
-  }, {
-    "chartboost_placement": "CBvsFBvsACInterstitial",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "CBvsFBvsACRewarded",
-    "format": "rewarded"
-  }, {
-    "chartboost_placement": "CBvsTJInterstitial",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "CBvsTJRewarded",
-    "format": "rewarded"
-  }, {
-    "chartboost_placement": "CBvsTJvsACInterstitial",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "CBvsTJvsACRewarded",
-    "format": "rewarded"
-  }, {
-    "chartboost_placement": "CBvsTJvsFBInterstitial",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "CBvsTJvsFBRewarded",
-    "format": "rewarded"
-  }, {
-    "chartboost_placement": "ChartboostStatic",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "CHvsFB",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
     "auto_refresh_rate": 30,
-    "chartboost_placement": "FBBanner",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "banner"
   }, {
-    "chartboost_placement": "FBInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "FBRewarded",
-    "format": "rewarded"
-  }, {
-    "chartboost_placement": "FBvsACInterstitial",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "FBvsACRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
     "auto_refresh_rate": 30,
-    "chartboost_placement": "GBBanner",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "banner"
   }, {
-    "chartboost_placement": "GBRewarded",
-    "format": "rewarded"
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
   }, {
-    "chartboost_placement": "interstitial_mediation",
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
     "auto_refresh_rate": 30,
-    "chartboost_placement": "MGBanner",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "banner"
   }, {
-    "chartboost_placement": "MGInterstitial",
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "MGRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "rewarded"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "rewarded"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "rewarded"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "rewarded"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "rewarded"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "rewarded"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "rewarded"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "rewarded"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
     "auto_refresh_rate": 30,
-    "chartboost_placement": "REFBanner",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "banner"
   }, {
-    "chartboost_placement": "REFInterstitial",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "REFRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
-    "chartboost_placement": "TJInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "TJRewarded",
-    "format": "rewarded"
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
   }, {
-    "chartboost_placement": "TJvsACInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "TJvsACRewarded",
-    "format": "rewarded"
-  }, {
-    "chartboost_placement": "TJvsFBvsACInterstitial",
-    "format": "interstitial"
-  }, {
-    "chartboost_placement": "TJvsFBvsACRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }, {
     "auto_refresh_rate": 30,
-    "chartboost_placement": "VBanner",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "banner"
   }, {
-    "chartboost_placement": "VInterstitial",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "interstitial"
   }, {
-    "chartboost_placement": "VRewarded",
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "rewarded"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "rewarded"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "rewarded"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "rewarded"
+  }, {
+    "auto_refresh_rate": 30,
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "banner"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
+    "format": "interstitial"
+  }, {
+    "chartboost_placement": "-- CHARTBOOST_PLACEMENT --",
     "format": "rewarded"
   }]
 }

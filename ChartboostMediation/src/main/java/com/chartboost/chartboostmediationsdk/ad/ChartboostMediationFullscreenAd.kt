@@ -177,7 +177,13 @@ class ChartboostMediationFullscreenAd(
                     ) {
                         loadResult = adController?.load(context, adLoadParams, metricsSet)
                             ?: Result.failure(
-                                ChartboostMediationAdException(ChartboostMediationError.LoadError.ChartboostMediationNotInitialized),
+                                ChartboostMediationAdException(
+                                    if (AppConfigStorage.shouldDisableSdk) {
+                                        ChartboostMediationError.LoadError.Disabled
+                                    } else {
+                                        ChartboostMediationError.LoadError.ChartboostMediationNotInitialized
+                                    },
+                                ),
                             )
                     }.also { it.join() }
 

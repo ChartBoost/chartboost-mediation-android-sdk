@@ -8,13 +8,13 @@
           "impid": "1",
           "price": 102,
           "ext": {
-            "partner_placement": "428939561173260_575107359889812",
-            "line_item_id": "a line item ID"
+            "partner_placement": "-- PARTNER_PLACEMENT --",
+            "line_item_id": "-- LINE_ITEM_ID --"
           }
         }
       ],
       "seat": "facebook",
-      "helium_bid_id": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e_facebook"
+      "helium_bid_id": "-- HELIUM_BID_ID --"
     },
     {
       "bid": [
@@ -23,13 +23,13 @@
           "impid": "1",
           "price": 17,
           "ext": {
-            "partner_placement": "MoatPublishingRewarded",
-            "line_item_id": "a line item ID"
+            "partner_placement": "-- PARTNER_PLACEMENT --",
+            "line_item_id": "-- LINE_ITEM_ID --"
           }
         }
       ],
       "seat": "chartboost",
-      "helium_bid_id": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e_chartboost"
+      "helium_bid_id": "-- HELIUM_BID_ID --"
     },
     {
       "bid": [
@@ -38,13 +38,13 @@
           "impid": "1",
           "price": 2,
           "ext": {
-            "partner_placement": "vz54103115d6d24c33b3",
-            "line_item_id": "a line item ID"
+            "partner_placement": "-- PARTNER_PLACEMENT --",
+            "line_item_id": "-- LINE_ITEM_ID --"
           }
         }
       ],
       "seat": "adcolony",
-      "helium_bid_id": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e_adcolony"
+      "helium_bid_id": "-- HELIUM_BID_ID --"
     },
     {
       "bid": [
@@ -83,7 +83,7 @@
         }
       ],
       "seat": "chartboost",
-      "helium_bid_id": "49e9fbb46f08ca6fa64fa5758d00f7579ad9145e_chartboost"
+      "helium_bid_id": "-- HELIUM_BID_ID --"
     }
   ],
   "ext": {

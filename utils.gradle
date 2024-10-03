@@ -1,0 +1,14 @@
+String getPropertyFromLocalOrDefault(String propertyName) {
+    def localPropertiesFile = project.rootProject.file('local.properties')
+    Boolean value = null
+    if (localPropertiesFile.exists()) {
+        def properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        value = properties.getProperty(propertyName)
+    }
+    return value ?: project.findProperty(propertyName)
+}
+
+ext {
+    getPropertyFromLocalOrDefault = this.&getPropertyFromLocalOrDefault
+}

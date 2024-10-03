@@ -13,11 +13,13 @@ import kotlinx.serialization.json.JsonObject
  * @suppress
  */
 data class CachedAd(
-    val auctionId: String,
+    internal val bids: Bids,
 ) {
     var loadId: String = ""
     var customData: String = ""
     var partnerAd: PartnerAd? = null
     var winningBidInfo: Map<String, String> = mapOf()
     var ilrdJson: JsonObject? = null
+
+    val auctionId: String = bids.auctionId
 }

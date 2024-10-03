@@ -911,11 +911,13 @@ class PartnerController {
         metrics.end = System.currentTimeMillis()
         metrics.isSuccess = result.isSuccess
         if (!result.isSuccess) {
-            (result.exceptionOrNull() as? ChartboostMediationAdException)?.chartboostMediationError
-                ?: ChartboostMediationError.ShowError.Unknown.apply {
-                    metrics.chartboostMediationError = this
-                    metrics.chartboostMediationErrorMessage = this.message
-                }
+            (
+                (result.exceptionOrNull() as? ChartboostMediationAdException)?.chartboostMediationError
+                    ?: ChartboostMediationError.ShowError.Unknown
+            ).apply {
+                metrics.chartboostMediationError = this
+                metrics.chartboostMediationErrorMessage = this.message
+            }
         }
     }
 

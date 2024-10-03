@@ -16,6 +16,7 @@ enum class NetworkTestJsonObjects(
 ) {
     // Simple request and success
     SIMPLE_AUCTION_ID_REQUEST("test.network/simple_auction_id_request.json"),
+    COMPLEX_IMPRESSION_REQUEST("test.network/complex_impression_request.json"),
     HTTP_200_SIMPLE_SUCCESS("test.network/http_200_simple_success.json"),
 
     // SDK_INIT

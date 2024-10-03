@@ -203,6 +203,12 @@ object AppConfigStorage {
     val defaultQueueSize: Int
         get() = appConfig.defaultQueueSize
 
+    /**
+     * Whether or not the Mediation SDK should be disabled.
+     */
+    val shouldDisableSdk: Boolean
+        get() = appConfig.shouldDisableSdk
+
     fun getEnableRateLimiting(context: Context): Boolean {
         val preferences =
             context.getSharedPreferences("CHARTBOOST_MEDIATION_EXPERIMENTAL", Context.MODE_PRIVATE)

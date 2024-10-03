@@ -2,6 +2,7 @@
 
 ![badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fchartboost.s3.amazonaws.com%2Fchartboost-mediation%2Fsdk%2Fandroid%2Fcode-coverage%2Fcoverage-percent.json)
 ![badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fchartboost.s3.amazonaws.com%2Fchartboost-core%2Fsdk%2Fandroid%2Fcode-coverage%2Fcoverage-percent.json)
+![badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fchartboost.s3.amazonaws.com%2Fchartboost-monetization%2Fsdk%2Fandroid%2Fcode-coverage%2Fcoverage-percent.json)
 
 The Android Chartboost Mediation SDK, by Chartboost, is a Unified-Auction & Mediated solution which helps developers increase their mobile apps' revenue with the inclusion of other supported Programmatic & Mediated SDKs.
 
@@ -51,7 +52,7 @@ repositories {
 
 dependencies {
     implementation("com.chartboost:chartboost-core-sdk:1.0.0")
-    implementation("com.chartboost:chartboost-mediation-sdk:5.0.0")
+    implementation("com.chartboost:chartboost-mediation-sdk:5.1.0")
 }
 ```
 

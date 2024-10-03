@@ -26,13 +26,13 @@ class BidTest {
                 "                    \"price\": 123.4," +
                 "                    \"ext\": {" +
                 "                        \"partner_placement\": \"490251\"," +
-                "                        \"line_item_id\": \"c9151458-c03b-442d-8e9b-f8729fad9c04\"," +
+                "                        \"line_item_id\": \"-- LINE_ITEM_ID --\"," +
                 "                        \"ilrd\": {" +
                 "                            \"network_name\": \"fyber\"," +
                 "                            \"network_type\": \"mediation\"," +
                 "                            \"precision\": \"publisher_defined\"," +
-                "                            \"line_item_name\": \"FNonProAndroidInterstitialTest\"," +
-                "                            \"network_placement_id\": \"490251\"," +
+                "                            \"line_item_name\": \"-- LINE_ITEM_NAME --\"," +
+                "                            \"network_placement_id\": \"-- NETWORK_PLACEMENT --\"," +
                 "                            \"ad_revenue\": 123.4" +
                 "                        }," +
                 "                        \"cpm_price\": 123.4," +
@@ -41,7 +41,7 @@ class BidTest {
                 "                }" +
                 "            ]," +
                 "            \"seat\": \"fyber\"," +
-                "            \"helium_bid_id\": \"ab82501b580000bb8ace119907f7a4d6665212c3_fyber_490251\"" +
+                "            \"helium_bid_id\": \"-- HELIUM_BID_ID --\"" +
                 "        }"
 
         private val BID_WITH_NULL_CPM =
@@ -53,13 +53,13 @@ class BidTest {
                 "                    \"price\": 123.4," +
                 "                    \"ext\": {" +
                 "                        \"partner_placement\": \"490251\"," +
-                "                        \"line_item_id\": \"c9151458-c03b-442d-8e9b-f8729fad9c04\"," +
+                "                        \"line_item_id\": \"-- LINE_ITEM_ID --\"," +
                 "                        \"ilrd\": {" +
                 "                            \"network_name\": \"fyber\"," +
                 "                            \"network_type\": \"mediation\"," +
                 "                            \"precision\": \"publisher_defined\"," +
-                "                            \"line_item_name\": \"FNonProAndroidInterstitialTest\"," +
-                "                            \"network_placement_id\": \"490251\"," +
+                "                            \"line_item_name\": \"-- LINE_ITEM_NAME --\"," +
+                "                            \"network_placement_id\": \"-- NETWORK_PLACEMENT --\"," +
                 "                            \"ad_revenue\": null" +
                 "                        }," +
                 "                        \"cpm_price\": null," +
@@ -68,7 +68,7 @@ class BidTest {
                 "                }" +
                 "            ]," +
                 "            \"seat\": \"fyber\"," +
-                "            \"helium_bid_id\": \"ab82501b580000bb8ace119907f7a4d6665212c3_fyber_490251\"" +
+                "            \"helium_bid_id\": \"-- HELIUM_BID_ID --\"" +
                 "        }"
 
         private const val ANOTHER_KEY = "another_key"
@@ -91,7 +91,7 @@ class BidTest {
 
     private lateinit var subject: Bid
     private lateinit var expectedJsonObject: JsonObject
-    private val adIdentifier: AdIdentifier = AdIdentifier(Ad.AdType.INTERSTITIAL, "FNonProAndroidInterstitialTest")
+    private val adIdentifier: AdIdentifier = AdIdentifier(Ad.AdType.INTERSTITIAL, "-- NETWORK_PLACEMENT --")
 
     @Before
     fun setUp() {
@@ -103,8 +103,8 @@ class BidTest {
                 put(NETWORK_NAME_KEY, PARTNER_NAME)
                 put("network_type", "mediation")
                 put("precision", "publisher_defined")
-                put("line_item_name", "FNonProAndroidInterstitialTest")
-                put("network_placement_id", "490251")
+                put("line_item_name", "-- LINE_ITEM_NAME --")
+                put("network_placement_id", "-- NETWORK_PLACEMENT --")
                 put("ad_revenue", CPM_PRICE_VALUE)
             }
     }

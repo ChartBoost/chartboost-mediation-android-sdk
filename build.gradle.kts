@@ -34,6 +34,7 @@ buildscript {
         gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
 
         maven("https://cboost.jfrog.io/artifactory/private-chartboost-core/") {
             credentials {
@@ -59,6 +60,7 @@ buildscript {
 
     }
 }
+
 
 
 
