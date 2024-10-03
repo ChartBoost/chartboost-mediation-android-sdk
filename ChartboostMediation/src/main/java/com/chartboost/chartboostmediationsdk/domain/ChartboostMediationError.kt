@@ -203,6 +203,14 @@ sealed class ChartboostMediationError(
             resolution = "Chartboost Mediation is already initializing. Please wait.",
             serverErrorName = "CM_INITIALIZATION_FAILURE_INITIALIZATION_IN_PROGRESS",
         )
+
+        @Serializable
+        object Disabled : InitializationError(
+            code = "CM_117",
+            cause = "Initialization has been disabled by the mediation server.",
+            resolution = "Update to a newer Chartboost Mediation SDK version or contact Chartboost Mediation Support for assistance.",
+            serverErrorName = "CM_INITIALIZATION_FAILURE_DISABLED",
+        )
     }
 
     /**
@@ -604,6 +612,22 @@ sealed class ChartboostMediationError(
             cause = "All waterfall entries have resulted in an error or no fill.",
             resolution = "Try again. If the problem persists, verify Partner settings in the Chartboost Mediation dashboard.",
             serverErrorName = "CM_LOAD_FAILURE_WATERFALL_EXHAUSTED_NO_FILL",
+        )
+
+        @Serializable
+        object AdTooLarge : LoadError(
+            "CM_336",
+            cause = "The partner ad dimension size is too large.",
+            resolution = "Try again. If the problem persists, verify Partner settings in the Chartboost Mediation dashboard.",
+            serverErrorName = "CM_LOAD_FAILURE_AD_TOO_LARGE",
+        )
+
+        @Serializable
+        object Disabled : LoadError(
+            "CM_337",
+            cause = "The load request failed due to the Chartboost Mediation SDK being disabled by the mediation server.",
+            resolution = "Update to a newer Chartboost Mediation SDK version or contact Chartboost Mediation Support for assistance.",
+            serverErrorName = "CM_LOAD_FAILURE_CHARTBOOST_MEDIATION_DISABLED",
         )
     }
 

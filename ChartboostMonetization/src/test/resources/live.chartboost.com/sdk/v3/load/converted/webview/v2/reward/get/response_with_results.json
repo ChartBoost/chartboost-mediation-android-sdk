@@ -1,0 +1,101 @@
+{
+  "locations": {
+    "Main": [
+      "adunit1"
+    ]
+  },
+  "adUnits": {
+    "adunit1": {
+      "expire": 1484091354,
+      "manifest": {
+        "assets": {
+          "images": {
+            "replay_landscape": {
+              "filename": "replay.png",
+              "url": "https://a.chartboost.com/video/default_assets/replay.png"
+            },
+            "post_video_button": {
+              "filename": "playfree.png",
+              "url": "https://a.chartboost.com/video/default_assets/playfree.png"
+            },
+            "post_video_reward_icon": {
+              "filename": "rewarded_coin.png",
+              "url": "https://a.chartboost.com/apps/video_icon/rewarded_coin.png"
+            },
+            "frame_landscape": {
+              "filename": "video-960x640.png",
+              "url": "https://a.chartboost.com/static-assets/interstitials-v2/frames/16-9/video-960x640.png"
+            },
+            "video_confirmation_button": {
+              "filename": "watch_button.png",
+              "url": "https://a.chartboost.com/video/default_assets/watch_button.png"
+            },
+            "video_confirmation_icon": {
+              "filename": "rewarded_coin.png",
+              "url": "https://a.chartboost.com/apps/video_icon/rewarded_coin.png"
+            },
+            "video_click_button": {
+              "filename": "download.png",
+              "url": "https://a.chartboost.com/video/default_assets/download.png"
+            },
+            "ad_landscape": {
+              "filename": "c761294c2f1411d5b52c25662ee64d23b2d4dfcc.jpeg",
+              "url": "https://a.chartboost.com/creatives/568dd74788380904ad4959b3/c761294c2f1411d5b52c25662ee64d23b2d4dfcc.jpeg"
+            },
+            "close_landscape": {
+              "filename": "video-60x60.png",
+              "url": "https://a.chartboost.com/static-assets/interstitials-v2/close-buttons/video-60x60.png"
+            },
+            "app_icon": {
+              "filename": "568dd74788380904ad4959b3.114.png",
+              "url": "https://a.chartboost.com/apps/icons/568dd74788380904ad4959b3.114.png"
+            }
+          },
+          "videos": {
+            "video_landscape": {
+              "filename": "5714774e04b01630fe7aa6c3_568-1460959055.mp4",
+              "url": "https://v.chartboost.com/videoads/5714774e04b01630fe7aa6c3_568-1460959055.mp4"
+            }
+          }
+        },
+        "parameters": {
+          "ad_type": "4",
+          "app_name": "Sword of Chaos - Kaos Kılıcı",
+          "post_video_reward_toaster_enabled": "false",
+          "preroll_popup": "false",
+          "reward_amount": "30",
+          "reward_currency": "Credits",
+          "show_close_button": "false"
+        },
+        "template": "5716abbf04b016310418b7e7"
+      },
+      "tracking": {
+        "adId": "8zgaCU+/vvdrQudz5CiqNyISiOe3FH9rWqzf5n2zaDMTO29FPjL3g77C6+XslFbPgZ+l6k1+X06PZVuRIGEbExWBpbgJlihy97PvaVkjphwuSiM1z0ySQD9BLdbAVWpUmZckJ/GiRppjQF2lOcYhC2m+2ejj9NWho5raH3jDUzJeL4uM6VglXI4UDZvQtjheQ9jRRNFTN6Wvl5yNyZyZ/Ea44cgWWuS8zbeQh5Aw7Y8whb4r0JVks5aHkpq8vxm7Kmq9jgv87SSEj+Osa+o0qu6bQUX11reDRMR3sq8FmxecFLA4qcVI+bYoYzikK9NE4LdCjIdAQ87pNkxtRKzQeE2AZ4sm+Ykl1xZP/ZdGDt9q6vtO+cp7C160vBihxG91wKC3YAQnJky5nIIJvacRwrcU3/hWXFh3dQeoYdFAdlw6rSHQ8i36K85i7/xhOVjUa0SqS5BQXaY+N+VLeqiTR5udbPwYsN8odirasu9H5ivkp2BD3lDk/7PkDLjVbeGELLiQkOK96oUXXmT4vrE2vORTqb4fdbp0xgpvVHrhS7GWbt9itYZYSiCN3V4edJelvD3AUn8Kci3GG/jLYJdSY0SCaCgbA3NM555Mv0BWxqo8K1JdW/5xei5JvygVFtBlKDDUsA0lGVITrEQ4Tj6CDSvQEhrX6qRjWuOOallE+YtvPUXuG4uDirSLNut7LG4YNQJioCwKCA48bjnaTndaKJrJZj998cx/ODZ+rUyxu1fA44f35li3AyMSECF3IV0+kir7fwGqOqZgo7aug8Qiuxru/d7l/4pd6T99ksOcp6MAgsr0Zp0BqwpyRnnekGh6koNEx/bniiuB0hl0gV0+HdLGh9h3nLKK5qT2WEjLQN1pFERf5SD2UHrDNuHau/3bwmGXXhc1ak0jQD61fPPWLwBbrPcYOKp7N2nx897EIgAMdUlJdul15UKkkLfVDfIM4BQuvHIRmUmFLn6oUGkIsF7oRbKtiy/SpEAlQ5q0BgkVD/U2qorfaZbrJqiGvBb98PFFVFkQ1gQ3ZUFw9xhPEQWY77mKsi1NUpJA1QZ6yNLqrFSwm++IYG3iCQGn+vbR/u0l617wLZcM8DBP86XX+KuKzxAkcrgIYLAC/3J6NCfCQr/KU+xA6VlQftjU+LVl21sbxT0U6J5J4zgjLagX5GylWY6MZNwCfcky+FyQA5nMzhGtPhujgq+0fpk8AVRCLuwSrOxxOtH9Q5eg2Sv/Se6dspyY9MHRO0evPO/Rzny/nZDKqhDrPUYS/HP7Z363uWXmdVjd9IVNet/hp72W1G97jPuiutz/h6r6baLJ+K9RJhDmqyx3Jj56gU9ncjrSZE8KbyScf0sFMR8LLV2mCxb5OwHNMh/CJkqlfZdMHki3HSfZm83nYoREj606t0zRfV2DEUDsytJ6rOz8zzFYbFVrbn3b5Ey0V9ro7WFM/Rkasj3DLrIt/44P2A+UzRt0FsQcU48ssxbzUlqlzCsHgQYVisTMH6jM+f19MKTQXJTLS4KDHODjemiYTZGr5EUBOzksHFNGbUvs7SDZ7zI7NuwBLZ5eYgdp7Qvqg29GJiHILCBcKjJbdcd5W9ZGeJKoa5iLUZ40GahHybBJWt2LXu/CXy9F4m8wdPa4DYtfg9981SmxH41UEqJSSLx3MDRp1//90UCIgepTlZr8CeNHhaYBCCTnqd9tSok4BY9+Zb1jcx4sHOQMz45aKE06bu7mgxpzyzrSp7JQbYU=",
+        "cgn": "KO2qMhtLh8Fx3hVH2li9cJM2/NN43UzNnXPgEjg0J39b/XXyPrrhRRjhPyilgyRtiN+w2BJV28NRCjPBfihvB+o4OUNpfCYf45wcYCcmy70JDmJF+dNwkEGKDHiLDxr5J0y8R/nP8H8bxQuwOtQeNnQQyaRDcC39+NlUYaQe1CyFN/bSL0uzVMDCZXfpbLmwwJscEXH2eBBC/+g6OIgSpkvUB0opCfU51hObPR06+UgTVlFXPI1+eC87jO5SoVwa9NCh5eDlP+d9k8PFzZuFbUvLAP6U7YMcVSASjqoMbGaziD1K+Ycb2pmFmp9Fm3ifEbFWXMj1zZkrQFGq6MczuiwD+j2UOnpjSWhjpZsmaFoPXm9zXAgN9xduoTrx6il6Z4uSxVzhUwVqFDUUJo49n2hOZ+RXi2euZVRt+XjSxsyvuYbax7CG3E1FMZ0yQn7VI0DFMUf1UTbi7kkvII44BlG+FVKrhiNV/Z0g9pmOGchLZXQG1NKcLJxasNI5VfU8SBSURiv65BE0w6aGvRyJG7I4rIr7nm1iT+9hUVXOp/B6tK9sxPeVlmYk+E6UfjCv/5vxOB+e1gLyzYSMgtts+IOVPloOXGCYoig22bFNuIVQFowg839APDl233wGiUmgQcS02UhAgjROo7ywo72x8XeSPKgBjL+Fko9FvzXhGdb6WVHDa5BENQibvPCh+U0oqw==",
+        "creative": "{\"creative_id\":\"5714774e04b01630fe7aa6c3\",\"creative_size\":\"large\",\"creative_ratio\":\"16:9\",\"frame\":\"default\",\"close_button\":\"default\"}",
+        "link": "https://itunes.apple.com/us/app/sword-of-chaos-kaos-k-l-c/id1063631875?mt=8&uo=4",
+        "to": "568dd74788380904ad4959b3",
+        "rewardAmount": 30,
+        "rewardCurrency": "Credits"
+      },
+      "ui": {
+        "animation": 6,
+        "mediaType": "video",
+        "enableAppSheetAnimation": true,
+        "showLoading": true
+      }
+    }
+  },
+  "templates": {
+    "5716abbf04b016310418b7e7": {
+      "assets": {
+        "html": {
+          "body": {
+            "filename": "33cda9530711983713a77eff494dd126f2fe86b5",
+            "url": "https://t.chartboost.com/base_templates/html/33cda9530711983713a77eff494dd126f2fe86b5"
+          }
+        }
+      }
+    }
+  }
+}

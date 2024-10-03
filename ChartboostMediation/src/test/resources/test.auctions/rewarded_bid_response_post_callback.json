@@ -6,15 +6,15 @@
       "impid": "1",
       "price": 25.0,
       "ext": {
-        "partner_placement": "Android CBNonProRewardedHigh",
-        "line_item_id": "739035c5-579e-4a97-86f0-48bda519ca92",
+        "partner_placement": "-- PARTNER_PLACEMENT --",
+        "line_item_id": "-- LINE_ITEM_ID --",
         "ilrd": {
           "network_name": "chartboost",
           "network_type": "mediation",
           "precision": "publisher_defined",
-          "line_item_name": "CBNonProRewardedHigh",
-          "line_item_id": "739035c5-579e-4a97-86f0-48bda519ca92",
-          "network_placement_id": "Android CBNonProRewardedHigh",
+          "line_item_name": "-- LINE_ITEM_NAME --",
+          "line_item_id": "-- LINE_ITEM_ID --",
+          "network_placement_id": "-- NETWORK_PLACEMENT --",
           "ad_revenue": 0.025
         },
         "first_look": false,
@@ -22,29 +22,29 @@
         "ad_revenue": 0.025,
         "bidder": {
           "helium": {
-            "partner_placement": "Android CBNonProRewardedHigh",
-            "line_item_id": "739035c5-579e-4a97-86f0-48bda519ca92"
+            "partner_placement": "-- PARTNER_PLACEMENT --",
+            "line_item_id": "-- LINE_ITEM_ID --"
           }
         }
       }
     }],
     "seat": "chartboost",
-    "helium_bid_id": "ac6d927a66055d84b6bd5f21c99440aa0bacbd67_chartboost_Android CBNonProRewardedHigh"
+    "helium_bid_id": "-- HELIUM_BID_ID --"
   }, {
     "bid": [{
       "id": "MEDIATION",
       "impid": "1",
       "price": 15.0,
       "ext": {
-        "partner_placement": "Android CBNonProRewardedMed",
-        "line_item_id": "49ec9c55-0f23-4138-a037-1972e1f0bee9",
+        "partner_placement": "-- PARTNER_PLACEMENT --",
+        "line_item_id": "-- LINE_ITEM_ID --",
         "ilrd": {
           "network_name": "chartboost",
           "network_type": "mediation",
           "precision": "publisher_defined",
-          "line_item_name": "CBNonProRewardedMed",
-          "line_item_id": "49ec9c55-0f23-4138-a037-1972e1f0bee9",
-          "network_placement_id": "Android CBNonProRewardedMed",
+          "line_item_name": "-- LINE_ITEM_NAME --",
+          "line_item_id": "-- LINE_ITEM_ID --",
+          "network_placement_id": "-- NETWORK_PLACEMENT --",
           "ad_revenue": 0.015
         },
         "first_look": false,
@@ -52,29 +52,29 @@
         "ad_revenue": 0.015,
         "bidder": {
           "helium": {
-            "partner_placement": "Android CBNonProRewardedMed",
-            "line_item_id": "49ec9c55-0f23-4138-a037-1972e1f0bee9"
+            "partner_placement": "-- PARTNER_PLACEMENT --",
+            "line_item_id": "-- LINE_ITEM_ID --"
           }
         }
       }
     }],
     "seat": "chartboost",
-    "helium_bid_id": "ac6d927a66055d84b6bd5f21c99440aa0bacbd67_chartboost_Android CBNonProRewardedMed"
+    "helium_bid_id": "-- HELIUM_BID_ID --"
   }, {
     "bid": [{
       "id": "MEDIATION",
       "impid": "1",
       "price": 5.0,
       "ext": {
-        "partner_placement": "MoatPublishingRewarded",
-        "line_item_id": "736d0d3b-638c-49ac-9053-0f0bd687cbd3",
+        "partner_placement": "-- PARTNER_PLACEMENT --",
+        "line_item_id": "-- LINE_ITEM_ID --",
         "ilrd": {
           "network_name": "chartboost",
           "network_type": "mediation",
           "precision": "publisher_defined",
-          "line_item_name": "CBNonProRewardedLow",
-          "line_item_id": "736d0d3b-638c-49ac-9053-0f0bd687cbd3",
-          "network_placement_id": "MoatPublishingRewarded",
+          "line_item_name": "-- LINE_ITEM_NAME --",
+          "line_item_id": "-- LINE_ITEM_ID --",
+          "network_placement_id": "-- NETWORK_PLACEMENT --",
           "ad_revenue": 0.005
         },
         "first_look": false,
@@ -82,14 +82,14 @@
         "ad_revenue": 0.005,
         "bidder": {
           "helium": {
-            "partner_placement": "MoatPublishingRewarded",
-            "line_item_id": "736d0d3b-638c-49ac-9053-0f0bd687cbd3"
+            "partner_placement": "-- PARTNER_PLACEMENT --",
+            "line_item_id": "-- LINE_ITEM_ID --"
           }
         }
       }
     }],
     "seat": "chartboost",
-    "helium_bid_id": "ac6d927a66055d84b6bd5f21c99440aa0bacbd67_chartboost_MoatPublishingRewarded"
+    "helium_bid_id": "-- HELIUM_BID_ID --"
   }],
   "ext": {
     "responsetimemillis": {},
@@ -97,7 +97,7 @@
       "impression_id": "ac6d927a66055d84b6bd5f21c99440aa0bacbd67",
       "currency_type": "USD",
       "country": "USA",
-      "placement_name": "CBNonProRewarded",
+      "placement_name":"-- PLACEMENT_NAME --",
       "placement_type": "rewarded"
     },
     "rewarded_callback": {

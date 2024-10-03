@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VAST version="3.0">
+    <Ad id="123">
+        <InLine>
+            <AdSystem>Chartboost</AdSystem>
+            <Error></Error>
+            <AdTitle>123</AdTitle>
+            <Impression>
+                <![CDATA[https://ssp-events.chartboost.com/impression?ssp=cbbidder&creative_id=1&model_id=iPhone8,1&cpi_price=20.0&exchange=chartboost&impression_id=84C49649A7D6D7AB1F8F42D432A6928A7894F73F&cpm_price=${AUCTION_PRICE}&ip_address=68.62.25.177&app_bundle=com.aaagame.classicvegasslots&click_id=2AAB3CD2503944B87555FAA4426727D104D802B7&cpm_bid=200.0&ssp_fields=%7B%22ad_group%22%3A%221%22%7D&model=iPhone8,1&identifier=000A97CE-DBC9-4531-A57A-D2BFB4B0A204&os=11.2.1]]></Impression>
+            <Creatives>
+                <Creative>
+                    <Linear>
+                        <Duration>00:00:30</Duration>
+                        <MediaFiles>
+                            <MediaFile
+                                bitrate="906"
+                                delivery="progressive"
+                                height="320"
+                                maintainAspectRatio="true"
+                                scalable="true"
+                                type="video/mp4"
+                                width="568">
+                                <![CDATA[https://v.chartboost.com/videoads/59ee4f72be42090b8693d217_568-1508790130.mp4]]>
+                            </MediaFile>
+                        </MediaFiles>
+                        <VideoClicks>
+                            <ClickThrough>
+                                <![CDATA[https://ssp-events.chartboost.com/click?ssp=cbbidder&creative_id=1&model_id=iPhone8,1&cpi_price=20.0&exchange=chartboost&impression_id=84C49649A7D6D7AB1F8F42D432A6928A7894F73F&cpm_price=${AUCTION_PRICE}&ip_address=68.62.25.177&app_bundle=com.aaagame.classicvegasslots&click_id=2AAB3CD2503944B87555FAA4426727D104D802B7&cpm_bid=200.0&ssp_fields=%7B%22ad_group%22%3A%221%22%7D&model=iPhone8,1&identifier=000A97CE-DBC9-4531-A57A-D2BFB4B0A204&os=11.2.1]]></ClickThrough>
+                        </VideoClicks>
+                    </Linear>
+                </Creative>
+                <Creative>
+                    <CompanionAds>
+                        <Companion
+                            assetHeight="473"
+                            assetWidth="841"
+                            height="473"
+                            width="841">
+                            <StaticResource creativeType="image/jpeg">
+                                <![CDATA[https://a.chartboost.com/creatives/5374e872c26ee411068adbee/9a1898d2d359d47e4a4cc98f3402bf56fb7745c0.jpeg]]>
+                            </StaticResource>
+                            <CompanionClickThrough>
+                                <![CDATA[https://ssp-events.chartboost.com/click?ssp=cbbidder&creative_id=1&model_id=iPhone8,1&cpi_price=20.0&exchange=chartboost&impression_id=84C49649A7D6D7AB1F8F42D432A6928A7894F73F&cpm_price=${AUCTION_PRICE}&ip_address=68.62.25.177&app_bundle=com.aaagame.classicvegasslots&click_id=2AAB3CD2503944B87555FAA4426727D104D802B7&cpm_bid=200.0&ssp_fields=%7B%22ad_group%22%3A%221%22%7D&model=iPhone8,1&identifier=000A97CE-DBC9-4531-A57A-D2BFB4B0A204&os=11.2.1]]>
+                            </CompanionClickThrough>
+                        </Companion>
+                    </CompanionAds>
+                </Creative>
+            </Creatives>
+        </InLine>
+    </Ad>
+</VAST>

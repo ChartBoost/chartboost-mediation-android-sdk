@@ -1,0 +1,46 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--https://support.google.com/googleplay/android-developer/answer/6048248?hl=en#zippy=%2Ctargeting-devices-without-an-advertising-id%2Cadvertising-id-violations%2Chow-to-opt-out-of-personalized-ads%2Cpersistent-identifiers-including-android-id
+        For publishers: Some Google Play policies, such as the Families Policy, require that apps not
+        use the Ad ID. If your app uses SDKs, like the Google Mobile Ads SDK, that declares the AD_ID
+        permission in their library manifests, you must prevent the permission from getting merged into
+        your app by including the following element in your manifest.
+        <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/> -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+
+    <application>
+        <activity
+            android:name="com.chartboost.sdk.view.CBImpressionActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
+            android:enableOnBackInvokedCallback="true"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+        <activity
+            android:name=".internal.clickthrough.EmbeddedBrowserActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+
+        <!-- ExoPlayer DownloadService -->
+        <service
+            android:name=".internal.video.repository.exoplayer.VideoRepositoryDownloadService"
+            android:exported="false">
+            <!-- This is needed for Scheduler -->
+            <intent-filter>
+                <action android:name="com.google.android.exoplayer.downloadService.action.RESTART" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+    </application>
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.ACTION_VIEW" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+</manifest>

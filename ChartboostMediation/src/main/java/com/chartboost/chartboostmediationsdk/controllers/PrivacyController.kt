@@ -31,6 +31,12 @@ class PrivacyController(
          * A placeholder value for GDPR not set.
          */
         private const val GDPR_NOT_SET = -1
+
+        /**
+         * The Interactive Advertising Bureau Global Privacy Platform Sections String.
+         * Note: This will later be moved to Chartboost Core.
+         */
+        private const val GPP_SID = "IABGPP_GppSID"
     }
 
     private val sharedPreferences =
@@ -50,6 +56,19 @@ class PrivacyController(
                 sharedPreferences.getInt(GDPR_APPLIES_KEY, GDPR_NOT_SET).takeIf { it != GDPR_NOT_SET }
             } catch (e: ClassCastException) {
                 LogController.e("Unable to get GDPR: $e")
+                null
+            }
+
+    /**
+     * The GPP Sections String.
+     * Note: This will later be moved to Chartboost Core.
+     */
+    val gppSid: String?
+        get() =
+            try {
+                sharedPreferences.getString(GPP_SID, "")
+            } catch (e: ClassCastException) {
+                LogController.e("Unable to get GPP Section string: $e")
                 null
             }
 }

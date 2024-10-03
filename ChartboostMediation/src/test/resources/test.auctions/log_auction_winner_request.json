@@ -3,8 +3,8 @@
   "placement_type":"interstitial",
   "winner":"fyber",
   "type":"mediation",
-  "line_item_id":"c9151458-c03b-442d-8e9b-f8729fad9c04",
-  "partner_placement":"490251",
+  "line_item_id":"-- LINE_ITEM_ID --",
+  "partner_placement":"-- PARTNER_PLACEMENT --",
   "price":100.0,
   "bidders":[
     {

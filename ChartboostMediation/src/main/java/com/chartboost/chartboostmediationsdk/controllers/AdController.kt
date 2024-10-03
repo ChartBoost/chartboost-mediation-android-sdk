@@ -159,7 +159,7 @@ class AdController(
                         headers = result.headers.toMultimap(),
                         chartboostMediationError = null,
                     )
-                val cachedAd = CachedAd(auctionResult.bids.auctionId)
+                val cachedAd = CachedAd(auctionResult.bids)
                 val partnerAdResult =
                     bidController.loadBids(
                         context = context,
@@ -364,7 +364,7 @@ class AdController(
             partnerController.routeShow(
                 activity,
                 cachedAd.partnerAd,
-                cachedAd.auctionId,
+                cachedAd.bids.auctionId,
                 cachedAd.loadId,
             )
         val showSucceeded = internalShowResult.metrics.first().isSuccess
@@ -382,7 +382,7 @@ class AdController(
             internalShowResult.partnerAd?.let { partnerAd ->
                 cachedAd.partnerAd = partnerAd
                 ChartboostMediationNetworking.trackChartboostImpression(
-                    cachedAd.auctionId,
+                    cachedAd.bids,
                     cachedAd.loadId,
                     partnerAd.partnerBannerSize?.type ?: partnerAd.request.format,
                 )

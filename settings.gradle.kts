@@ -6,12 +6,16 @@
  */
 
 include(
+    // Mediation SDK
     ":ChartboostMediation",
     ":ChartboostMediationCanary",
     ":ChartboostMediationJavaValidator",
+    // Core SDK
     ":ChartboostCore",
-    ":ChartboostCoreCanary",
     ":ChartboostCoreJavaValidator",
+    // Ads SDK
+    ":ChartboostMonetization",
+    // Mediation Adapters
     ":GoogleUserMessagingPlatformAdapter",
     ":UsercentricsAdapter",
     ":AdMobAdapter",

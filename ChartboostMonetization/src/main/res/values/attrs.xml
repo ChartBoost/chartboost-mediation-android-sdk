@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Banner">
+        <attr name="location" format="string" />
+        <attr name="size" format="enum">
+            <enum name="STANDARD" value="0" />
+            <enum name="MEDIUM" value="1" />
+            <enum name="LEADERBOARD" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>

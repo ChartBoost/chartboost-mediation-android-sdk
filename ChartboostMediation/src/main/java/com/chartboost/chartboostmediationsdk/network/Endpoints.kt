@@ -109,7 +109,7 @@ object Endpoints {
         CONFIG("config", Version.V1),
         END_QUEUE("end-queue", Version.V1),
         EXPIRATION("expiration", Version.V1),
-        HELIUM_IMPRESSION("mediation-impression", Version.V1),
+        HELIUM_IMPRESSION("mediation-impression", Version.V2),
         INITIALIZATION("initialization", Version.V1),
         LOAD("load", Version.V2),
         PARTNER_IMPRESSION("partner-impression", Version.V1),

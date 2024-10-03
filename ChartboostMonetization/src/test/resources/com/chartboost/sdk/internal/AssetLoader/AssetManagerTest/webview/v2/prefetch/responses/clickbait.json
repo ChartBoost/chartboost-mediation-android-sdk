@@ -1,0 +1,22 @@
+{
+  "cache_assets": {
+    "templates": [
+      {
+        "template": "clickbait template id",
+        "elements": [
+          {
+            "name": "clickbait",
+            "type": "html",
+            "value": "https://sdk/AssetLoader/AssetManagerTest/templates/html/clickbait"
+          },
+          {
+            "name": "clickbait.css",
+            "type": "css",
+            "value": "https://sdk/AssetLoader/AssetManagerTest/templates/css/clickbait.css",
+            "param": "{% css %}"
+          }
+        ]
+      }
+    ]
+  }
+}

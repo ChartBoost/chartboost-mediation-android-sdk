@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="NewApi" severity="ignore" />
+    <issue id="UseSparseArrays" severity="ignore">
+        <ignore path="src/com/chartboost/sdk/Video/CBVideoPrefetcher.java" />
+    </issue>
+    <issue id="AppCompatCustomView" severity="ignore">
+        <ignore path="src/main/java/com/chartboost/sdk/View/CBImageView.java" />
+    </issue>
+    <issue id="SyntheticAccessor" severity="ignore">
+        <ignore path="src/main/java/com/chartboost/sdk/internal/video/player/AdsMediaPlayer.kt" />
+    </issue>
+</lint>

@@ -1,0 +1,75 @@
+{
+  "status": 200,
+  "message": "Success",
+  "cache_assets": {
+    "templates": [
+      {
+        "template": "5716abbf04b016310418b7e7",
+        "elements": [
+          {
+            "name": "33cda9530711983713a77eff494dd126f2fe86b5",
+            "type": "html",
+            "value": "https://t.chartboost.com/base_templates/html/33cda9530711983713a77eff494dd126f2fe86b5"
+          }
+        ]
+      },
+      {
+        "template": "5716abc004b0163150ff429e",
+        "elements": [
+          {
+            "name": "2e34e65ca1f91ee30d0953e00632abf6b4158240",
+            "type": "html",
+            "value": "https://t.chartboost.com/base_templates/html/2e34e65ca1f91ee30d0953e00632abf6b4158240"
+          }
+        ]
+      }
+    ],
+    "videos": [
+      {
+        "name": "5714596543150f360ce290ce_568-1460951397.mp4",
+        "type": "",
+        "value": "https://v2.chartboost.com/videoads/5714596543150f360ce290ce_568-1460951397.mp4"
+      },
+      {
+        "name": "55fb49585b1453669ffdd4da_568-1442531710.mp4",
+        "type": "",
+        "value": "https://v.chartboost.com/videoads/55fb49585b1453669ffdd4da_568-1442531710.mp4"
+      },
+      {
+        "name": "56ff669ac909a64395ce6ad5_568-1459578522.mp4",
+        "type": "",
+        "value": "https://v2.chartboost.com/videoads/56ff669ac909a64395ce6ad5_568-1459578522.mp4"
+      },
+      {
+        "name": "56f43b46f6cd4503c0eaed4b_568-1458846534.mp4",
+        "type": "",
+        "value": "https://v2.chartboost.com/videoads/56f43b46f6cd4503c0eaed4b_568-1458846534.mp4"
+      },
+      {
+        "name": "56f43b042fdf3406b92d996f_568-1458846468.mp4",
+        "type": "",
+        "value": "https://v2.chartboost.com/videoads/56f43b042fdf3406b92d996f_568-1458846468.mp4"
+      },
+      {
+        "name": "567a7039a8b63c7fe2161f05_568-1450864697.mp4",
+        "type": "",
+        "value": "https://v2.chartboost.com/videoads/567a7039a8b63c7fe2161f05_568-1450864697.mp4"
+      },
+      {
+        "name": "571b101ff6cd4576b02b3098_568-1461391391.mp4",
+        "type": "",
+        "value": "https://v.chartboost.com/videoads/571b101ff6cd4576b02b3098_568-1461391391.mp4"
+      },
+      {
+        "name": "57158efd04b01630fe7bb412_568-1461030653.mp4",
+        "type": "",
+        "value": "https://v2.chartboost.com/videoads/57158efd04b01630fe7bb412_568-1461030653.mp4"
+      },
+      {
+        "name": "56f43b318838095f6461e6c4_568-1458846513.mp4",
+        "type": "",
+        "value": "https://v2.chartboost.com/videoads/56f43b318838095f6461e6c4_568-1458846513.mp4"
+      }
+    ]
+  }
+}

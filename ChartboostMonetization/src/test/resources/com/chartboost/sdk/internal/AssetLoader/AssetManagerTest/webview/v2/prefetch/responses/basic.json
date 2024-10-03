@@ -1,0 +1,16 @@
+{
+  "cache_assets": {
+    "templates": [
+      {
+        "template": "basic template id",
+        "elements": [
+          {
+            "name": "basic",
+            "type": "html",
+            "value": "https://sdk/AssetLoader/AssetManagerTest/templates/html/basic"
+          }
+        ]
+      }
+    ]
+  }
+}

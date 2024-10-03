@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<!-- saved from url=(0085)https://t.chartboost.com/base_templates/html/ff6e789d706aa4fc97ff7ea0d906029caf7642d6 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=0">
+    <style>
+body {
+  /*Disable scrolling on devices*/
+  overflow: hidden; }
+
+img {
+  outline: 0;
+  -webkit-tap-highlight-color: transparent !important;
+  border: none; }
+
+    </style>
+<script>
+var Chartboost = window.Chartboost || {};
+Chartboost.Params = {
+    landscape: {
+        frame: {
+            url: '{% frame_landscape %}',
+            scale: '{% frame_landscape_scale %}',
+            offset: {
+                x: '{% frame_landscape_offset_x %}',
+                y: '{% frame_landscape_offset_y %}'
+            }
+        },
+        ad: {
+            url: '{% ad_landscape %}',
+            scale: '{% ad_landscape_scale %}',
+            offset: {
+                x: '{% ad_landscape_offset_x %}',
+                y: '{% ad_landscape_offset_y %}'
+            }
+        },
+        close: {
+            url: '{% close_landscape %}',
+            scale: '{% close_landscape_scale %}',
+            offset: {
+                x: '{% close_landscape_offset_x %}',
+                y: '{% close_landscape_offset_y %}'
+            }
+        }
+    },
+    portrait: {
+        frame: {
+            url: '{% frame_portrait %}',
+            scale: '{% frame_portrait_scale %}',
+            offset: {
+                x: '{% frame_portrait_offset_x %}',
+                y: '{% frame_portrait_offset_y %}'
+            }
+        },
+        ad: {
+            url: '{% ad_portrait %}',
+            scale: '{% ad_portrait_scale %}',
+            offset: {
+                x: '{% ad_portrait_offset_x %}',
+                y: '{% ad_portrait_offset_y %}'
+            }
+        },
+        close: {
+            url: '{% close_portrait %}',
+            scale: '{% close_portrait_scale %}',
+            offset: {
+                x: '{% close_portrait_offset_x %}',
+                y: '{% close_portrait_offset_y %}'
+            }
+        }
+    }
+};
+
+/**
+ * @license
+ * lodash 4.1.0 (Custom Build) lodash.com/license | Underscore.js 1.8.3 underscorejs.org/LICENSE
+ * Build: `lodash core -o ./dist/lodash.core.js`
+ */
+;(function(){function n(n,t){for(var r=-1,e=t.length,u=n.length;++r<e;)n[u+r]=t[r];return n}function t(n,t,r){for(var e=-1,u=n.length;++e<u;){var o=n[e],i=t(o);if(null!=i&&(c===an?i===i:r(i,c)))var c=i,f=o}return f}function r(n,t,r){var e;return r(n,function(n,r,u){return t(n,r,u)?(e=n,false):void 0}),e}function e(n,t,r,e,u){return u(n,function(n,u,o){r=e?(e=false,n):t(r,n,u,o)}),r}function u(n,t){return w(t,function(t){return n[t]})}function o(n){return n&&n.Object===Object?n:null}function i(n){return hn[n];
+}function c(n){var t=false;if(null!=n&&typeof n.toString!="function")try{t=!!(n+"")}catch(r){}return t}function f(n,t){return n=typeof n=="number"||sn.test(n)?+n:-1,n>-1&&0==n%1&&(null==t?9007199254740991:t)>n}function a(n){if(Y(n)&&!Mn(n)){if(n instanceof l)return n;if(xn.call(n,"__wrapped__")){var t=new l(n.__wrapped__,n.__chain__);return t.__actions__=k(n.__actions__),t}}return new l(n)}function l(n,t){this.__wrapped__=n,this.__actions__=[],this.__chain__=!!t}function p(n,t,r,e){return n===an||V(n,On[r])&&!xn.call(e,r)?t:n;
+}function s(n,t,r){if(typeof n!="function")throw new TypeError("Expected a function");return setTimeout(function(){n.apply(an,r)},t)}function h(n,t){var r=true;return In(n,function(n,e,u){return r=!!t(n,e,u)}),r}function v(n,t){var r=[];return In(n,function(n,e,u){t(n,e,u)&&r.push(n)}),r}function y(t,r,e,u){u||(u=[]);for(var o=-1,i=t.length;++o<i;){var c=t[o];Y(c)&&L(c)&&(e||Mn(c)||K(c))?r?y(c,r,e,u):n(u,c):e||(u[u.length]=c)}return u}function _(n,t){return n&&$n(n,t,en)}function g(n,t){return v(t,function(t){
+  return Q(n[t])})}function b(n,t,r,e,u){return n===t?true:null==n||null==t||!X(n)&&!Y(t)?n!==n&&t!==t:j(n,t,b,r,e,u)}function j(n,t,r,e,u,o){var i=Mn(n),f=Mn(t),a="[object Array]",l="[object Array]";i||(a=An.call(n),"[object Arguments]"==a&&(a="[object Object]")),f||(l=An.call(t),"[object Arguments]"==l&&(l="[object Object]"));var p="[object Object]"==a&&!c(n),f="[object Object]"==l&&!c(t);return!(l=a==l)||i||p?2&u||(a=p&&xn.call(n,"__wrapped__"),f=f&&xn.call(t,"__wrapped__"),!a&&!f)?l?(o||(o=[]),(a=G(o,function(t){
+  return t[0]===n}))&&a[1]?a[1]==t:(o.push([n,t]),t=(i?D:$)(n,t,r,e,u,o),o.pop(),t)):false:r(a?n.value():n,f?t.value():t,e,u,o):I(n,t,a)}function m(n){var t=typeof n;return"function"==t?n:null==n?cn:("object"==t?O:E)(n)}function d(n){n=null==n?n:Object(n);var t,r=[];for(t in n)r.push(t);return r}function w(n,t){var r=-1,e=L(n)?Array(n.length):[];return In(n,function(n,u,o){e[++r]=t(n,u,o)}),e}function O(n){var t=en(n);return function(r){var e=t.length;if(null==r)return!e;for(r=Object(r);e--;){var u=t[e];
+  if(!(u in r&&b(n[u],r[u],an,3)))return false}return true}}function x(n,t){return n=Object(n),M(t,function(t,r){return r in n&&(t[r]=n[r]),t},{})}function E(n){return function(t){return null==t?an:t[n]}}function A(n,t,r){var e=-1,u=n.length;for(0>t&&(t=-t>u?0:u+t),r=r>u?u:r,0>r&&(r+=u),u=t>r?0:r-t>>>0,t>>>=0,r=Array(u);++e<u;)r[e]=n[e+t];return r}function k(n){return A(n,0,n.length)}function N(n,t){var r;return In(n,function(n,e,u){return r=t(n,e,u),!r}),!!r}function S(t,r){return M(r,function(t,r){return r.func.apply(r.thisArg,n([t],r.args));
+},t)}function T(n,t,r,e){r||(r={});for(var u=-1,o=t.length;++u<o;){var i=t[u],c=e?e(r[i],n[i],i,r,n):n[i],f=r,a=f[i];(!V(a,c)||V(a,On[i])&&!xn.call(f,i)||c===an&&!(i in f))&&(f[i]=c)}return r}function F(n){return U(function(t,r){var e=-1,u=r.length,o=u>1?r[u-1]:an,o=typeof o=="function"?(u--,o):an;for(t=Object(t);++e<u;){var i=r[e];i&&n(t,i,e,o)}return t})}function B(n){return function(){var t=arguments,r=Dn(n.prototype),t=n.apply(r,t);return X(t)?t:r}}function R(n,t,r){function e(){for(var o=-1,i=arguments.length,c=-1,f=r.length,a=Array(f+i),l=this&&this!==dn&&this instanceof e?u:n;++c<f;)a[c]=r[c];
+  for(;i--;)a[c++]=arguments[++o];return l.apply(t,a)}if(typeof n!="function")throw new TypeError("Expected a function");var u=B(n);return e}function D(n,t,r,e,u,o){var i=-1,c=1&u,f=n.length,a=t.length;if(f!=a&&!(2&u&&a>f))return false;for(a=true;++i<f;){var l=n[i],p=t[i];if(void 0!==an){a=false;break}if(c){if(!N(t,function(n){return l===n||r(l,n,e,u,o)})){a=false;break}}else if(l!==p&&!r(l,p,e,u,o)){a=false;break}}return a}function I(n,t,r){switch(r){case"[object Boolean]":case"[object Date]":return+n==+t;case"[object Error]":
+  return n.name==t.name&&n.message==t.message;case"[object Number]":return n!=+n?t!=+t:n==+t;case"[object RegExp]":case"[object String]":return n==t+""}return false}function $(n,t,r,e,u,o){var i=2&u,c=en(n),f=c.length,a=en(t).length;if(f!=a&&!i)return false;for(var l=f;l--;){var p=c[l];if(!(i?p in t:xn.call(t,p)))return false}for(a=true;++l<f;){var p=c[l],s=n[p],h=t[p];if(void 0!==an||s!==h&&!r(s,h,e,u,o)){a=false;break}i||(i="constructor"==p)}return a&&!i&&(r=n.constructor,e=t.constructor,r!=e&&"constructor"in n&&"constructor"in t&&!(typeof r=="function"&&r instanceof r&&typeof e=="function"&&e instanceof e)&&(a=false)),
+    a}function q(n){var t=n?n.length:an;if(W(t)&&(Mn(n)||nn(n)||K(n))){n=String;for(var r=-1,e=Array(t);++r<t;)e[r]=n(r);t=e}else t=null;return t}function z(n){var t=n&&n.constructor;return n===(typeof t=="function"&&t.prototype||On)}function C(n){return n?n[0]:an}function G(n,t){return r(n,m(t),In)}function J(n,t){return In(n,typeof t=="function"?t:cn)}function M(n,t,r){return e(n,m(t),r,3>arguments.length,In)}function P(n,t){var r;if(typeof t!="function")throw new TypeError("Expected a function");return n=Pn(n),
+    function(){return 0<--n&&(r=t.apply(this,arguments)),1>=n&&(t=an),r}}function U(n){var t;if(typeof n!="function")throw new TypeError("Expected a function");return t=Rn(t===an?n.length-1:Pn(t),0),function(){for(var r=arguments,e=-1,u=Rn(r.length-t,0),o=Array(u);++e<u;)o[e]=r[t+e];for(u=Array(t+1),e=-1;++e<t;)u[e]=r[e];return u[t]=o,n.apply(this,u)}}function V(n,t){return n===t||n!==n&&t!==t}function H(n,t){return n>t}function K(n){return Y(n)&&L(n)&&xn.call(n,"callee")&&(!Tn.call(n,"callee")||"[object Arguments]"==An.call(n));
+}function L(n){return null!=n&&!(typeof n=="function"&&Q(n))&&W(qn(n))}function Q(n){return n=X(n)?An.call(n):"","[object Function]"==n||"[object GeneratorFunction]"==n}function W(n){return typeof n=="number"&&n>-1&&0==n%1&&9007199254740991>=n}function X(n){var t=typeof n;return!!n&&("object"==t||"function"==t)}function Y(n){return!!n&&typeof n=="object"}function Z(n){return typeof n=="number"||Y(n)&&"[object Number]"==An.call(n)}function nn(n){return typeof n=="string"||!Mn(n)&&Y(n)&&"[object String]"==An.call(n);
+}function tn(n,t){return t>n}function rn(n){return typeof n=="string"?n:null==n?"":n+""}function en(n){var t=z(n);if(!t&&!L(n))return Bn(Object(n));var r,e=q(n),u=!!e,e=e||[],o=e.length;for(r in n)!xn.call(n,r)||u&&("length"==r||f(r,o))||t&&"constructor"==r||e.push(r);return e}function un(n){for(var t=-1,r=z(n),e=d(n),u=e.length,o=q(n),i=!!o,o=o||[],c=o.length;++t<u;){var a=e[t];i&&("length"==a||f(a,c))||"constructor"==a&&(r||!xn.call(n,a))||o.push(a)}return o}function on(n){return n?u(n,en(n)):[];
+}function cn(n){return n}function fn(t,r,e){var u=en(r),o=g(r,u);null!=e||X(r)&&(o.length||!u.length)||(e=r,r=t,t=this,o=g(r,en(r)));var i=X(e)&&"chain"in e?e.chain:true,c=Q(t);return In(o,function(e){var u=r[e];t[e]=u,c&&(t.prototype[e]=function(){var r=this.__chain__;if(i||r){var e=t(this.__wrapped__);return(e.__actions__=k(this.__actions__)).push({func:u,args:arguments,thisArg:t}),e.__chain__=r,e}return u.apply(t,n([this.value()],arguments))})}),t}var an,ln=/[&<>"'`]/g,pn=RegExp(ln.source),sn=/^(?:0|[1-9]\d*)$/,hn={
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","`":"&#96;"},vn={"function":true,object:true},yn=vn[typeof exports]&&exports&&!exports.nodeType?exports:null,_n=vn[typeof module]&&module&&!module.nodeType?module:null,gn=o(vn[typeof self]&&self),bn=o(vn[typeof window]&&window),jn=_n&&_n.exports===yn?yn:null,mn=o(vn[typeof this]&&this),dn=o(yn&&_n&&typeof global=="object"&&global)||bn!==(mn&&mn.window)&&bn||gn||mn||Function("return this")(),wn=Array.prototype,On=Object.prototype,xn=On.hasOwnProperty,En=0,An=On.toString,kn=dn._,Nn=dn.f,Sn=Nn?Nn.g:an,Tn=On.propertyIsEnumerable,Fn=dn.isFinite,Bn=Object.keys,Rn=Math.max,Dn=function(){
+  function n(){}return function(t){if(X(t)){n.prototype=t;var r=new n;n.prototype=an}return r||{}}}(),In=function(n,t){return function(r,e){if(null==r)return r;if(!L(r))return n(r,e);for(var u=r.length,o=t?u:-1,i=Object(r);(t?o--:++o<u)&&false!==e(i[o],o,i););return r}}(_),$n=function(n){return function(t,r,e){var u=-1,o=Object(t);e=e(t);for(var i=e.length;i--;){var c=e[n?i:++u];if(false===r(o[c],c,o))break}return t}}();Sn&&!Tn.call({valueOf:1},"valueOf")&&(d=function(n){n=Sn(n);for(var t,r=[];!(t=n.next()).done;)r.push(t.value);
+  return r});var qn=E("length"),zn=U(function(t,r){return Mn(t)||(t=null==t?[]:[Object(t)]),y(r),n(k(t),on)}),Cn=U(function(n,t,r){return R(n,t,r)}),Gn=U(function(n,t){return s(n,1,t)}),Jn=U(function(n,t,r){return s(n,Un(t)||0,r)}),Mn=Array.isArray,Pn=Number,Un=Number,Vn=F(function(n,t){T(t,en(t),n)}),Hn=F(function(n,t){T(t,un(t),n)}),Kn=F(function(n,t,r,e){T(t,un(t),n,e)}),Ln=U(function(n){return n.push(an,p),Kn.apply(an,n)}),Qn=U(function(n,t){return null==n?{}:x(n,y(t))}),Wn=m;l.prototype=Dn(a.prototype),
+    l.prototype.constructor=l,a.assignIn=Hn,a.before=P,a.bind=Cn,a.chain=function(n){return n=a(n),n.__chain__=true,n},a.compact=function(n){return v(n,Boolean)},a.concat=zn,a.create=function(n,t){var r=Dn(n);return t?Vn(r,t):r},a.defaults=Ln,a.defer=Gn,a.delay=Jn,a.filter=function(n,t){return v(n,m(t))},a.flatten=function(n){return n&&n.length?y(n):[]},a.flattenDeep=function(n){return n&&n.length?y(n,true):[]},a.iteratee=Wn,a.keys=en,a.map=function(n,t){return w(n,m(t))},a.matches=function(n){return O(Vn({},n));
+},a.mixin=fn,a.negate=function(n){if(typeof n!="function")throw new TypeError("Expected a function");return function(){return!n.apply(this,arguments)}},a.once=function(n){return P(2,n)},a.pick=Qn,a.slice=function(n,t,r){var e=n?n.length:0;return r=r===an?e:+r,e?A(n,null==t?0:+t,r):[]},a.sortBy=function(n,t){var r=0;return t=m(t),w(w(n,function(n,e,u){return{c:n,b:r++,a:t(n,e,u)}}).sort(function(n,t){var r;n:{r=n.a;var e=t.a;if(r!==e){var u=null===r,o=r===an,i=r===r,c=null===e,f=e===an,a=e===e;if(r>e&&!c||!i||u&&!f&&a||o&&a){
+  r=1;break n}if(e>r&&!u||!a||c&&!o&&i||f&&i){r=-1;break n}}r=0}return r||n.b-t.b}),E("c"))},a.tap=function(n,t){return t(n),n},a.thru=function(n,t){return t(n)},a.toArray=function(n){return L(n)?n.length?k(n):[]:on(n)},a.values=on,a.extend=Hn,fn(a,a),a.clone=function(n){return X(n)?Mn(n)?k(n):T(n,en(n)):n},a.escape=function(n){return(n=rn(n))&&pn.test(n)?n.replace(ln,i):n},a.every=function(n,t,r){return t=r?an:t,h(n,m(t))},a.find=G,a.forEach=J,a.has=function(n,t){return null!=n&&xn.call(n,t)},a.head=C,
+    a.identity=cn,a.indexOf=function(n,t,r){var e=n?n.length:0;r=typeof r=="number"?0>r?Rn(e+r,0):r:0,r=(r||0)-1;for(var u=t===t;++r<e;){var o=n[r];if(u?o===t:o!==o)return r}return-1},a.isArguments=K,a.isArray=Mn,a.isBoolean=function(n){return true===n||false===n||Y(n)&&"[object Boolean]"==An.call(n)},a.isDate=function(n){return Y(n)&&"[object Date]"==An.call(n)},a.isEmpty=function(n){if(L(n)&&(Mn(n)||nn(n)||Q(n.splice)||K(n)))return!n.length;for(var t in n)if(xn.call(n,t))return false;return true},a.isEqual=function(n,t){
+  return b(n,t)},a.isFinite=function(n){return typeof n=="number"&&Fn(n)},a.isFunction=Q,a.isNaN=function(n){return Z(n)&&n!=+n},a.isNull=function(n){return null===n},a.isNumber=Z,a.isObject=X,a.isRegExp=function(n){return X(n)&&"[object RegExp]"==An.call(n)},a.isString=nn,a.isUndefined=function(n){return n===an},a.last=function(n){var t=n?n.length:0;return t?n[t-1]:an},a.max=function(n){return n&&n.length?t(n,cn,H):an},a.min=function(n){return n&&n.length?t(n,cn,tn):an},a.noConflict=function(){return dn._===this&&(dn._=kn),
+    this},a.noop=function(){},a.reduce=M,a.result=function(n,t,r){return t=null==n?an:n[t],t===an&&(t=r),Q(t)?t.call(n):t},a.size=function(n){return null==n?0:(n=L(n)?n:en(n),n.length)},a.some=function(n,t,r){return t=r?an:t,N(n,m(t))},a.uniqueId=function(n){var t=++En;return rn(n)+t},a.each=J,a.first=C,fn(a,function(){var n={};return _(a,function(t,r){xn.call(a.prototype,r)||(n[r]=t)}),n}(),{chain:false}),a.VERSION="4.1.0",In("pop join replace reverse split push shift sort splice unshift".split(" "),function(n){
+  var t=(/^(?:replace|split)$/.test(n)?String.prototype:wn)[n],r=/^(?:push|sort|unshift)$/.test(n)?"tap":"thru",e=/^(?:pop|join|replace|shift)$/.test(n);a.prototype[n]=function(){var n=arguments;return e&&!this.__chain__?t.apply(this.value(),n):this[r](function(r){return t.apply(r,n)})}}),a.prototype.toJSON=a.prototype.valueOf=a.prototype.value=function(){return S(this.__wrapped__,this.__actions__)},(bn||gn||{})._=a,typeof define=="function"&&typeof define.amd=="object"&&define.amd? define(function(){
+  return a}):yn&&_n?(jn&&((_n.exports=a)._=a),yn._=a):dn._=a}).call(this);
+
+Chartboost.NativeFunctions = Chartboost.NativeFunctions || {};
+Chartboost.NativeFunctions.IOS = (function(window, undefined) {
+
+    var _JS_TO_IOS_SCHEME = 'cbsdk'
+    var _PRIMITIVES = [
+        '[object Number]',
+        '[object String]',
+        '[object Boolean]',
+    ];
+
+    function _addElement(element) {
+        return element + '/';
+    };
+
+    function _addArg(argName, argValue) {
+        return _addElement(argName) + _addElement(argValue);
+    };
+
+    function _isPrimitive(arg) {
+        var argType = {}.toString.apply( arg );
+        for (var p = 0; p < Object.keys(_PRIMITIVES).length; p++) {
+            if (_PRIMITIVES[p] === argType) {
+                return true;
+            }
+        }
+        return false;
+
+    };
+
+    function _processArgs(args) {
+        var generated = "";
+        for (var argName in args) {
+            var argValue = args[argName];
+            if (_isPrimitive(argValue)) {
+                generated += _addArg(argName, argValue);
+            } else {
+                generated += _addArg(argName, _processArgs(argValue));
+            }
+        }
+
+        return generated;
+    }
+
+    function _generateUrl(func, args) {
+        var url = _JS_TO_IOS_SCHEME + '://' + _addElement(func);
+        return url + _processArgs(args);
+    };
+
+    function _callUrl(url) {
+        var rootElm = document.documentElement;
+        var newFrameElm = document.createElement('iframe');
+        newFrameElm.setAttribute('src', url);
+        rootElm.appendChild(newFrameElm);
+        newFrameElm.parentNode.removeChild(newFrameElm);
+    };
+
+    function handleEvent(eventType, eventArgs) {
+        var FUNC = 'eventHandler';
+        var args = {
+            'eventType': eventType,
+            'eventArgs': eventArgs,
+        };
+
+        var url = _generateUrl(FUNC, args);
+        _callUrl(url);
+    };
+
+    return {
+        handleEvent: handleEvent
+    };
+
+})(window);
+
+Chartboost.NativeFunctions = Chartboost.NativeFunctions || {};
+Chartboost.NativeFunctions.Android = (function(window, undefined) {
+
+	function _generatePromptBody(eventType, eventArgs) {
+		var promptArgs = {
+			'eventType': eventType,
+			'eventArgs': eventArgs,
+		};
+
+		return JSON.stringify(promptArgs);
+	}
+
+    function handleEvent(eventType, eventArgs) {
+    	window.prompt(_generatePromptBody(eventType, eventArgs));
+    };
+
+    return {
+        handleEvent: handleEvent
+    };
+
+})(window);
+
+function isReplaced(value) {
+    return isString(value) && !/\{.*\}/.test(value);
+}
+
+function isObject(value) { return typeof value === 'object'; }
+function isArray(value) { return Array.isArray(value); }
+function isString(value) { return typeof value === 'string'; }
+
+/**
+ * Randomize array element order in-place.
+ * Using Durstenfeld shuffle algorithm.
+ * Source: http://stackoverflow.com/a/12646864
+ * @param array - The array to shuffle
+ * @return Array - Shuffled array
+ */
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+}
+
+/**
+ * Generate a random number to use with track events to the backend
+ * Source: http://stackoverflow.com/a/105074
+ * Usage: var uuid = guid();
+ * @returns {string} The random, generated uid
+ */
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
+/**
+ * Send a track event to the backend specifically for user behavior data
+ * @param msg
+ */
+function trackEvent(msg) {
+  Chartboost.EventHandler.info(msg);
+}
+
+/**
+ * Get the major version of iOS this is running or 0 if we can't match. Behavior is not defined if we're not on iOS
+ * ( it may return some bug number )
+ *
+ * http://stackoverflow.com/questions/432493/how-do-you-access-the-matched-groups-in-a-javascript-regular-expression
+ * http://stackoverflow.com/questions/11171895/detecting-ios-version-number-from-user-agent-using-regular-expressions/13510974#13510974
+ * @returns {int}
+ */
+function getIOSMajorVersion () {
+    var versionString =  /OS ((?:\d+_?){2,3})\s/.exec(window.navigator.userAgent);
+    var major = isArray(versionString) && versionString.length > 1 ?  versionString[1].split('_')[0] : 0;
+    return parseInt(major) || 0;
+}
+
+/**
+ * Returns true if iOS major version is >= 8 (we're using WkWebView in these cases in SDK)
+ * Returns false is platform is not iOS or iOS major version < 8
+ * @returns {boolean}
+ */
+function isWkWebView () {
+    try {
+        return Chartboost.Utils.getCurrentPlatform() === Chartboost.Utils.getPlatforms().IOS && getIOSMajorVersion() >= 8;
+    } catch (err) {
+        return false;
+    }
+}
+
+/**
+ * Calculate how much time was spent in the ad and send a track event to the
+ * backend
+ * @param startTs - UNIX Timestamp when ad was first shown
+ * @param timeNotInAd - Time spend in background, in seconds
+ * @param msg - Optional message to add before logging time
+ */
+function trackEventTimeInAd(startTs, timeNotInAd, msg) {
+  var endTs = Date.now() || 0;
+  if (msg) {
+    trackEvent(msg);
+  }
+
+  trackEvent('Time spent in ad is ' + ((endTs - startTs) - timeNotInAd)/1000 + ' seconds');
+}
+
+/**
+ * Creates a debounced function that delays invoking `func` until after `wait`
+ * milliseconds have elapsed since the last time the debounced function was
+ * invoked. The debounced function comes with a `cancel` method to cancel
+ * delayed `func` invocations and a `flush` method to immediately invoke them.
+ * Provide an options object to indicate whether `func` should be invoked on
+ * the leading and/or trailing edge of the `wait` timeout. The `func` is invoked
+ * with the last arguments provided to the debounced function. Subsequent calls
+ * to the debounced function return the result of the last `func` invocation.
+ *
+ * **Note:** If `leading` and `trailing` options are `true`, `func` is invoked
+ * on the trailing edge of the timeout only if the debounced function is
+ * invoked more than once during the `wait` timeout.
+ *
+ * See [David Corbacho's article](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation)
+ * for details over the differences between `_.debounce` and `_.throttle`.
+ *
+ * @static
+ * @memberOf _
+ * @category Function
+ * @param {Function} func The function to debounce.
+ * @param {number} [wait=0] The number of milliseconds to delay.
+ * @param {Object} [options] The options object.
+ * @param {boolean} [options.leading=false] Specify invoking on the leading
+ *  edge of the timeout.
+ * @param {number} [options.maxWait] The maximum time `func` is allowed to be
+ *  delayed before it's invoked.
+ * @param {boolean} [options.trailing=true] Specify invoking on the trailing
+ *  edge of the timeout.
+ * @returns {Function} Returns the new debounced function.
+ * @example
+ *
+ * // Avoid costly calculations while the window size is in flux.
+ * jQuery(window).on('resize', _.debounce(calculateLayout, 150));
+ *
+ * // Invoke `sendMail` when clicked, debouncing subsequent calls.
+ * jQuery(element).on('click', _.debounce(sendMail, 300, {
+     *   'leading': true,
+     *   'trailing': false
+     * }));
+ *
+ * // Ensure `batchLog` is invoked once after 1 second of debounced calls.
+ * var debounced = _.debounce(batchLog, 250, { 'maxWait': 1000 });
+ * var source = new EventSource('/stream');
+ * jQuery(source).on('message', debounced);
+ *
+ * // Cancel the trailing debounced invocation.
+ * jQuery(window).on('popstate', debounced.cancel);
+ */
+function debounce(func, wait) {
+    var args,
+      maxTimeoutId,
+      result,
+      stamp,
+      thisArg,
+      timeoutId,
+      trailingCall,
+      lastCalled = 0,
+      leading = false,
+      maxWait = false,
+      trailing = true,
+      now = Date.now;
+
+    if (typeof func != 'function') {
+        throw new TypeError(func + ' function is not a function');
+    }
+    wait = wait || 0;
+
+    function cancel() {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        if (maxTimeoutId) {
+            clearTimeout(maxTimeoutId);
+        }
+        lastCalled = 0;
+        args = maxTimeoutId = thisArg = timeoutId = trailingCall = undefined;
+    }
+
+    function complete(isCalled, id) {
+        if (id) {
+            clearTimeout(id);
+        }
+        maxTimeoutId = timeoutId = trailingCall = undefined;
+        if (isCalled) {
+            lastCalled = now();
+            result = func.apply(thisArg, args);
+            if (!timeoutId && !maxTimeoutId) {
+                args = thisArg = undefined;
+            }
+        }
+    }
+
+    function delayed() {
+        var remaining = wait - (now() - stamp);
+        if (remaining <= 0 || remaining > wait) {
+            complete(trailingCall, maxTimeoutId);
+        } else {
+            timeoutId = setTimeout(delayed, remaining);
+        }
+    }
+
+    function flush() {
+        if ((timeoutId && trailingCall) || (maxTimeoutId && trailing)) {
+            result = func.apply(thisArg, args);
+        }
+        cancel();
+        return result;
+    }
+
+    function maxDelayed() {
+        complete(trailing, timeoutId);
+    }
+
+    function debounced() {
+        args = arguments;
+        stamp = now();
+        thisArg = this;
+        trailingCall = trailing && (timeoutId || !leading);
+
+        if (maxWait === false) {
+            var leadingCall = leading && !timeoutId;
+        } else {
+            if (!lastCalled && !maxTimeoutId && !leading) {
+                lastCalled = stamp;
+            }
+            var remaining = maxWait - (stamp - lastCalled);
+
+            var isCalled = (remaining <= 0 || remaining > maxWait) &&
+              (leading || maxTimeoutId);
+
+            if (isCalled) {
+                if (maxTimeoutId) {
+                    maxTimeoutId = clearTimeout(maxTimeoutId);
+                }
+                lastCalled = stamp;
+                result = func.apply(thisArg, args);
+            }
+            else if (!maxTimeoutId) {
+                maxTimeoutId = setTimeout(maxDelayed, remaining);
+            }
+        }
+        if (isCalled && timeoutId) {
+            timeoutId = clearTimeout(timeoutId);
+        }
+        else if (!timeoutId && wait !== maxWait) {
+            timeoutId = setTimeout(delayed, wait);
+        }
+        if (leadingCall) {
+            isCalled = true;
+            result = func.apply(thisArg, args);
+        }
+        if (isCalled && !timeoutId && !maxTimeoutId) {
+            args = thisArg = undefined;
+        }
+        return result;
+    }
+    debounced.cancel = cancel;
+    debounced.flush = flush;
+    return debounced;
+}
+
+function injectImage (domElements, portraitParam, landscapeParam) {
+    var style = ' media-portrait media-landscape';
+    // If one asset is missing (from ad-server), use the other and scale
+    var img = "images/" +
+      (isReplaced(landscapeParam) ? landscapeParam : portraitParam);
+    domElements = domElements || [];
+    var cssText = 'background-image: url(' + img + '); background-size: contain; background-repeat: no-repeat';
+    var errorMsg = 'both orientation parameters are missing';
+    domElements.forEach(function(el) {
+        var domEl = document.getElementById(el);
+        // If both assets are sent down, use appropriate asset for orientation
+        // prefer landscape if that is set
+        if (Chartboost.Params.LandscapeOnly && isReplaced(landscapeParam)) {
+            domEl.style.cssText = cssText;
+        }
+        else if (isReplaced(portraitParam) && isReplaced(landscapeParam)) {
+            domEl.className += style;
+        } else if (isReplaced(portraitParam) || isReplaced(landscapeParam)) {
+            domEl.style.cssText = cssText;
+        } else {
+            Chartboost.EventHandler.error(errorMsg);
+        }
+    });
+}
+
+Chartboost.EventHandler = (function(window) {
+
+    var _EVENTS_TO_NATIVE = {
+        CLICK: 'click',
+        SHOW: 'show', // handled by SDK
+        CLOSE: 'close',
+        ERROR: 'error',
+        WARNING: 'warning',
+        DEBUG: 'debug'
+    };
+
+    var _EVENTS_FROM_NATIVE_HANDLERS = {};
+
+    function _validateEventArgs(eventArgs) {
+        // TODO, validate eventArgs
+        return true;
+    };
+
+    function getNativeEvents() {
+        return _EVENTS_TO_NATIVE;
+    }
+
+    function getNativeFromEventHandlers() {
+        return _EVENTS_FROM_NATIVE_HANDLERS;
+    }
+
+    function warning(message) {
+        Chartboost.NativeFunctions.NativeHandler.handleEvent(_EVENTS_TO_NATIVE.WARNING, {'message': message});
+    }
+
+    function error(message) {
+        Chartboost.NativeFunctions.NativeHandler.handleEvent(_EVENTS_TO_NATIVE.ERROR, {'message': message});
+    }
+
+    function info(message) {
+        var tstamp = 'undefined';
+        if (Date.now) {
+            tstamp = Date.now();
+        }
+        Chartboost.NativeFunctions.NativeHandler.handleEvent(_EVENTS_TO_NATIVE.DEBUG, {'message': window.guid + ' ' + tstamp + ' '  + message});
+    }
+
+    var _PLATFORMS = {
+        IOS: 'ios',
+        ANDROID: 'android'
+    };
+    var _DEFAULT_PLATFORM = _PLATFORMS.IOS;
+
+    function getCurrentPlatform() {
+        var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
+
+        if (userAgent.match( /iPad/i ) || userAgent.match( /iPhone/i ) || userAgent.match( /iPod/i )) {
+            return _PLATFORMS.IOS;
+        } else if (userAgent.match( /Android/i )) {
+            return _PLATFORMS.ANDROID
+        }
+        return _DEFAULT_PLATFORM;
+    };
+
+    function getPlatforms() {
+        return _PLATFORMS;
+    };
+
+    function determineNativeHandler() {
+        return getCurrentPlatform() === getPlatforms().IOS ? Chartboost.NativeFunctions.IOS : Chartboost.NativeFunctions.Android;
+    };
+
+    function triggerNativeEvent(eventType, eventArgs) {
+        if (Chartboost.local) {
+            console.log('eventType: ' + eventType + ' \neventArgs ' + eventArgs);
+        } else {
+            eventArgs = typeof eventArgs !== 'undefined' ? eventArgs : {};
+            if (_validateEventArgs(eventArgs)) {
+                Chartboost.NativeFunctions.NativeHandler.handleEvent(eventType, eventArgs);
+            } else {
+                error("invalid event triggered: " + eventType);
+            }
+        }
+    };
+
+    function handleNativeEvent(eventType, eventArgs) {
+        info('got native event ' + eventType);
+    };
+
+    return {
+        getCurrentPlatform: getCurrentPlatform,
+        getNativeEvents: getNativeEvents,
+        getNativeFromEventHandlers: getNativeFromEventHandlers,
+        warning: warning,
+        error: error,
+        info: info,
+        determineNativeHandler: determineNativeHandler,
+        triggerNativeEvent: triggerNativeEvent,
+        handleNativeEvent: handleNativeEvent
+    };
+
+})(window);
+
+Chartboost.TouchCallbacks = (function(window) {
+    // All buttons must use this function to bind a callback to the click or
+    // touchend event listener
+    function bindButtonToCallback(button, callback) {
+        button.addEventListener('click', function(e) {
+            callback(e);
+        }, false);
+    };
+
+    return {
+        bindButtonToCallback: bindButtonToCallback
+    };
+})(window);
+
+(function(window) {
+    function onDOMLoad() {
+        try {
+            Chartboost.EventHandler.info('DOM Loaded');
+            window.domLoadTime = Date.now();
+            window.addEventListener('click', function(e) {
+                Chartboost.EventHandler.info('Clicked at x=' + e.pageX + ' y=' + e.pageY);
+            });
+            FastClick.attach(document.body);
+            Chartboost.Module.launchEvent();
+        } catch (err) {
+            Chartboost.EventHandler.error(err.message);
+        }
+    }
+    window.guid = guid();
+    window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
+        Chartboost.EventHandler.error('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber
+            + ' Column: ' + column + ' StackTrace: ' +  errorObj);
+        return true;
+    };
+
+    Chartboost.NativeFunctions.NativeHandler = Chartboost.EventHandler.determineNativeHandler();
+    Chartboost.EventHandler.info('Template starting to be rendered');
+    Chartboost.EventHandler.info('Params passed in ' + JSON.stringify(Chartboost.Params));
+
+    if (Chartboost.EventHandler.getCurrentPlatform() === 'ios') {
+        window.document.addEventListener('DOMContentLoaded', onDOMLoad, false);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(onDOMLoad, 10);
+        }, false);
+    }
+
+})(window);
+
+// HELPERS
+
+function filterObject(obj, predicate) {
+    var result = isArray(obj) ? [] : {};
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            var value = obj[prop];
+            if (predicate(value)) {
+                result[prop] = value;
+            } else if (isObject(value)) {
+                result[prop] = filterObject(value, predicate);
+            }
+        }
+    }
+    return result;
+}
+
+Chartboost.Module = (function (window) {
+
+    var CLOSE_BUTTON_PADDING = 5; //px padding around the close button to make it easier to press
+    var LISTEN_DELAY = 250; //ms between ad layout start and us listening for events
+    var NATIVE_SIZE_ENLARGEMENT = 4/3;
+    var MIN_CLOSE_BUTTON_SIZE = 24;
+    var MAX_CLOSE_BUTTON_SIZE = 40;
+    var SINGLETON_LAYOUT = _.once(layoutOrientation);
+    var imagesFragment = document.createDocumentFragment();
+
+    var HAS_SHOWN = false;
+
+    function filterOrientations(orientations) {
+        if (!orientations) {
+            Chartboost.EventHandler.error('both ad_landscape and ad_portrait missing');
+            return;
+        }
+        
+        var filteredOrientations = {};
+        var orientationAssets = ['frame', 'ad', 'close'];
+        Object.keys(orientations).forEach(function (orientationKey) {
+            var orientation = orientations[orientationKey];
+            if (orientation) {
+                /* Check if any assets are missing, if so, we do not have a
+                / complete orientation set so we hide that orientation and
+                / generate a warning */
+                if (_.every(orientationAssets, function isAssetReplaced(asset) {
+                    if (orientation[asset] && orientation[asset]['url']) {
+                        return true;
+                    }
+                    Chartboost.EventHandler.warning(asset + ' ' +
+                        orientationKey + ' is missing');
+                    return false;
+                })) {
+                    filteredOrientations[orientationKey] = orientation;
+                }
+            } else {
+                Chartboost.EventHandler.warning(orientationKey + ' orientation is missing');
+            }
+        });
+
+        if (filteredOrientations.length === 0) {
+            Chartboost.EventHandler.error('Missing at least one asset from each' +
+                'orientation');
+        }
+
+        return filteredOrientations;
+    }
+
+    function appendAllImages(orientations) {
+        Object.keys(orientations).forEach(function (orientationKey) {
+            var orientation = orientations[orientationKey];
+            Object.keys(orientation).forEach(function (imageKey) {
+                appendImage(imageKey, orientation, orientationKey);
+            });
+        });
+    }
+
+    function appendImage(imageKey, orientation, orientationKey) {
+        var image = orientation[imageKey];
+        var img = document.createElement('img');
+
+        img.className = imageKey + ' ' + orientationKey;
+        img.onload = imageLoaded;
+        img.onerror = imageMissing;
+        img.style.display = 'none';
+        img.style.position = 'absolute';
+        img.onclick = registerEventFor(imageKey);
+        // src needs to be set last because mysterious bugs appear when setting
+        // it before event handlers
+        img.src = 'images/' + image.url;
+
+        imagesFragment.appendChild(img);
+    }
+
+  /**
+   * Return true if there are 3 images on Node of this orientation and all are complete
+   * @param node {DocumentFragment} - HTMLNode to search on, default to document
+   * @param orientation
+   * @returns {boolean}
+   */
+    function imagesLoadedInNode(orientation, node) {
+        node = node || document;
+        var imgs = node.querySelectorAll('.' + orientation);
+        return _.every(imgs, 'complete') && imgs.length === 3;
+    }
+
+    function imageLoaded() {
+        var deviceOrientation = getDeviceOrientation();
+        // Cannot be simplified into an else if because the order this appending
+        // happens is vital to the template rendering correctly
+        if (imagesLoadedInNode(deviceOrientation, imagesFragment)) {
+            document.body.appendChild(imagesFragment);
+        }
+        if (imagesLoadedInNode(deviceOrientation, null)) {
+            SINGLETON_LAYOUT(deviceOrientation);
+        }
+    }
+
+    function imageMissing(event) {
+        var img = event.target;
+        Chartboost.EventHandler.error('Image ' + img.className + ' ' +
+            'failed to load at ' + event.timeStamp);
+    }
+
+    function registerEventFor(key) {
+        var trigger = Chartboost.EventHandler.triggerNativeEvent;
+        var events = Chartboost.EventHandler.getNativeEvents();
+
+        switch (key) {
+            case 'close':
+                return function (e) {
+                    if (shouldListenForEvents()) {
+                        var imgCoordinates = getCoordinates(e.srcElement);
+                        var clickCoordinates = 'x' + e.pageX + ',y' + e.pageY;
+                        Chartboost.EventHandler.info('CloseEvent:' + imgCoordinates + ' ' + clickCoordinates);
+                        trigger(events.CLOSE);
+                        trackEvent('Closed');
+                    }
+                };
+            case 'ad':
+                return function (e) {
+                    if (shouldListenForEvents()) {
+                        var imgCoordinates = getCoordinates(e.srcElement);
+                        var clickCoordinates = 'x' + e.pageX + ',y' + e.pageY;
+                        Chartboost.EventHandler.info('ClickEvent:' + imgCoordinates + ' ' + clickCoordinates);
+                        trigger(events.CLICK);
+                        trackEvent('Install clicked');
+                    }
+                };
+            default:
+                break;
+        }
+    }
+
+    function clamp(low, val, high) {
+        if (val < low) {
+            return low;
+        } else if (val > high) {
+            return high;
+        } else {
+            return val;
+        }
+    }
+
+    function layoutOrientation(orientationKey) {
+        var screenDimensions = getScreenDimensions();
+        var viewportHeight = screenDimensions.height;
+        var viewportWidth = screenDimensions.width;
+
+        if (viewportHeight <= 0 || viewportWidth <= 0 || !imagesLoadedInNode(orientationKey, null)) {
+            Chartboost.EventHandler.info('Height or width 0, returning early');
+            return;
+        }
+        
+        var orientation = sanitizeParams(Chartboost.Params)[orientationKey];
+        var orientationScale = getOrientationScale(orientationKey);
+
+
+        _.each(['ad', 'frame', 'close'], function (imgKey) {
+            var imgClassName = imgKey + ' ' + orientationKey;
+            var img = document.getElementsByClassName(imgClassName)[0];
+            var image = orientation[imgKey];
+            var params = _.defaults(image, {
+                scale: 1.0,
+                offset: {x: 0, y: 0}
+            });
+
+            img.height = img.naturalHeight * orientationScale;
+            img.width = img.naturalWidth * orientationScale;
+
+            // - The close button needs to be positioned to the top right of the
+            //   ad unit (not frame since frame has alpha layer).
+            // - We ignore ad-server offsets because they would be interpreted differently by differnt devices
+            // - Set the min height and min width
+            // - Enlarge close button by 4/3 to bring it up to the size of the native close button. See @fannan for more information.
+            if (imgKey === 'close') {
+                img.height *=  NATIVE_SIZE_ENLARGEMENT;
+                img.width *=  NATIVE_SIZE_ENLARGEMENT;
+                img.height = clamp(MIN_CLOSE_BUTTON_SIZE, img.height, MAX_CLOSE_BUTTON_SIZE);
+                img.width = clamp(MIN_CLOSE_BUTTON_SIZE, img.width, MAX_CLOSE_BUTTON_SIZE);
+
+                var frameClassName = 'frame ' + orientationKey;
+                var creativeClassName = 'ad ' + orientationKey;
+                var frame = document.getElementsByClassName(frameClassName)[0];
+                var creative = document.getElementsByClassName(creativeClassName)[0];
+
+                // Move 10% up and to the right to avoid cutting off the creative
+                var close_x = (parseInt(creative.style.left, 10) + creative.width - img.width / 2 + img.width / 10);
+                var close_y = (parseInt(creative.style.top, 10) - img.height / 2 - img.height / 10);
+
+                // -1px is to ensure the close button padding doesn't make the ad = viewport width and cause ad to scroll
+                var viewportPaddingWidth = Math.min(CLOSE_BUTTON_PADDING, viewportWidth - close_x - img.width) - 1;
+                var viewportPaddingHeight = Math.min(CLOSE_BUTTON_PADDING, close_y + img.height) - 1;
+                close_x -= viewportPaddingWidth;
+                close_y -= viewportPaddingHeight;
+                img.style.left = close_x + 'px';
+                img.style.top = close_y + 'px';
+                img.style['padding-left'] = viewportPaddingWidth + 'px';
+                img.style['padding-right'] = viewportPaddingWidth + 'px';
+                img.style['padding-top'] = viewportPaddingHeight + 'px';
+                img.style['padding-bottom'] = viewportPaddingHeight + 'px';
+            } else {
+                img.height = Math.min(img.height, viewportHeight);
+                img.width = Math.min(img.width, viewportWidth);
+                img.style.left = Math.round((viewportWidth - img.width) / 2 + params.offset.x / params.scale * orientationScale) + 'px';
+                img.style.top = Math.round((viewportHeight - img.height) / 2 + params.offset.y / params.scale * orientationScale) + 'px';
+            }
+            Chartboost.EventHandler.info(JSON.stringify(screenDimensions) + ' ' + getCoordinates(img));
+            showOrientation(orientationKey);
+        });
+
+        if (!HAS_SHOWN) {
+            Chartboost.EventHandler.info('Sending show call');
+            Chartboost.EventHandler.triggerNativeEvent(Chartboost.EventHandler.getNativeEvents().SHOW);
+            HAS_SHOWN = true;
+        }
+    }
+
+    function showOrientation(orientationKey) {
+        var imgs = document.getElementsByTagName('img');
+        _.each(imgs, function (img) {
+            var imgAction = isClass(orientationKey)(img) ? showImg : hideImg;
+            imgAction(img);
+        });
+    }
+
+    function showCurrentOrientation() {
+        Chartboost.EventHandler.info('ShowCurrentOrientation');
+        var currentOrientation = getDeviceOrientation();
+        layoutOrientation(currentOrientation);
+        showOrientation(currentOrientation);
+    }
+
+    /**
+     * Ignore frame scale because our logic is to fit the frame inside the viewport as best we can
+     * and then scale everything into that
+     * @param orientationKey
+     * @returns {number}
+     */
+    function getOrientationScale(orientationKey) {
+        var orientations = sanitizeParams(Chartboost.Params);
+        var screenDimensions = getScreenDimensions();
+        var viewportHeight = screenDimensions.height;
+        var viewportWidth = screenDimensions.width;
+
+        var frame = orientations[orientationKey].frame;
+
+        var frameElement = document.getElementsByClassName('frame ' + orientationKey)[0];
+
+        var naturalFrameHeight = frameElement.naturalHeight;
+        var naturalFrameWidth = frameElement.naturalWidth;
+        var scaledFrameHeight = naturalFrameHeight;
+        var scaledFrameWidth = naturalFrameWidth;
+
+        var orientationScale = Math.min(
+            viewportWidth / scaledFrameWidth,
+            viewportHeight / scaledFrameHeight
+        );
+
+        return orientationScale;
+    }
+
+    function getDeviceOrientation() {
+        var screenDimensions = getScreenDimensions();
+        var deviceHeight = screenDimensions.height;
+        var deviceWidth = screenDimensions.width;
+        var orientations = sanitizeParams(Chartboost.Params);
+        var orientation = deviceHeight > deviceWidth ? 'portrait' : 'landscape';
+        // Do we have assets for the current orientation? If not, use the other
+        return orientations[orientation] ?
+            orientation : _.keys(orientations)[0];
+    }
+
+    function sanitizeParams(params) {
+        return filterOrientations(filterObject(params, isReplaced));
+    }
+
+    // Exports
+
+    function launchEvent() {
+        window.addEventListener('resize', debounce(showCurrentOrientation, 10));
+        appendAllImages(sanitizeParams(Chartboost.Params));
+    }
+
+    return {
+        launchEvent: launchEvent
+    };
+
+    // Helpers
+
+    // Taken from http://stackoverflow.com/a/5898748
+    // When using SVG elements, className will not be a string, see
+    // http://stackoverflow.com/questions/5898656/test-if-an-element-contains-a-class#comment31459058_5898748
+    function isClass(className) {
+        return function(el) {
+            return (' ' + el.className + ' ').indexOf(' ' + className + ' ') > -1;
+        }
+    }
+
+    function showImg(img) { img.style.display = 'block'; }
+    function hideImg(img) { img.style.display = 'none'; }
+
+    /**
+    * Return bounding rectangular coordinates of element
+    * @param element
+    * @returns String
+    */
+    function getCoordinates(element) {
+        return JSON.stringify({
+            name: element.className,
+            nWidth: element.naturalWidth,
+            nHeight: element.naturalHeight,
+            dim: getScreenDimensions(),
+            width: element.width,
+            height: element.height,
+            top: element.style.top,
+            left: element.style.left,
+        });
+    }
+
+    function getScreenDimensions() {
+        return {
+            width: window.innerWidth,
+            height: window.innerHeight
+        }
+    }
+
+    function shouldListenForEvents () {
+        // we want a slight delay to listen for events on Android because its laggy and bad
+        return Chartboost.EventHandler.getCurrentPlatform() === 'ios' || ((Date.now() - window.domLoadTime) > LISTEN_DELAY);
+    }
+
+})(window);
+
+
+!function(){"use strict";function t(e,o){function i(t,e){return function(){return t.apply(e,arguments)}}var r;if(o=o||{},this.trackingClick=!1,this.trackingClickStart=0,this.targetElement=null,this.touchStartX=0,this.touchStartY=0,this.lastTouchIdentifier=0,this.touchBoundary=o.touchBoundary||10,this.layer=e,this.tapDelay=o.tapDelay||200,this.tapTimeout=o.tapTimeout||700,!t.notNeeded(e)){for(var a=["onMouse","onClick","onTouchStart","onTouchMove","onTouchEnd","onTouchCancel"],c=this,s=0,u=a.length;u>s;s++)c[a[s]]=i(c[a[s]],c);n&&(e.addEventListener("mouseover",this.onMouse,!0),e.addEventListener("mousedown",this.onMouse,!0),e.addEventListener("mouseup",this.onMouse,!0)),e.addEventListener("click",this.onClick,!0),e.addEventListener("touchstart",this.onTouchStart,!1),e.addEventListener("touchmove",this.onTouchMove,!1),e.addEventListener("touchend",this.onTouchEnd,!1),e.addEventListener("touchcancel",this.onTouchCancel,!1),Event.prototype.stopImmediatePropagation||(e.removeEventListener=function(t,n,o){var i=Node.prototype.removeEventListener;"click"===t?i.call(e,t,n.hijacked||n,o):i.call(e,t,n,o)},e.addEventListener=function(t,n,o){var i=Node.prototype.addEventListener;"click"===t?i.call(e,t,n.hijacked||(n.hijacked=function(t){t.propagationStopped||n(t)}),o):i.call(e,t,n,o)}),"function"==typeof e.onclick&&(r=e.onclick,e.addEventListener("click",function(t){r(t)},!1),e.onclick=null)}}var e=navigator.userAgent.indexOf("Windows Phone")>=0,n=navigator.userAgent.indexOf("Android")>0&&!e,o=/iP(ad|hone|od)/.test(navigator.userAgent)&&!e,i=o&&/OS 4_\d(_\d)?/.test(navigator.userAgent),r=o&&/OS [6-7]_\d/.test(navigator.userAgent),a=navigator.userAgent.indexOf("BB10")>0;t.prototype.needsClick=function(t){switch(t.nodeName.toLowerCase()){case"button":case"select":case"textarea":if(t.disabled)return!0;break;case"input":if(o&&"file"===t.type||t.disabled)return!0;break;case"label":case"iframe":case"video":return!0}return/\bneedsclick\b/.test(t.className)},t.prototype.needsFocus=function(t){switch(t.nodeName.toLowerCase()){case"textarea":return!0;case"select":return!n;case"input":switch(t.type){case"button":case"checkbox":case"file":case"image":case"radio":case"submit":return!1}return!t.disabled&&!t.readOnly;default:return/\bneedsfocus\b/.test(t.className)}},t.prototype.sendClick=function(t,e){var n,o;document.activeElement&&document.activeElement!==t&&document.activeElement.blur(),o=e.changedTouches[0],n=document.createEvent("MouseEvents"),n.initMouseEvent(this.determineEventType(t),!0,!0,window,1,o.screenX,o.screenY,o.clientX,o.clientY,!1,!1,!1,!1,0,null),n.forwardedTouchEvent=!0,t.dispatchEvent(n)},t.prototype.determineEventType=function(t){return n&&"select"===t.tagName.toLowerCase()?"mousedown":"click"},t.prototype.focus=function(t){var e;o&&t.setSelectionRange&&0!==t.type.indexOf("date")&&"time"!==t.type&&"month"!==t.type?(e=t.value.length,t.setSelectionRange(e,e)):t.focus()},t.prototype.updateScrollParent=function(t){var e,n;if(e=t.fastClickScrollParent,!e||!e.contains(t)){n=t;do{if(n.scrollHeight>n.offsetHeight){e=n,t.fastClickScrollParent=n;break}n=n.parentElement}while(n)}e&&(e.fastClickLastScrollTop=e.scrollTop)},t.prototype.getTargetElementFromEventTarget=function(t){return t.nodeType===Node.TEXT_NODE?t.parentNode:t},t.prototype.onTouchStart=function(t){var e,n,r;if(t.targetTouches.length>1)return!0;if(e=this.getTargetElementFromEventTarget(t.target),n=t.targetTouches[0],o){if(r=window.getSelection(),r.rangeCount&&!r.isCollapsed)return!0;if(!i){if(n.identifier&&n.identifier===this.lastTouchIdentifier)return t.preventDefault(),!1;this.lastTouchIdentifier=n.identifier,this.updateScrollParent(e)}}return this.trackingClick=!0,this.trackingClickStart=t.timeStamp,this.targetElement=e,this.touchStartX=n.pageX,this.touchStartY=n.pageY,t.timeStamp-this.lastClickTime<this.tapDelay&&t.preventDefault(),!0},t.prototype.touchHasMoved=function(t){var e=t.changedTouches[0],n=this.touchBoundary;return Math.abs(e.pageX-this.touchStartX)>n||Math.abs(e.pageY-this.touchStartY)>n?!0:!1},t.prototype.onTouchMove=function(t){return this.trackingClick?((this.targetElement!==this.getTargetElementFromEventTarget(t.target)||this.touchHasMoved(t))&&(this.trackingClick=!1,this.targetElement=null),!0):!0},t.prototype.findControl=function(t){return void 0!==t.control?t.control:t.htmlFor?document.getElementById(t.htmlFor):t.querySelector("button, input:not([type=hidden]), keygen, meter, output, progress, select, textarea")},t.prototype.onTouchEnd=function(t){var e,a,c,s,u,l=this.targetElement;if(!this.trackingClick)return!0;if(t.timeStamp-this.lastClickTime<this.tapDelay)return this.cancelNextClick=!0,!0;if(t.timeStamp-this.trackingClickStart>this.tapTimeout)return!0;if(this.cancelNextClick=!1,this.lastClickTime=t.timeStamp,a=this.trackingClickStart,this.trackingClick=!1,this.trackingClickStart=0,r&&(u=t.changedTouches[0],l=document.elementFromPoint(u.pageX-window.pageXOffset,u.pageY-window.pageYOffset)||l,l.fastClickScrollParent=this.targetElement.fastClickScrollParent),c=l.tagName.toLowerCase(),"label"===c){if(e=this.findControl(l)){if(this.focus(l),n)return!1;l=e}}else if(this.needsFocus(l))return t.timeStamp-a>100||o&&window.top!==window&&"input"===c?(this.targetElement=null,!1):(this.focus(l),this.sendClick(l,t),o&&"select"===c||(this.targetElement=null,t.preventDefault()),!1);return o&&!i&&(s=l.fastClickScrollParent,s&&s.fastClickLastScrollTop!==s.scrollTop)?!0:(this.needsClick(l)||(t.preventDefault(),this.sendClick(l,t)),!1)},t.prototype.onTouchCancel=function(){this.trackingClick=!1,this.targetElement=null},t.prototype.onMouse=function(t){return this.targetElement?t.forwardedTouchEvent?!0:t.cancelable&&(!this.needsClick(this.targetElement)||this.cancelNextClick)?(t.stopImmediatePropagation?t.stopImmediatePropagation():t.propagationStopped=!0,t.stopPropagation(),t.preventDefault(),!1):!0:!0},t.prototype.onClick=function(t){var e;return this.trackingClick?(this.targetElement=null,this.trackingClick=!1,!0):"submit"===t.target.type&&0===t.detail?!0:(e=this.onMouse(t),e||(this.targetElement=null),e)},t.prototype.destroy=function(){var t=this.layer;n&&(t.removeEventListener("mouseover",this.onMouse,!0),t.removeEventListener("mousedown",this.onMouse,!0),t.removeEventListener("mouseup",this.onMouse,!0)),t.removeEventListener("click",this.onClick,!0),t.removeEventListener("touchstart",this.onTouchStart,!1),t.removeEventListener("touchmove",this.onTouchMove,!1),t.removeEventListener("touchend",this.onTouchEnd,!1),t.removeEventListener("touchcancel",this.onTouchCancel,!1)},t.notNeeded=function(t){var e,o,i,r;if("undefined"==typeof window.ontouchstart)return!0;if(o=+(/Chrome\/([0-9]+)/.exec(navigator.userAgent)||[,0])[1]){if(!n)return!0;if(e=document.querySelector("meta[name=viewport]")){if(-1!==e.content.indexOf("user-scalable=no"))return!0;if(o>31&&document.documentElement.scrollWidth<=window.outerWidth)return!0}}if(a&&(i=navigator.userAgent.match(/Version\/([0-9]*)\.([0-9]*)/),i[1]>=10&&i[2]>=3&&(e=document.querySelector("meta[name=viewport]")))){if(-1!==e.content.indexOf("user-scalable=no"))return!0;if(document.documentElement.scrollWidth<=window.outerWidth)return!0}return"none"===t.style.msTouchAction||"manipulation"===t.style.touchAction?!0:(r=+(/Firefox\/([0-9]+)/.exec(navigator.userAgent)||[,0])[1],r>=27&&(e=document.querySelector("meta[name=viewport]"),e&&(-1!==e.content.indexOf("user-scalable=no")||document.documentElement.scrollWidth<=window.outerWidth))?!0:"none"===t.style.touchAction||"manipulation"===t.style.touchAction?!0:!1)},t.attach=function(e,n){return new t(e,n)},"function"==typeof define&&"object"==typeof define.amd&&define.amd?define(function(){return t}):"undefined"!=typeof module&&module.exports?(module.exports=t.attach,module.exports.FastClick=t):window.FastClick=t}();
+</script>
+</head>
+<body style="margin:0">
+
+
+</body></html>

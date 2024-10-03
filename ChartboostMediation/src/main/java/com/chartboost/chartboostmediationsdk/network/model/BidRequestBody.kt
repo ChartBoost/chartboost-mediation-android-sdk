@@ -79,6 +79,9 @@ class BidRequestBody private constructor(
                         isCoppa = ChartboostCore.analyticsEnvironment.isUserUnderage,
                         gdpr = privacyController.gdpr?.toString(),
                         usPrivacy = ChartboostCore.consent.consents[ConsentKeys.USP] ?: "",
+                        gpp = ChartboostCore.consent.consents[ConsentKeys.GPP] ?: "",
+                        // To be replaced with Chartboost Core consents in a future release.
+                        gppSid = privacyController.gppSid ?: "",
                     ),
                 ext =
                     BidRequestExt(
@@ -166,12 +169,12 @@ class BidRequestExt(
             initStatuses: Map<String, PartnerController.PartnerInitializationStatus>,
         ): Map<String, Map<String, String>> =
             mutableMapOf<String, Map<String, String>>().apply {
-                mapAllBidders(adapters, bidTokens).forEach { bidder ->
-                    val initStatus = initStatuses[bidder.key]
+                initStatuses.forEach { bidder ->
+                    val initStatus = bidder.value
                     if (initStatus != null && initStatus != INITIALIZED) {
                         put(
                             bidder.key,
-                            bidder.value.toMutableMap().apply {
+                            mutableMapOf<String, String>().apply {
                                 put("status", initStatus.name)
                                 if (initStatus == FAILED) {
                                     put("status", "Initialization Failed")

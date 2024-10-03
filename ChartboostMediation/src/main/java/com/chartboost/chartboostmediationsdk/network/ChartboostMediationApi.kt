@@ -14,6 +14,7 @@ import com.chartboost.chartboostmediationsdk.network.model.ChartboostMediationHe
 import com.chartboost.chartboostmediationsdk.network.model.ChartboostMediationHeaderMap.ChartboostMediationAppConfigHeaderMap
 import com.chartboost.chartboostmediationsdk.network.model.ImpressionRequestBody
 import com.chartboost.chartboostmediationsdk.network.model.MetricsRequestBody
+import com.chartboost.chartboostmediationsdk.network.model.PartnerImpressionRequestBody
 import com.chartboost.chartboostmediationsdk.network.model.QueueRequestBody
 import com.chartboost.chartboostmediationsdk.network.model.SimpleTrackingRequestBody
 import kotlinx.serialization.json.JsonElement
@@ -46,7 +47,7 @@ interface ChartboostMediationApi {
     suspend fun trackPartnerImpression(
         @Url url: String,
         @HeaderMap headers: ChartboostMediationHeaderMap.ChartboostMediationAdLifecycleHeaderMap,
-        @Body body: ImpressionRequestBody,
+        @Body body: PartnerImpressionRequestBody,
     ): Response<String>
 
     @POST

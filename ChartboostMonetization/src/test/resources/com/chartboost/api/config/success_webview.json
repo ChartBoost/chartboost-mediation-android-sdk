@@ -1,0 +1,31 @@
+{
+  "status": 200,
+  "response": {
+    "webview": {
+      "enabled": true,
+      "ignoreExperiment": false,
+      "version": "v2",
+      "cacheMaxBytes": 52428800,
+      "cacheMaxUnits": 10,
+      "cacheTTLs": 604800,
+      "directories": [
+        "templates",
+        "videos"
+      ],
+      "type": "ui"
+    },
+    "retriesEnabled": false,
+    "retriesEnabledCoreDataSystem": false,
+    "trackingLevels": {
+      "debug": false,
+      "session": false,
+      "system": false,
+      "user": false,
+      "critical": true
+    },
+    "publisherDisable": false,
+    "prefetchDisable": false,
+    "autoIAPTrackingEnable": false
+  },
+  "time": 1470176613
+}

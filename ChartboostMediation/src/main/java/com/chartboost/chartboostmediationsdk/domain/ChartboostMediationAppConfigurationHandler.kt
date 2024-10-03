@@ -12,6 +12,7 @@ import com.chartboost.chartboostmediationsdk.ChartboostMediationInternal
 import com.chartboost.chartboostmediationsdk.ChartboostMediationPreinitializationConfiguration
 import com.chartboost.chartboostmediationsdk.controllers.PartnerController
 import com.chartboost.chartboostmediationsdk.domain.EventResult.SdkInitializationResult.InitResult1B
+import com.chartboost.chartboostmediationsdk.domain.MetricsManager.postMetricsData
 import com.chartboost.chartboostmediationsdk.domain.MetricsManager.postMetricsDataForFailedEvent
 import com.chartboost.chartboostmediationsdk.network.Endpoints
 import com.chartboost.chartboostmediationsdk.utils.LogController
@@ -19,6 +20,7 @@ import com.chartboost.core.ChartboostCore
 import com.chartboost.core.consent.ConsentKey
 import com.chartboost.core.consent.ConsentValue
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @suppress
@@ -32,6 +34,11 @@ class ChartboostMediationAppConfigurationHandler(
     private val context: Context?,
     private val chartboostMediationPreinitializationConfiguration: ChartboostMediationPreinitializationConfiguration?,
 ) {
+    companion object {
+        // To prevent overloading the server on failed init, let's send the initialization event once.
+        private var shouldSendInitializationMetrics = AtomicBoolean(false)
+    }
+
     /**
      * Handle configuration changes during Chartboost Mediation initialization.
      *
@@ -40,6 +47,28 @@ class ChartboostMediationAppConfigurationHandler(
     suspend fun handleConfigurationChange(partnerController: PartnerController): ChartboostMediationError? {
         val parsingError = AppConfigStorage.parsingError
         val validCachedConfigExists = AppConfigStorage.validCachedConfigExists
+
+        if (AppConfigStorage.shouldDisableSdk) {
+            LogController.e("Failed to initialize the Chartboost Mediation SDK. SDK is disabled.")
+            val mediationDisabled = ChartboostMediationError.InitializationError.Disabled
+            if (!shouldSendInitializationMetrics.getAndSet(true)) {
+                postMetricsData(
+                    setOf(
+                        Metrics(
+                            null,
+                            Endpoints.Event.INITIALIZATION,
+                        ),
+                    ),
+                    eventResult =
+                        if (validCachedConfigExists) {
+                            EventResult.SdkInitializationResult.InitResult2C
+                        } else {
+                            EventResult.SdkInitializationResult.InitResult1C
+                        },
+                )
+            }
+            return mediationDisabled
+        }
 
         if (parsingError == null || validCachedConfigExists) {
             val context =
@@ -125,16 +154,16 @@ class ChartboostMediationAppConfigurationHandler(
         return suspendCancellableCoroutine { continuation ->
             // Using manually tracked resumes since the coroutine seems to sometimes still be
             // active when something has gone wrong.
-            var coroutineResumed = false
+            val coroutineResumed = AtomicBoolean(false)
             partnerController.setUpAdapters(
                 context,
                 partnerConfigMap,
                 AppConfigStorage.adapterClassPaths,
                 skippedPartnerIds,
                 onPartnerInitializationComplete = { error ->
-                    if (coroutineResumed) return@setUpAdapters
-                    coroutineResumed = true
-                    continuation.resumeWith(Result.success(error))
+                    if (coroutineResumed.compareAndSet(false, true)) {
+                        continuation.resumeWith(Result.success(error))
+                    }
                 },
             )
         }

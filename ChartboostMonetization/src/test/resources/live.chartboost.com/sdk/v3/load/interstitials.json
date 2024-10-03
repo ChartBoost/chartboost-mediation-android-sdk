@@ -1,0 +1,194 @@
+{
+  "locations": {
+    "Default": [
+      "adunit1",
+      "adunit2"
+    ],
+    "Main": [
+      "adunit2"
+    ]
+  },
+  "adUnits": {
+    "adunit1": {
+      "expire": 1481924479,
+      "manifest": {
+        "assets": {
+          "images": {
+            "ad_landscape": {
+              "filename": "96109965470a39a6ef52517b1c99fd5f84545f6d.jpeg",
+              "url": "https://a.chartboost.com/creatives/56838f66f78982593a02c56e/96109965470a39a6ef52517b1c99fd5f84545f6d.jpeg"
+            },
+            "ad_portrait": {
+              "filename": "8f6e925d350e619bfa80d57fd4ee4f4fe145c9d3.jpeg",
+              "url": "https://a.chartboost.com/creatives/56838f66f78982593a02c56e/8f6e925d350e619bfa80d57fd4ee4f4fe145c9d3.jpeg"
+            },
+            "app_icon": {
+              "filename": "56838f66f78982593a02c56e.114.png",
+              "url": "https://a.chartboost.com/apps/icons/56838f66f78982593a02c56e.114.png"
+            },
+            "close_landscape": {
+              "filename": "webview-60x60.png",
+              "url": "https://a.chartboost.com/static-assets/interstitials-v2/close-buttons/webview-60x60.png"
+            },
+            "close_portrait": {
+              "filename": "webview-60x60.png",
+              "url": "https://a.chartboost.com/static-assets/interstitials-v2/close-buttons/webview-60x60.png"
+            },
+            "frame_landscape": {
+              "filename": "2048x1536.png",
+              "url": "https://a.chartboost.com/static-assets/interstitials-v2/frames/4-3/2048x1536.png"
+            },
+            "frame_portrait": {
+              "filename": "1536x2048.png",
+              "url": "https://a.chartboost.com/static-assets/interstitials-v2/frames/3-4/1536x2048.png"
+            }
+          }
+        },
+        "parameters": {
+          "ad_landscape_offset_x": "0",
+          "ad_landscape_offset_y": "0",
+          "ad_landscape_scale": "1.0",
+          "ad_portrait_offset_x": "0",
+          "ad_portrait_offset_y": "0",
+          "ad_portrait_scale": "1.0",
+          "app_name": "Jungle Rumble -Top puzzle game",
+          "close_landscape_offset_x": "760",
+          "close_landscape_offset_y": "-570",
+          "close_landscape_scale": "0.75",
+          "close_portrait_offset_x": "570",
+          "close_portrait_offset_y": "-760",
+          "close_portrait_scale": "0.75",
+          "frame_landscape_offset_x": "0",
+          "frame_landscape_offset_y": "0",
+          "frame_landscape_scale": "1.0",
+          "frame_portrait_offset_x": "0",
+          "frame_portrait_offset_y": "0",
+          "frame_portrait_scale": "1.0",
+          "number_installs": "50000",
+          "number_ratings": "1198",
+          "star_rating": "4.280467510223389"
+        },
+        "template": "5833671304b01601d7eaf353"
+      },
+      "tracking": {
+        "adId": "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",
+        "cgn": "97CaOtm0HtS7Co5tnqfO3WuLknqZcqVl9n66vYdnNGM7bxVoFs+gI1eiFcdlM973g2OAZolJGX3f22M6VZjeI4fPJ74+WWkKQMXxFh5IEfZGIrP3sEOAhVYtsFVIZRC0Pf71HkSaYYpq7LetjoMVpOkh6NuZTk3Voq17nb+6DRviI4yLya1hP4hwPl/c9MORSleEUhhb5oFl8kHQ64Sx0fLk2J3RfKZWS11+5owg2jzVfMukv4wrxf/hXZ1oU/ltcF3epGffkMH29dajuOH8juhjhiKDQiomDL3BGbHmGo8CTBsOZUE9N2o7RBIywcUmj3/qXaKXCLdqlC/sfbpVi8WeDkm96JZ7Zf2QT3wngJXJFwIjMTWQVZ4uUnrR3SnDZ9rrq60idgVNC8qs2R2qD2xxL5PIYKzQ1Xjf/9XMwsSni465167BulxK3OoLYmIsxpl8Qw/E80GXAg6Vnzd6dBBeYFKnaLCRgQQoyk0OWxKUZNrgczpwV14HzSXBukz5VBgYSsvoMawl4efh5CrsFfgA5Iljis9sFtu7E5AbJyvUPo5Oa2mecbb+Gv7/wqDNtLWyAeYe01GZJosasCT43Uw39avgnhrVfz+MIxf6GrB9eHF3IsWyUZ4amWtx6x3P79BtSLiwC2qZzeiKrz/kqUnVAuprU2WLCwbjtg6V/nyVHWBMWWpyW4+A3NbbNOG4gj3Vu8jmHkUIN1HujR+ns+DDsfzluAbUX7NrP72AQXPNOcJJmBQpsFDQkGQRKvXiS3zzDOs7gbERPt25ylndErxN+rNq1nK6pii8jwe+rRRJVeVJFxwux95J7UgOwSjKcvUkBqoh+8jOWCY0fCFhpTY7xPSbPKw+6/WhhGN40AtaZRkCL/eoIMliZQ380WmwxvOZ+xYbWQK0213JVVn8Vkhzwwaq/pGX0aBJcAXzqmeIgPI=",
+        "creative": "{\"creative_id\":\"5853f99643150f6cf32f0d71\",\"creative_size\":\"huge\",\"creative_ratio\":\"4:3,3:4\",\"frame\":\"default\",\"close_button\":\"default\"}",
+        "link": "market://details?id=com.littleengine.junglematch&referrer=utm_source%3DChartboost%26utm_medium%3DInterstitial%26utm_term%3Dhottest_match3_game%26utm_content%3DCPI%26utm_campaign%3DJungleRumble",
+        "to": "56838f66f78982593a02c56e"
+      },
+      "ui": {
+        "animation": 7,
+        "enableAppSheetAnimation": false,
+        "mediaType": "image",
+        "showLoading": false
+      }
+    },
+    "adunit2": {
+      "expire": 1481924486,
+      "manifest": {
+        "assets": {
+          "images": {
+            "ad_landscape": {
+              "filename": "241f704ef5ee85333bf40516890926db510cada5.jpeg",
+              "url": "https://a.chartboost.com/creatives/4f3586b4cd1cb2c25400001c/241f704ef5ee85333bf40516890926db510cada5.jpeg"
+            },
+            "ad_portrait": {
+              "filename": "10b182e3a2c48da620083b0bb8173618cf4ac9cc.jpeg",
+              "url": "https://a.chartboost.com/creatives/4f3586b4cd1cb2c25400001c/10b182e3a2c48da620083b0bb8173618cf4ac9cc.jpeg"
+            },
+            "app_icon": {
+              "filename": "4f3586b4cd1cb2c25400001c.114.png",
+              "url": "https://a.chartboost.com/apps/icons/4f3586b4cd1cb2c25400001c.114.png"
+            },
+            "close_landscape": {
+              "filename": "webview-60x60.png",
+              "url": "https://a.chartboost.com/static-assets/interstitials-v2/close-buttons/webview-60x60.png"
+            },
+            "close_portrait": {
+              "filename": "webview-60x60.png",
+              "url": "https://a.chartboost.com/static-assets/interstitials-v2/close-buttons/webview-60x60.png"
+            },
+            "frame_landscape": {
+              "filename": "video-2048x1536.png",
+              "url": "https://a.chartboost.com/static-assets/interstitials-v2/frames/4-3/video-2048x1536.png"
+            },
+            "frame_portrait": {
+              "filename": "video-1152x2048.png",
+              "url": "https://a.chartboost.com/static-assets/interstitials-v2/frames/9-16/video-1152x2048.png"
+            },
+            "replay_landscape": {
+              "filename": "replay_white.png",
+              "url": "https://a.chartboost.com/video/default_assets/replay_white.png"
+            },
+            "replay_portrait": {
+              "filename": "replay_white.png",
+              "url": "https://a.chartboost.com/video/default_assets/replay_white.png"
+            },
+            "video_click_button": {
+              "filename": "download.png",
+              "url": "https://a.chartboost.com/video/default_assets/download.png"
+            }
+          },
+          "videos": {
+            "video_landscape": {
+              "filename": "5408018bc26ee4365868486b_568-1411069049.mp4",
+              "url": "https://v.chartboost.com/videoads/5408018bc26ee4365868486b_568-1411069049.mp4"
+            },
+            "video_portrait": {
+              "filename": "5408018bc26ee4365868486b_568-1411069049.mp4",
+              "url": "https://v.chartboost.com/videoads/5408018bc26ee4365868486b_568-1411069049.mp4"
+            }
+          }
+        },
+        "parameters": {
+          "ad_type": "5",
+          "app_name": "Capes of Destruction",
+          "number_installs": "10000",
+          "number_ratings": "61",
+          "post_video_reward_toaster_enabled": "true",
+          "preroll_popup": "true",
+          "reward_amount": "0",
+          "show_close_button": "false",
+          "star_rating": "3.6065573692321777"
+        },
+        "template": "58508a2b43150f424433f669"
+      },
+      "tracking": {
+        "adId": "MUOgjiXMHdvWRAkzUrFeE/l+BLVDm0Q+2YGl263BpmEIcTiWBarU/x5FbblM4cuuZm3JajLARsjZUVadKm/Xn/qMGl8EH6tKLoDGCAj5YPnBBMa5DaEDQWTduUheCyas0QBFOqERydiOz8P72AKSMccfsCZ9wbVCJ+I9I9vz+XyrzwnnpDz3Ppha94ZMTVObNsne5+pDn6gZZ85rQxVB3ejwQwTd1nLm5SYKydjjm6LySUoSlK0qXT6Dv3gsJECyG057ucVJPMJyMUp3PSaOl7a02GpS2+fZn1i8vn0S/x2Nhdk3FFS5leStAZredjlh73QZfNOhvVJKIdX7E1XzO4I1m5lhgAwMVl7mdwaJTWNxir9Wg3vAcmw05OUFD+GhzbdmhtwYGjRcZ5mI6jPs3XmvAPeVZwU4NCztb+aw/fgHaUZ3WsRrJdj+UbvmPzne22GCp7XcGzAgvpLSjnCem7f47LdOPFrNWxRivPo2w9wm0fYb2sqlE/up59/oQgW8NbX/n8QHj8lXsMLnx3Gy07rm452sO830t3HPTHUYVwvh6fsRAKJJ7cOT8JsEx1b4gkK/jlYcQGa3EYH1ejXCAWJjTGMS//HkFf5tKH1jrRasm/nKZP4VLRL5MGRH043vq4YavoPQ+yv3q70yOXkhWjXTWqOa0A0GZh0Eu8Xooek7T5v535gHPgHXLPWYkufX6pk2uWja+Qd8RXbp/XGMVtWBkW1EuPnkd4ouMh+aFMDI8QacfPTiYsKWYF8BIC8GVIkJOib3PcPDmQ1LK8s5CpbfC4Fq6ggfEJlNLPyPiAgtSMS2Kw7soOSm0iePOZ0g7JBuc2smO7P++5lTd3h1pDl9rSWXQJs7bosRvw7hkYJRtzSYiNDJpI+aT98du9ZKB1rDXZRgPoG/BBJWAUdd16CQjRtGZmBnX+Hg3kHxPHmyLN+ae3P0MLMaEp3ZKpG3Ud6G/POClxIX+IJMeOMzacGsWGnunDg7wGsFja7tVuLfvTZk6T8iuUT2lJ0x6a/nmDjj5JB+IEPx0GK3bj0S9IXiPNbFZYXyDY+1M0NGe7SO9+okENg7oS3C7x0rIqoLEGyr2BydNSkqMREQJhsYxvP9GZy3o0+ANgcJsM/80r5lClFds5vLFbXvtIQt669dXpmjyylWQYINdgXms7WcHsEpnTzLGPU7drI/H94ZCOVBBroD+v/8kcy7eH8n0o/di9J70ivMh/yEtoqwrI6mmjXQCjCQUARFbA1yIZ/pA9b5uX4U7P5B9jWuXueyvPD6Q2WKLV005rIzaWWBjyxRr+uUQI9DesIvLtWCMnXY1sALPaqtHDwKA2hEBiDuUiqV1lWdj+2sB3JHc1qgbKGdOTBcyYLkI0engibtxBnXIfUmUrAcSPP2n8B2w5XvaqZodz30a0CbnkHQ5Q3gsxMxqfhub82z9YJ54aVNdluoxs8x8x5iZT093zMt+yoA+Kwm/r5RMc5dbLc/At/0ymPOPIvee1D3j/2KRyY9bPj8yZaq9raGRkQrxr1We3clJRFs74F4knhQGDmK04SSN5ZGYkpTbZnmpWHi31FiNKT++pHq+8+n1JgPBZBlXE+wcm3sIVC/X0L9o7z+lELZ3ar5NzeACy8NZ+f52r8U94iq5KolWTSpluzN8N535DJGAAhqj+OzHK639YJ6Y7wRyO03ZK7QgbQkoEdfD3m6qzy2sHbhqnb81TLYFzUV0w8p7HivyumLL5D6z3tfydoKlcc=",
+        "cgn": "eZZMtQP5sguo2/ELy3yWtcdt8/rxgYweY8//79lK9seGC1+rByVsmiWecC/ecIZb+7L8vL2KE88/oO+opDleFz4OmcWLvsU3y9Wee5U3K5zv1aZ2S3IWjI2yhrNVDc7kXmpPt4L2GKksdWHJNHt1Q/w1xt6cHFP0T1fL0Zy1YmlgCFyAQgqdrlYEnXJ8GGmRMjf9eS1EQdM9wUQ121UmaSXnjTOrE+TsRQ7ysAIuaq6wbe92rMr75I/sDKcVSSXnnVPbofE/WoYFSQLlM133Xr4UVWAl6w7eTI4EZWVGk3UPd7G0CLh7w3jBH3QNi7L5oKRZBGduETFl503VO+7RZES3vJiBxFDfJkqw8jbv9+vpOj8hHuymoyMVVdPJkFlZ/6u4uK6oe72VnEQyrd0eydQIoP33IztcAbSHrsqd3x8Eg9aUDTeisDPW/HOXEF3D0wI1wJP2ZmctYT5yDOYjOjuwdT0RafC09hAtzr1jrUi5RdvMaMYz6wmwP2pH5Exx9IXSZX6NLWYkR9snle/5FzylbnwRbbJpHcRXFg5G0LY7AGUZhE12RG82CFGBoYmfnjnGoF7f2Tk31rqoCF7AdjIkisK4HEI2rCPcG/23Qj0zfK0=",
+        "creative": "{\"creative_id\":\"5408018bc26ee4365868486b\",\"creative_size\":\"huge\",\"creative_ratio\":\"4:3,3:4\",\"frame\":\"default\",\"close_button\":\"default\"}",
+        "link": "market://details?id=com.edzme.capesofdestruction",
+        "to": "4f3586b4cd1cb2c25400001c"
+      },
+      "ui": {
+        "animation": 7,
+        "enableAppSheetAnimation": false,
+        "mediaType": "video",
+        "showLoading": false
+      }
+    }
+  },
+  "templates": {
+    "5833671304b01601d7eaf353": {
+      "assets": {
+        "html": {
+          "body": {
+            "filename": "static-etna-800461004",
+            "url": "https://t.chartboost.com/base_templates/html/static-etna-8f669fe00f.html"
+          }
+        }
+      }
+    },
+    "58508a2b43150f424433f669": {
+      "assets": {
+        "html": {
+          "body": {
+            "filename": "7d93f1074023d62786b3cf9e58c81c9d296b61e1-815717487",
+            "url": "https://t.chartboost.com/base_templates/html/7d93f1074023d62786b3cf9e58c81c9d296b61e1"
+          }
+        }
+      }
+    }
+  }
+}

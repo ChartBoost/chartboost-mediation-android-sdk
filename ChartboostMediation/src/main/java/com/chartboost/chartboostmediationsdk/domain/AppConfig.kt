@@ -71,6 +71,8 @@ data class AppConfig(
     val queueAdTtlSeconds: Long = 3600L,
     @SerialName("default_queue_size")
     val defaultQueueSize: Int = 2,
+    @SerialName("disable_sdk")
+    val shouldDisableSdk: Boolean = false,
 ) {
     companion object {
         /**

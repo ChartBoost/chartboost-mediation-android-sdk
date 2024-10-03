@@ -30,6 +30,7 @@ import com.chartboost.chartboostmediationsdk.network.model.ChartboostMediationHe
 import com.chartboost.chartboostmediationsdk.network.model.ChartboostMediationNetworkingResult
 import com.chartboost.chartboostmediationsdk.network.model.ImpressionRequestBody
 import com.chartboost.chartboostmediationsdk.network.model.MetricsRequestBody
+import com.chartboost.chartboostmediationsdk.network.model.PartnerImpressionRequestBody
 import com.chartboost.chartboostmediationsdk.network.model.QueueRequestBody
 import com.chartboost.chartboostmediationsdk.network.model.SimpleTrackingRequestBody
 import com.chartboost.chartboostmediationsdk.utils.ChartboostMediationJson
@@ -123,14 +124,14 @@ internal object ChartboostMediationNetworking {
     }
 
     suspend fun trackChartboostImpression(
-        auctionID: String?,
+        bids: Bids,
         loadId: String,
         adType: String,
     ): ChartboostMediationNetworkingResult<Unit?> {
         val appSetId = ChartboostCore.analyticsEnvironment.getVendorIdentifier() ?: ""
 
         return safeApiCall {
-            ImpressionRequestBody(auctionID).let {
+            ImpressionRequestBody(bids).let {
                 api.trackChartboostImpression(
                     url = Endpoints.Event.HELIUM_IMPRESSION.endpoint,
                     headers =
@@ -153,7 +154,7 @@ internal object ChartboostMediationNetworking {
         adType: String,
     ): ChartboostMediationNetworkingResult<Unit?> =
         safeApiCall {
-            ImpressionRequestBody(auctionID).let {
+            PartnerImpressionRequestBody(auctionID).let {
                 api.trackPartnerImpression(
                     url = Endpoints.Event.PARTNER_IMPRESSION.endpoint,
                     headers =

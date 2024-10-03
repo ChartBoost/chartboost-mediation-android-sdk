@@ -56,6 +56,20 @@ sealed interface EventResult {
 
             override fun getMetricsError(): MetricsError? = jsonParseError
         }
+
+        // No cached config
+        // Response JSON parsed: init success but SDK disabled, /event body JSON has cached metrics array, no error
+        object InitResult1C : SdkInitializationResult(
+            success = true,
+            initResultCode = "disabled_by_fetched_config ",
+        )
+
+        // Has cached config
+        // Response JSON parsed: init success but SDK disabled, /event body JSON has cached metrics array, no error
+        object InitResult2C : SdkInitializationResult(
+            success = true,
+            initResultCode = "disabled_by_cached_config ",
+        )
     }
 
     sealed class AdLoadResult : EventResult {

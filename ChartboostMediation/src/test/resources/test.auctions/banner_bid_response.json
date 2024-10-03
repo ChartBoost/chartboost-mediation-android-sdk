@@ -6,15 +6,15 @@
       "impid": "1",
       "price": 24.0,
       "ext": {
-        "partner_placement": "ca-app-pub-6548817822928201/2477295426",
-        "line_item_id": "855b08a5-01f6-4938-b5ac-190c5ac3203d",
+        "partner_placement": "-- PARTNER_PLACEMENT --",
+        "line_item_id": "-- LINE_ITEM_ID --",
         "ilrd": {
           "network_name": "admob",
           "network_type": "mediation",
           "precision": "publisher_defined",
-          "line_item_name": "AMNonProRewardedInterstitial",
-          "line_item_id": "855b08a5-01f6-4938-b5ac-190c5ac3203d",
-          "network_placement_id": "ca-app-pub-6548817822928201/2477295426",
+          "line_item_name": "-- LINE_ITEM_NAME --",
+          "line_item_id": "-- LINE_ITEM_ID --",
+          "network_placement_id": "-- NETWORK_PLACEMENT --",
           "ad_revenue": 0.024
         },
         "first_look": false,
@@ -22,30 +22,30 @@
         "ad_revenue": 0.024,
         "bidder": {
           "helium": {
-            "partner_placement": "ca-app-pub-6548817822928201/2477295426",
-            "line_item_id": "855b08a5-01f6-4938-b5ac-190c5ac3203d",
+            "partner_placement": "-- PARTNER_PLACEMENT --",
+            "line_item_id": "-- LINE_ITEM_ID --",
             "is_hybrid_setup": true
           }
         }
       }
     }],
     "seat": "admob",
-    "helium_bid_id": "1efa2aff42e764e425af9e4c619a40517bffa473_admob_ca-app-pub-6548817822928201/2477295426"
+    "helium_bid_id": "-- HELIUM_BID_ID --"
   }, {
     "bid": [{
       "id": "MEDIATION",
       "impid": "1",
       "price": 23.5,
       "ext": {
-        "partner_placement": "ca-app-pub-6548817822928201/3934976356",
-        "line_item_id": "a29992aa-30f4-419c-bb36-e87d9cfa2da0",
+        "partner_placement": "-- PARTNER_PLACEMENT --",
+        "line_item_id": "-- LINE_ITEM_ID --",
         "ilrd": {
           "network_name": "admob",
           "network_type": "mediation",
           "precision": "publisher_defined",
-          "line_item_name": "AMNonProRewardedAndroidHigh",
-          "line_item_id": "a29992aa-30f4-419c-bb36-e87d9cfa2da0",
-          "network_placement_id": "ca-app-pub-6548817822928201/3934976356",
+          "line_item_name": "-- LINE_ITEM_NAME --",
+          "line_item_id": "-- LINE_ITEM_ID --",
+          "network_placement_id": "-- NETWORK_PLACEMENT --",
           "ad_revenue": 0.0235
         },
         "first_look": false,
@@ -53,30 +53,30 @@
         "ad_revenue": 0.0235,
         "bidder": {
           "helium": {
-            "partner_placement": "ca-app-pub-6548817822928201/3934976356",
-            "line_item_id": "a29992aa-30f4-419c-bb36-e87d9cfa2da0",
+            "partner_placement": "-- PARTNER_PLACEMENT --",
+            "line_item_id": "-- LINE_ITEM_ID --",
             "is_hybrid_setup": true
           }
         }
       }
     }],
     "seat": "admob",
-    "helium_bid_id": "1efa2aff42e764e425af9e4c619a40517bffa473_admob_ca-app-pub-6548817822928201/3934976356"
+    "helium_bid_id": "-- HELIUM_BID_ID --"
   }, {
     "bid": [{
       "id": "MEDIATION",
       "impid": "1",
       "price": 11.5,
       "ext": {
-        "partner_placement": "ca-app-pub-6548817822928201/3370841902",
-        "line_item_id": "c4a565c6-9d2c-400e-8cc2-b6562f52c4f8",
+        "partner_placement": "-- PARTNER_PLACEMENT --",
+        "line_item_id": "-- LINE_ITEM_ID --",
         "ilrd": {
           "network_name": "admob",
           "network_type": "mediation",
           "precision": "publisher_defined",
-          "line_item_name": "AMNonProRewardedAndroidMed",
-          "line_item_id": "c4a565c6-9d2c-400e-8cc2-b6562f52c4f8",
-          "network_placement_id": "ca-app-pub-6548817822928201/3370841902",
+          "line_item_name": "-- LINE_ITEM_NAME --",
+          "line_item_id": "-- LINE_ITEM_ID --",
+          "network_placement_id": "-- NETWORK_PLACEMENT --",
           "ad_revenue": 0.0115
         },
         "first_look": false,
@@ -84,30 +84,30 @@
         "ad_revenue": 0.0115,
         "bidder": {
           "helium": {
-            "partner_placement": "ca-app-pub-6548817822928201/3370841902",
-            "line_item_id": "c4a565c6-9d2c-400e-8cc2-b6562f52c4f8",
+            "partner_placement": "-- PARTNER_PLACEMENT --",
+            "line_item_id": "-- LINE_ITEM_ID --",
             "is_hybrid_setup": true
           }
         }
       }
     }],
     "seat": "admob",
-    "helium_bid_id": "1efa2aff42e764e425af9e4c619a40517bffa473_admob_ca-app-pub-6548817822928201/3370841902"
+    "helium_bid_id": "-- HELIUM_BID_ID --"
   }, {
     "bid": [{
       "id": "MEDIATION",
       "impid": "1",
       "price": 3.5,
       "ext": {
-        "partner_placement": "ca-app-pub-6548817822928201/4126548045",
-        "line_item_id": "cff92924-934c-4b85-9fcb-0cff9cde27c9",
+        "partner_placement": "-- PARTNER_PLACEMENT --",
+        "line_item_id": "-- LINE_ITEM_ID --",
         "ilrd": {
           "network_name": "admob",
           "network_type": "mediation",
           "precision": "publisher_defined",
-          "line_item_name": "AMNonProRewardedAndroidLow",
-          "line_item_id": "cff92924-934c-4b85-9fcb-0cff9cde27c9",
-          "network_placement_id": "ca-app-pub-6548817822928201/4126548045",
+          "line_item_name": "-- LINE_ITEM_NAME --",
+          "line_item_id": "-- LINE_ITEM_ID --",
+          "network_placement_id": "-- NETWORK_PLACEMENT --",
           "ad_revenue": 0.0035
         },
         "first_look": false,
@@ -115,15 +115,15 @@
         "ad_revenue": 0.0035,
         "bidder": {
           "helium": {
-            "partner_placement": "ca-app-pub-6548817822928201/4126548045",
-            "line_item_id": "cff92924-934c-4b85-9fcb-0cff9cde27c9",
+            "partner_placement": "-- PARTNER_PLACEMENT --",
+            "line_item_id": "-- LINE_ITEM_ID --",
             "is_hybrid_setup": true
           }
         }
       }
     }],
     "seat": "admob",
-    "helium_bid_id": "1efa2aff42e764e425af9e4c619a40517bffa473_admob_ca-app-pub-6548817822928201/4126548045"
+    "helium_bid_id": "-- HELIUM_BID_ID --"
   }],
   "ext": {
     "responsetimemillis": {
@@ -133,7 +133,7 @@
       "impression_id": "1efa2aff42e764e425af9e4c619a40517bffa473",
       "currency_type": "USD",
       "country": "USA",
-      "placement_name": "GBAMRewarded",
+      "placement_name":"-- PLACEMENT_NAME --",
       "placement_type": "rewarded"
     }
   }
