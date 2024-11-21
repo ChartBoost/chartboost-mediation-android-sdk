@@ -530,7 +530,7 @@ class BannerController(
                     return@async createAdLoadResult(
                         loadId,
                         createPayloadJson(metricsSet),
-                        ChartboostMediationError.LoadError.Unknown,
+                        getError(loadResult) ?: ChartboostMediationError.LoadError.Unknown,
                         placement = request.placement,
                         bannerSize = request.size.asSize(),
                     )
