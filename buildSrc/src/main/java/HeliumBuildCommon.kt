@@ -7,7 +7,7 @@
 
 object HeliumSdkInfo {
     const val heliumName = "Helium SDK"
-    var heliumSdkVersion = "4.9.1"
+    var heliumSdkVersion = "4.9.2"
 }
 
 object HeliumAndroidSupport {

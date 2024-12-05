@@ -6,17 +6,12 @@
  */
 
 include(
-    // Mediation SDK
-    ":ChartboostMediation",
-    ":ChartboostMediationCanary",
-    ":ChartboostMediationJavaValidator",
-    // Core SDK
+    ":Helium",
+    ":HeliumCanary",
+    ":HeliumJavaValidator",
     ":ChartboostCore",
+    ":ChartboostCoreCanary",
     ":ChartboostCoreJavaValidator",
-    // Ads SDK
-    ":ChartboostMonetization",
-    // Mediation Adapters
-    ":GoogleUserMessagingPlatformAdapter",
     ":UsercentricsAdapter",
     ":AdMobAdapter",
     ":AmazonPublisherServicesAdapter",
@@ -33,101 +28,86 @@ include(
     ":MobileFuseAdapter",
     ":PangleAdapter",
     ":ReferenceAdapter",
-    ":ReferenceConsentAdapter",
     ":UnityAdsAdapter",
-    ":UnmanagedAdapter",
     ":VerveAdapter",
     ":VungleAdapter",
 )
 
-val commonMediationRepoPrefix = "./chartboost-mediation-android-adapter-"
-val commonConsentRepoPrefix = "./chartboost-core-android-consent-adapter-"
+val commonNamedRepoPrefix = "./chartboost-mediation-android-adapter-"
 
 project(":AdMobAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}admob/AdMobAdapter",
+        "${commonNamedRepoPrefix}admob/AdMobAdapter",
     )
 project(":AppLovinAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}applovin/AppLovinAdapter",
+        "${commonNamedRepoPrefix}applovin/AppLovinAdapter",
     )
 project(":AmazonPublisherServicesAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}amazon-publisher-services/AmazonPublisherServicesAdapter",
+        "${commonNamedRepoPrefix}amazon-publisher-services/AmazonPublisherServicesAdapter",
     )
 project(":BidMachineAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}bidmachine/BidMachineAdapter",
+        "${commonNamedRepoPrefix}bidmachine/BidMachineAdapter",
     )
 project(":ChartboostAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}chartboost/ChartboostAdapter",
+        "${commonNamedRepoPrefix}chartboost/ChartboostAdapter",
     )
 project(":DigitalTurbineExchangeAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}digital-turbine-exchange/DigitalTurbineExchangeAdapter",
+        "${commonNamedRepoPrefix}digital-turbine-exchange/DigitalTurbineExchangeAdapter",
     )
 project(":MetaAudienceNetworkAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}meta-audience-network/MetaAudienceNetworkAdapter",
+        "${commonNamedRepoPrefix}meta-audience-network/MetaAudienceNetworkAdapter",
     )
 project(":GoogleBiddingAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}google-bidding/GoogleBiddingAdapter",
+        "${commonNamedRepoPrefix}google-bidding/GoogleBiddingAdapter",
     )
 project(":HyprMXAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}hyprmx/HyprMXAdapter",
+        "${commonNamedRepoPrefix}hyprmx/HyprMXAdapter",
     )
 project(":InMobiAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}inmobi/InMobiAdapter",
+        "${commonNamedRepoPrefix}inmobi/InMobiAdapter",
     )
 project(":IronSourceAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}ironsource/IronSourceAdapter",
+        "${commonNamedRepoPrefix}ironsource/IronSourceAdapter",
     )
 project(":MintegralAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}mintegral/MintegralAdapter",
+        "${commonNamedRepoPrefix}mintegral/MintegralAdapter",
     )
 project(":MobileFuseAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}mobilefuse/MobileFuseAdapter",
+        "${commonNamedRepoPrefix}mobilefuse/MobileFuseAdapter",
     )
 project(":PangleAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}pangle/PangleAdapter",
+        "${commonNamedRepoPrefix}pangle/PangleAdapter",
     )
 project(":ReferenceAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}reference/ReferenceAdapter",
+        "${commonNamedRepoPrefix}reference/ReferenceAdapter",
     )
 project(":UnityAdsAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}unity-ads/UnityAdsAdapter",
+        "${commonNamedRepoPrefix}unity-ads/UnityAdsAdapter",
     )
 project(":VerveAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}verve/VerveAdapter",
+        "${commonNamedRepoPrefix}verve/VerveAdapter",
     )
 project(":VungleAdapter").projectDir =
     File(
-        "${commonMediationRepoPrefix}vungle/VungleAdapter",
-    )
-project(":GoogleUserMessagingPlatformAdapter").projectDir =
-    File(
-        "${commonConsentRepoPrefix}google-user-messaging-platform/GoogleUserMessagingPlatformAdapter",
-    )
-project(":ReferenceConsentAdapter").projectDir =
-    File(
-        "${commonConsentRepoPrefix}reference/ReferenceConsentAdapter",
-    )
-project(":UnmanagedAdapter").projectDir =
-    File(
-        "${commonConsentRepoPrefix}unmanaged/UnmanagedAdapter",
+        "${commonNamedRepoPrefix}vungle/VungleAdapter",
     )
 project(":UsercentricsAdapter").projectDir =
     File(
-        "${commonConsentRepoPrefix}usercentrics/UsercentricsAdapter",
+        "./chartboost-core-android-consent-adapter-usercentrics/UsercentricsAdapter",
     )

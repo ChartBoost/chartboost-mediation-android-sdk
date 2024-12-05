@@ -1,0 +1,15 @@
+<!--
+  Copyright 2019-2024 Chartboost, Inc.
+  
+  Use of this source code is governed by an MIT-style
+  license that can be found in the LICENSE file.
+-->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+</manifest>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Copyright 2022-2024 Chartboost, Inc.
+  
+  Use of this source code is governed by an MIT-style
+  license that can be found in the LICENSE file.
+-->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/listview_background_shape">
+    <corners android:radius="5dp" />
+    <solid android:color="#8aaa3b" />
+</shape>
