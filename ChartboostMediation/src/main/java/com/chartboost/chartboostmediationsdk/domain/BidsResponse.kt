@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -10,6 +10,7 @@ package com.chartboost.chartboostmediationsdk.domain
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 
 /**
  * @suppress
@@ -45,11 +46,14 @@ data class BidsExt(
     val errors: JsonElement? = null,
     @SerialName(REWARDED_CALLBACK_KEY)
     var rewardedCallbackData: RewardedCallbackData? = null,
+    @SerialName(EVENT_TRACKERS_KEY)
+    val eventTrackers: JsonObject? = null,
 ) {
     companion object {
         private const val ILRD_KEY = "ilrd"
         private const val ERRORS_KEY = "errors"
         private const val RESPONSE_TIME_MILLIS_KEY = "responsetimemillis"
         private const val REWARDED_CALLBACK_KEY = "rewarded_callback"
+        private const val EVENT_TRACKERS_KEY = "event_trackers"
     }
 }

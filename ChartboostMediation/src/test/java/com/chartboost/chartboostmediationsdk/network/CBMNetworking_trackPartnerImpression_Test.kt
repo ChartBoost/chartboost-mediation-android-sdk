@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -28,6 +28,7 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression succ
 
         val response =
             ChartboostMediationNetworking.trackPartnerImpression(
+                mockUrl,
                 APP_SET_ID,
                 ChartboostMediationNetworkingTest.AUCTION_ID,
                 LOAD_ID,
@@ -35,7 +36,6 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression succ
             )
         val request = mockWebServer.takeRequest()
 
-        val expectedUrl = Endpoints.Event.PARTNER_IMPRESSION.endpoint
         val expectedRequestJson =
             NetworkTestJsonObjects.SIMPLE_AUCTION_ID_REQUEST.trimmedJsonString.format(
                 ChartboostMediationNetworkingTest.AUCTION_ID,
@@ -43,7 +43,7 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression succ
 
         val actualUrl = request.requestUrl.toString()
 
-        Assert.assertEquals(expectedUrl, actualUrl)
+        Assert.assertEquals(mockUrl, actualUrl)
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
@@ -70,6 +70,7 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression fail
 
         val response =
             ChartboostMediationNetworking.trackPartnerImpression(
+                mockUrl,
                 APP_SET_ID,
                 ChartboostMediationNetworkingTest.AUCTION_ID,
                 LOAD_ID,
@@ -77,7 +78,6 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression fail
             )
         val request = mockWebServer.takeRequest()
 
-        val expectedUrl = Endpoints.Event.PARTNER_IMPRESSION.endpoint
         val expectedRequestJson =
             String.format(
                 NetworkTestJsonObjects.SIMPLE_AUCTION_ID_REQUEST.trimmedJsonString,
@@ -86,7 +86,7 @@ fun ChartboostMediationNetworkingTest.`verify result for partner impression fail
 
         val actualUrl = request.requestUrl.toString()
 
-        Assert.assertEquals(expectedUrl, actualUrl)
+        Assert.assertEquals(mockUrl, actualUrl)
         // partner impressions should not contain a helium session id header
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,

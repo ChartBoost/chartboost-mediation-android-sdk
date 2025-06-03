@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -38,6 +38,7 @@ import java.lang.reflect.Modifier
 @Config(manifest = Config.NONE)
 class ChartboostMediationNetworkingTest {
     val mockWebServer = MockWebServer()
+    val mockUrl = mockWebServer.url("").toString().plus("chartboost.com/v2/event/mock")
 
     @Before
     @ExperimentalCoroutinesApi
@@ -57,20 +58,6 @@ class ChartboostMediationNetworkingTest {
         val mockAppSetIdClient: AppSetIdClient = mockk()
 
         mockkObject(Endpoints.Auction.AUCTION_NONTRACKING)
-        mockkObject(Endpoints.Event)
-        mockkObject(Endpoints.Event.BANNER_SIZE)
-        mockkObject(Endpoints.Event.CLICK)
-        mockkObject(Endpoints.Event.CONFIG)
-        mockkObject(Endpoints.Event.END_QUEUE)
-        mockkObject(Endpoints.Event.EXPIRATION)
-        mockkObject(Endpoints.Event.HELIUM_IMPRESSION)
-        mockkObject(Endpoints.Event.INITIALIZATION)
-        mockkObject(Endpoints.Event.LOAD)
-        mockkObject(Endpoints.Event.PARTNER_IMPRESSION)
-        mockkObject(Endpoints.Event.PREBID)
-        mockkObject(Endpoints.Event.REWARD)
-        mockkObject(Endpoints.Event.START_QUEUE)
-        mockkObject(Endpoints.Event.WINNER)
         mockkObject(Endpoints.Sdk.SDK_INIT)
 
         every { mockAppSetIdInfo.scope } returns AppSetIdInfo.SCOPE_DEVELOPER
@@ -82,67 +69,6 @@ class ChartboostMediationNetworkingTest {
         every { AppSet.getClient(any()) } returns mockAppSetIdClient
 
         coEvery { Endpoints.Auction.AUCTION_NONTRACKING.endpoint } returns url + "${Endpoints.Auction.AUCTION_NONTRACKING.version}/auctions"
-        coEvery { Endpoints.Event.BANNER_SIZE.endpoint } returns
-            mockedEventUrl(
-                url,
-                Endpoints.Event.BANNER_SIZE,
-            )
-        coEvery { Endpoints.Event.CLICK.endpoint } returns
-            mockedEventUrl(
-                url,
-                Endpoints.Event.CLICK,
-            )
-        coEvery { Endpoints.Event.CONFIG.endpoint } returns
-            mockedEventUrl(
-                url,
-                Endpoints.Event.CONFIG,
-            )
-        coEvery { Endpoints.Event.END_QUEUE.endpoint } returns
-            mockedEventUrl(
-                url,
-                Endpoints.Event.END_QUEUE,
-            )
-        coEvery { Endpoints.Event.EXPIRATION.endpoint } returns
-            mockedEventUrl(
-                url,
-                Endpoints.Event.EXPIRATION,
-            )
-        coEvery { Endpoints.Event.HELIUM_IMPRESSION.endpoint } returns
-            mockedEventUrl(
-                url,
-                Endpoints.Event.HELIUM_IMPRESSION,
-            )
-        coEvery { Endpoints.Event.INITIALIZATION.endpoint } returns
-            mockedEventUrl(
-                url,
-                Endpoints.Event.INITIALIZATION,
-            )
-        coEvery { Endpoints.Event.LOAD.endpoint } returns mockedEventUrl(url, Endpoints.Event.LOAD)
-        coEvery { Endpoints.Event.PARTNER_IMPRESSION.endpoint } returns
-            mockedEventUrl(
-                url,
-                Endpoints.Event.PARTNER_IMPRESSION,
-            )
-        coEvery { Endpoints.Event.PREBID.endpoint } returns
-            mockedEventUrl(
-                url,
-                Endpoints.Event.PREBID,
-            )
-        coEvery { Endpoints.Event.REWARD.endpoint } returns
-            mockedEventUrl(
-                url,
-                Endpoints.Event.REWARD,
-            )
-        coEvery { Endpoints.Event.START_QUEUE.endpoint } returns
-            mockedEventUrl(
-                url,
-                Endpoints.Event.START_QUEUE,
-            )
-        coEvery { Endpoints.Event.WINNER.endpoint } returns
-            mockedEventUrl(
-                url,
-                Endpoints.Event.WINNER,
-            )
         coEvery { Endpoints.Sdk.SDK_INIT.endpoint } returns
             "${url}${Endpoints.Sdk.SDK_INIT.version}/${Endpoints.Sdk.SDK_INIT.name.lowercase()}"
 
@@ -376,9 +302,4 @@ class ChartboostMediationNetworkingTest {
             coEvery { mockEnvironment.getAdvertisingIdentifier() } returns "ifa"
         }
     }
-
-    private fun mockedEventUrl(
-        url: String,
-        endpoint: Endpoints.Event,
-    ) = "${url}${endpoint.version}/event/${endpoint.name.lowercase()}"
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -22,4 +22,6 @@ data class CachedAd(
     var ilrdJson: JsonObject? = null
 
     val auctionId: String = bids.auctionId
+
+    val adEventTrackers: Map<TrackingEvent, List<ServerEventTracker>> = bids.adEventTrackers
 }

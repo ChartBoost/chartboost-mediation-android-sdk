@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -10,7 +10,7 @@ package com.chartboost.chartboostmediationsdk.network.model
 import com.chartboost.chartboostmediationsdk.domain.ChartboostMediationError
 import com.chartboost.chartboostmediationsdk.domain.Metrics
 import com.chartboost.chartboostmediationsdk.domain.MetricsError
-import com.chartboost.chartboostmediationsdk.network.Endpoints
+import com.chartboost.chartboostmediationsdk.domain.TrackingEvent
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -119,7 +119,7 @@ class MetricsData private constructor(
             val end = metrics.end
 
             // Only do this for initialization since it's known to be a problem.
-            if (event != Endpoints.Event.INITIALIZATION) {
+            if (event != TrackingEvent.INITIALIZATION) {
                 return start ?: System.currentTimeMillis()
             }
 

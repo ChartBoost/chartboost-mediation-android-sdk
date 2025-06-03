@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -12,7 +12,6 @@ import android.content.Context
 import com.chartboost.chartboostmediationsdk.ChartboostMediationSdk
 import com.chartboost.chartboostmediationsdk.controllers.AdController
 import com.chartboost.chartboostmediationsdk.domain.*
-import com.chartboost.chartboostmediationsdk.network.Endpoints
 import com.chartboost.chartboostmediationsdk.network.model.MetricsRequestBody
 import com.chartboost.chartboostmediationsdk.utils.ChartboostMediationJson
 import com.chartboost.chartboostmediationsdk.utils.LogController
@@ -408,7 +407,7 @@ class ChartboostMediationFullscreenAd(
         val metricsSet =
             setOf(
                 Metrics(
-                    event = Endpoints.Event.SHOW,
+                    event = TrackingEvent.SHOW,
                     partner = null,
                 ).apply {
                     start = System.currentTimeMillis()

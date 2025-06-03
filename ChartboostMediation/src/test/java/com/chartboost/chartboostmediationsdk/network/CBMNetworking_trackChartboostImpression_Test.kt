@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -36,18 +36,18 @@ fun ChartboostMediationNetworkingTest.`verify result for chartboost ("helium") i
 
         val response =
             ChartboostMediationNetworking.trackChartboostImpression(
+                mockUrl,
                 testBids(),
                 LOAD_ID,
                 AdFormat.BANNER.key,
             )
         val request = mockWebServer.takeRequest()
 
-        val expectedUrl = Endpoints.Event.HELIUM_IMPRESSION.endpoint
         val expectedRequestJson = NetworkTestJsonObjects.COMPLEX_IMPRESSION_REQUEST.trimmedJsonString
 
         val actualUrl = request.requestUrl.toString()
 
-        Assert.assertEquals(expectedUrl, actualUrl)
+        Assert.assertEquals(mockUrl, actualUrl)
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
@@ -74,18 +74,18 @@ fun ChartboostMediationNetworkingTest.`verify result for chartboost ("helium") i
 
         val response =
             ChartboostMediationNetworking.trackChartboostImpression(
+                mockUrl,
                 testBids(),
                 LOAD_ID,
                 AdFormat.BANNER.key,
             )
         val request = mockWebServer.takeRequest()
 
-        val expectedUrl = Endpoints.Event.HELIUM_IMPRESSION.endpoint
         val expectedRequestJson = NetworkTestJsonObjects.COMPLEX_IMPRESSION_REQUEST.trimmedJsonString
 
         val actualUrl = request.requestUrl.toString()
 
-        Assert.assertEquals(expectedUrl, actualUrl)
+        Assert.assertEquals(mockUrl, actualUrl)
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),

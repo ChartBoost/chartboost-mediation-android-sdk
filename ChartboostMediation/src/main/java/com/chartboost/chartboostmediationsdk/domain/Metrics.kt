@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -8,7 +8,6 @@
 package com.chartboost.chartboostmediationsdk.domain
 
 import android.util.Size
-import com.chartboost.chartboostmediationsdk.network.Endpoints.Event
 
 /**
  * @suppress
@@ -20,7 +19,7 @@ import com.chartboost.chartboostmediationsdk.network.Endpoints.Event
  */
 class Metrics(
     val partner: String?,
-    val event: Event,
+    val event: TrackingEvent,
 ) {
     /**
      * Collection of reportable network type
@@ -146,16 +145,16 @@ class Metrics(
         }
 
     /**
-     * Get the corresponding [ChartboostMediationError] timeout for the given [Sdk.Event].
+     * Get the corresponding [ChartboostMediationError] timeout for the given [TrackingEvent].
      *
-     * @param event The [Sdk.Event] to get the timeout for.
+     * @param event The [TrackingEvent] to get the timeout for.
      */
-    private fun getTimeoutForEvent(event: Event): ChartboostMediationError =
+    private fun getTimeoutForEvent(event: TrackingEvent): ChartboostMediationError =
         when (event) {
-            Event.INITIALIZATION -> ChartboostMediationError.InitializationError.Timeout
-            Event.PREBID -> ChartboostMediationError.PrebidError.Timeout
-            Event.LOAD -> ChartboostMediationError.LoadError.AdRequestTimeout
-            Event.SHOW -> ChartboostMediationError.ShowError.Timeout
+            TrackingEvent.INITIALIZATION -> ChartboostMediationError.InitializationError.Timeout
+            TrackingEvent.PREBID -> ChartboostMediationError.PrebidError.Timeout
+            TrackingEvent.LOAD -> ChartboostMediationError.LoadError.AdRequestTimeout
+            TrackingEvent.SHOW -> ChartboostMediationError.ShowError.Timeout
             else -> ChartboostMediationError.OtherError.Unknown
         }
 }

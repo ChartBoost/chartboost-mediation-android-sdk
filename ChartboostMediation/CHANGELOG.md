@@ -2,6 +2,9 @@ Android Change Log
 ==================
 Check for the latest Chartboost Mediation SDK at the Chartboost Mediation website.
 
+### Version 5.3.0 *(2025-06-03)*
+- Bug fixes and improvements.
+
 ### Version 5.2.0 *(2024-11-21)*
 Improvements:
 - Subsequent banner load failures will report specific error codes caught from partner adapters instead of the generic CM_300 (Unknown) error code.

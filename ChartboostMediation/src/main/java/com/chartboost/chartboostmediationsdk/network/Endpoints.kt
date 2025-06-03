@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -7,13 +7,6 @@
 
 package com.chartboost.chartboostmediationsdk.network
 
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.jsonPrimitive
 import java.util.*
 
 /**
@@ -32,6 +25,8 @@ object Endpoints {
         internal set
 
     internal const val BASE_DOMAIN = "${SCHEME}chartboost.com"
+
+    internal const val DEFAULT_INITIALIZATION_EVENT_URL = "${SCHEME}initialization.mediation-sdk.chartboost.com/v1/event/initialization"
 
     /**
      * Various endpoints have a version associated with them.
@@ -92,60 +87,5 @@ object Endpoints {
          */
         val endpoint
             get() = "${SCHEME}$hostname.$SDK_HOSTNAME/$version/auctions"
-    }
-
-    /**
-     * Event endpoints associated with the __[SDK_DOMAIN]__ along with an event path.
-     * Some of the events are currently only used for [MetricsRequest] while others
-     * are used during an ad's cycle.
-     */
-    @Serializable
-    enum class Event(
-        private val hostname: String,
-        val version: Version,
-    ) {
-        BANNER_SIZE("banner-size", Version.V1),
-        CLICK("click", Version.V2),
-        CONFIG("config", Version.V1),
-        END_QUEUE("end-queue", Version.V1),
-        EXPIRATION("expiration", Version.V1),
-        HELIUM_IMPRESSION("mediation-impression", Version.V2),
-        INITIALIZATION("initialization", Version.V1),
-        LOAD("load", Version.V2),
-        PARTNER_IMPRESSION("partner-impression", Version.V1),
-        PREBID("prebid", Version.V1),
-        REWARD("reward", Version.V2),
-        SHOW("show", Version.V1),
-        START_QUEUE("start-queue", Version.V1),
-        WINNER("winner", Version.V3),
-        ;
-
-        /**
-         * Creates a String URL for the particular [Event] enum.
-         * An event URL will generally look as follows:
-         * __https://[Event.hostname].mediation-sdk.chartboost.com/[Version]/event/[Event.name]__
-         */
-
-        val endpoint
-            get() = "${SCHEME}$hostname.$SDK_HOSTNAME/$version/event/${name.lowercase()}"
-
-        object EventEnumSetSerializer : KSerializer<EnumSet<Event>> {
-            override val descriptor = JsonArray.serializer().descriptor
-
-            override fun serialize(
-                encoder: Encoder,
-                value: EnumSet<Event>,
-            ) {
-                val jsonArray = JsonArray(value.map { JsonPrimitive(it.name) })
-                encoder.encodeSerializableValue(JsonArray.serializer(), jsonArray)
-            }
-
-            override fun deserialize(decoder: Decoder): EnumSet<Event> {
-                val jsonArray = decoder.decodeSerializableValue(JsonArray.serializer())
-                return jsonArray.mapNotNull { jsonElement ->
-                    runCatching { Event.valueOf(jsonElement.jsonPrimitive.content) }.getOrNull()
-                }.toCollection(EnumSet.noneOf(Event::class.java))
-            }
-        }
     }
 }
