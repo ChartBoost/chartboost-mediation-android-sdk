@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -9,13 +9,11 @@ package com.chartboost.chartboostmediationsdk.domain
 
 import com.chartboost.chartboostmediationsdk.ChartboostMediationSdk
 import com.chartboost.chartboostmediationsdk.controllers.banners.VisibilityTracker
-import com.chartboost.chartboostmediationsdk.network.Endpoints
 import com.chartboost.chartboostmediationsdk.utils.ChartboostMediationJson
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
-import java.util.*
 
 /**
  * @suppress
@@ -34,9 +32,8 @@ data class AppConfig(
     val bannerLoadTimeoutSeconds: Int = 15,
     @SerialName("banner_size_event_delay_ms")
     val bannerSizeEventDelayMs: Long = 1000L,
-    @Serializable(with = Endpoints.Event.EventEnumSetSerializer::class)
-    @SerialName("metrics_events")
-    val metricsEvents: EnumSet<Endpoints.Event> = EnumSet.allOf(Endpoints.Event::class.java),
+    @SerialName("event_trackers")
+    val eventTrackers: JsonObject = buildJsonObject { },
     @SerialName("fullscreen_load_timeout")
     val fullscreenLoadTimeoutSeconds: Int = 30,
     @SerialName("show_timeout")

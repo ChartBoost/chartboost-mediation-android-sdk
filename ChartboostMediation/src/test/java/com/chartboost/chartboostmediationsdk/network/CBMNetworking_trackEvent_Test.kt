@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -11,6 +11,7 @@ import com.chartboost.chartboostmediationsdk.domain.ChartboostMediationError
 import com.chartboost.chartboostmediationsdk.domain.EventResult
 import com.chartboost.chartboostmediationsdk.domain.Metrics
 import com.chartboost.chartboostmediationsdk.domain.MetricsError
+import com.chartboost.chartboostmediationsdk.domain.TrackingEvent
 import com.chartboost.chartboostmediationsdk.network.ChartboostMediationNetworkingTest.Companion.LOAD_ID
 import com.chartboost.chartboostmediationsdk.network.ChartboostMediationNetworkingTest.Companion.QUEUE_ID
 import com.chartboost.chartboostmediationsdk.network.model.ChartboostMediationNetworkingResult
@@ -33,7 +34,7 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization succ
 
         val response =
             ChartboostMediationNetworking.trackEvent(
-                event = Endpoints.Event.INITIALIZATION,
+                url = mockUrl,
                 loadId = LOAD_ID,
                 queueId = QUEUE_ID,
                 metricsRequestBody =
@@ -47,7 +48,7 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization succ
                                     MetricsData(
                                         Metrics(
                                             partner = "chartboost",
-                                            event = Endpoints.Event.INITIALIZATION,
+                                            event = TrackingEvent.INITIALIZATION,
                                         ).apply {
                                             start = 1681763389528L
                                             end = 1681763390021L
@@ -64,13 +65,12 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization succ
 
         val request = mockWebServer.takeRequest()
 
-        val expectedUrl = Endpoints.Event.INITIALIZATION.endpoint
         val expectedRequestJson =
             NetworkTestJsonObjects.TRACK_EVENT_INITIALIZATION_SUCCESS_REQUEST.minifiedJsonString
 
         val actualUrl = request.requestUrl.toString()
 
-        Assert.assertEquals(expectedUrl, actualUrl)
+        Assert.assertEquals(mockUrl, actualUrl)
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
@@ -106,7 +106,7 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization with
 
         val response =
             ChartboostMediationNetworking.trackEvent(
-                event = Endpoints.Event.INITIALIZATION,
+                url = mockUrl,
                 loadId = LOAD_ID,
                 queueId = QUEUE_ID,
                 metricsRequestBody =
@@ -120,7 +120,7 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization with
                                     MetricsData(
                                         Metrics(
                                             partner = "chartboost",
-                                            event = Endpoints.Event.INITIALIZATION,
+                                            event = TrackingEvent.INITIALIZATION,
                                         ).apply {
                                             start = 1681763389528L
                                             end = 1681763390021L
@@ -138,13 +138,12 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization with
 
         val request = mockWebServer.takeRequest()
 
-        val expectedUrl = Endpoints.Event.INITIALIZATION.endpoint
         val expectedRequestJson =
             NetworkTestJsonObjects.TRACK_EVENT_INITIALIZATION_SUCCESS_WITH_ERROR_REQUEST.minifiedJsonString
 
         val actualUrl = request.requestUrl.toString()
 
-        Assert.assertEquals(expectedUrl, actualUrl)
+        Assert.assertEquals(mockUrl, actualUrl)
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
@@ -184,7 +183,7 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization fail
 
         val response =
             ChartboostMediationNetworking.trackEvent(
-                event = Endpoints.Event.INITIALIZATION,
+                url = mockUrl,
                 loadId = LOAD_ID,
                 queueId = QUEUE_ID,
                 metricsRequestBody =
@@ -199,7 +198,6 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization fail
 
         val request = mockWebServer.takeRequest()
 
-        val expectedUrl = Endpoints.Event.INITIALIZATION.endpoint
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),
@@ -217,7 +215,7 @@ fun ChartboostMediationNetworkingTest.`verify trackEvent for initialization fail
 
         val actualUrl = request.requestUrl.toString()
 
-        Assert.assertEquals(expectedUrl, actualUrl)
+        Assert.assertEquals(mockUrl, actualUrl)
         Assert.assertEquals(expectedRequestJson, request.body.readUtf8())
 
         Assert.assertTrue(response is ChartboostMediationNetworkingResult.Success)

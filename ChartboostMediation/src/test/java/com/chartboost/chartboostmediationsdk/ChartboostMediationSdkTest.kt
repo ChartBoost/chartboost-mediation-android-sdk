@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -63,7 +63,6 @@ class ChartboostMediationSdkTest {
         Endpoints.SDK_HOSTNAME = mockWebServer.hostName
 
         mockkObject(Endpoints.Sdk.SDK_INIT)
-        mockkObject(Endpoints.Event.INITIALIZATION)
 
         MockKAnnotations.init(this)
         // Setup mocks that will be used in our tests.
@@ -82,8 +81,6 @@ class ChartboostMediationSdkTest {
 
         coEvery { Endpoints.Sdk.SDK_INIT.endpoint } returns
             url + "${Endpoints.Sdk.SDK_INIT.version}/${Endpoints.Sdk.SDK_INIT.name.lowercase()}"
-        coEvery { Endpoints.Event.INITIALIZATION.endpoint } returns
-            url + "${Endpoints.Event.INITIALIZATION.version}/${Endpoints.Event.INITIALIZATION.name.lowercase()}"
 
         // We may be hitting various levels of logging during the tests. Let's justRun.
         mockkObject(LogController)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -14,11 +14,11 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.chartboost.chartboostmediationsdk.Ilrd
 import com.chartboost.chartboostmediationsdk.ad.ChartboostMediationAdShowResult
 import com.chartboost.chartboostmediationsdk.domain.*
+import com.chartboost.chartboostmediationsdk.domain.TrackingEvent.EXPIRATION
 import com.chartboost.chartboostmediationsdk.network.ChartboostMediationNetworking
 import com.chartboost.chartboostmediationsdk.network.ChartboostMediationNetworking.AUCTION_ID_HEADER_KEY
 import com.chartboost.chartboostmediationsdk.network.ChartboostMediationNetworking.OLD_RATE_LIMIT_HEADER_KEY
 import com.chartboost.chartboostmediationsdk.network.ChartboostMediationNetworking.RATE_LIMIT_HEADER_KEY
-import com.chartboost.chartboostmediationsdk.network.Endpoints
 import com.chartboost.chartboostmediationsdk.network.model.ChartboostMediationNetworkingResult
 import com.chartboost.chartboostmediationsdk.network.model.MetricsRequestBody
 import com.chartboost.chartboostmediationsdk.utils.BackgroundTimeMonitoring
@@ -191,13 +191,14 @@ class AdController(
                                 ),
                             )
                         },
+                    adEventTrackers = cachedAd.adEventTrackers,
                 )
                 partnerAdResult.fold({
                     cachedAd.partnerAd = it
                     cachedAd.winningBidInfo = auctionResult.bids.bidInfo
                     cachedAd.ilrdJson = auctionResult.bids.activeBid?.ilrd
                     cachedAd.loadId = adLoadParams.loadId
-                    sendAuctionWinnerRequest(auctionResult.bids, adLoadParams.loadId)
+                    sendAuctionWinnerRequest(auctionResult.bids, adLoadParams.loadId, cachedAd.adEventTrackers)
                     return Result.success(cachedAd)
                 }, {
                     return Result.failure(it)
@@ -213,7 +214,7 @@ class AdController(
 
                 MetricsManager.postMetricsDataForFailedEvent(
                     partner = null,
-                    event = Endpoints.Event.LOAD,
+                    event = TrackingEvent.LOAD,
                     auctionIdentifier = result.headers?.get(AUCTION_ID_HEADER_KEY) ?: "",
                     chartboostMediationError = result.error,
                     chartboostMediationErrorMessage = result.error.message,
@@ -262,7 +263,7 @@ class AdController(
 
                 MetricsManager.postMetricsDataForFailedEvent(
                     partner = null,
-                    event = Endpoints.Event.LOAD,
+                    event = TrackingEvent.LOAD,
                     auctionIdentifier = result.headers[AUCTION_ID_HEADER_KEY],
                     chartboostMediationError = cmError,
                     chartboostMediationErrorMessage = cmError.message,
@@ -293,23 +294,23 @@ class AdController(
             override fun onImpressionTracked(partnerAd: PartnerAd) {
                 adInteractionListener.onImpressionTracked(partnerAd)
                 CoroutineScope(IO).launch {
-                    ChartboostMediationNetworking.trackPartnerImpression(
+                    MetricsManager.trackPartnerImpression(
                         ChartboostCore.analyticsEnvironment.getVendorIdentifier() ?: "",
                         bids.auctionId,
                         cachedAd.loadId,
                         partnerAd.partnerBannerSize?.type ?: partnerAd.request.format,
+                        cachedAd.adEventTrackers,
                     )
                 }
             }
 
             override fun onClicked(partnerAd: PartnerAd) {
-                CoroutineScope(IO).launch {
-                    ChartboostMediationNetworking.trackClick(
-                        bids.auctionId,
-                        cachedAd.loadId,
-                        partnerAd.partnerBannerSize?.type ?: partnerAd.request.format,
-                    )
-                }
+                MetricsManager.trackClick(
+                    bids.auctionId,
+                    cachedAd.loadId,
+                    partnerAd.partnerBannerSize?.type ?: partnerAd.request.format,
+                    cachedAd.adEventTrackers,
+                )
                 adInteractionListener.onClicked(partnerAd)
             }
 
@@ -321,15 +322,16 @@ class AdController(
                     return
                 }
 
-                CoroutineScope(IO).launch {
-                    ChartboostMediationNetworking.trackReward(
-                        bids.auctionId,
-                        cachedAd.loadId,
-                        partnerAd.request.format,
-                    )
-                    val activeBid = bids.activeBid
-                    if (activeBid != null) {
-                        bids.rewardedCallbackData?.let { rewardedCallbackData ->
+                MetricsManager.trackReward(
+                    bids.auctionId,
+                    cachedAd.loadId,
+                    partnerAd.request.format,
+                    cachedAd.adEventTrackers,
+                )
+                val activeBid = bids.activeBid
+                if (activeBid != null) {
+                    bids.rewardedCallbackData?.let { rewardedCallbackData ->
+                        CoroutineScope(IO).launch {
                             ChartboostMediationNetworking.makeRewardedCallbackRequest(
                                 activeBid,
                                 cachedAd.customData,
@@ -351,6 +353,17 @@ class AdController(
 
             override fun onExpired(partnerAd: PartnerAd) {
                 adInteractionListener.onExpired(partnerAd)
+                MetricsManager.postMetricsData(
+                    setOf(
+                        Metrics(
+                            partnerAd.request.partnerId,
+                            EXPIRATION,
+                        ).apply {
+                            this.auctionId = auctionId
+                        },
+                    ),
+                    adEventTrackers = cachedAd.adEventTrackers,
+                )
             }
         }
     }
@@ -366,6 +379,7 @@ class AdController(
                 cachedAd.partnerAd,
                 cachedAd.bids.auctionId,
                 cachedAd.loadId,
+                cachedAd.adEventTrackers,
             )
         val showSucceeded = internalShowResult.metrics.first().isSuccess
         val metricsRequestBody =
@@ -381,10 +395,11 @@ class AdController(
         if (showSucceeded) {
             internalShowResult.partnerAd?.let { partnerAd ->
                 cachedAd.partnerAd = partnerAd
-                ChartboostMediationNetworking.trackChartboostImpression(
+                MetricsManager.trackChartboostImpression(
                     cachedAd.bids,
                     cachedAd.loadId,
                     partnerAd.partnerBannerSize?.type ?: partnerAd.request.format,
+                    cachedAd.adEventTrackers,
                 )
                 cachedAd.ilrdJson?.let {
                     ilrd.onIlrdReceived(partnerAd.request.mediationPlacement, it.toJSONObject())
@@ -442,14 +457,14 @@ class AdController(
     private fun sendAuctionWinnerRequest(
         bids: Bids,
         loadId: String,
+        adEventTrackers: Map<TrackingEvent, List<ServerEventTracker>>,
     ) {
-        CoroutineScope(IO).launch {
-            ChartboostMediationNetworking.logAuctionWinner(
-                bids,
-                loadId,
-                bids.activeBid?.adIdentifier?.placementType ?: "",
-            )
-        }
+        MetricsManager.trackAuctionWinner(
+            bids,
+            loadId,
+            bids.activeBid?.adIdentifier?.placementType ?: "",
+            adEventTrackers,
+        )
     }
 
     private fun getImpressionDepth(adType: Int): Int =

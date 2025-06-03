@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -26,8 +26,6 @@ import com.chartboost.chartboostmediationsdk.ad.ChartboostMediationBannerAdView.
 import com.chartboost.chartboostmediationsdk.controllers.AdController
 import com.chartboost.chartboostmediationsdk.domain.*
 import com.chartboost.chartboostmediationsdk.domain.PartnerAdUtils.getCreativeSizeFromPartnerAdDetails
-import com.chartboost.chartboostmediationsdk.network.ChartboostMediationNetworking
-import com.chartboost.chartboostmediationsdk.network.Endpoints
 import com.chartboost.chartboostmediationsdk.network.model.BannerAdDimensions
 import com.chartboost.chartboostmediationsdk.network.model.BannerSizeBody
 import com.chartboost.chartboostmediationsdk.network.model.MetricsRequestBody
@@ -706,6 +704,7 @@ class BannerController(
                                 partnerName = partnerAd.request.partnerId,
                                 auctionId = nextAd.bids.auctionId,
                                 loadId = nextAd.loadId,
+                                adEventTrackers = nextAd.adEventTrackers,
                             )
                             val placement = getBannerAdPlacement()
                             ChartboostMediationSdk.chartboostMediationInternal.adController?.incrementBannerImpressionDepth()
@@ -719,11 +718,13 @@ class BannerController(
                                     )
                             }
                             CoroutineScope(IO).launch {
-                                ChartboostMediationNetworking.trackChartboostImpression(
-                                    nextAd.bids,
-                                    nextAd.loadId,
-                                    nextAd.partnerAd?.partnerBannerSize?.type
-                                        ?: if (bannerSize?.isAdaptive == true) AdFormat.ADAPTIVE_BANNER.key else AdFormat.BANNER.key,
+                                MetricsManager.trackChartboostImpression(
+                                    bids = nextAd.bids,
+                                    loadId = nextAd.loadId,
+                                    adType =
+                                        nextAd.partnerAd?.partnerBannerSize?.type
+                                            ?: if (bannerSize?.isAdaptive == true) AdFormat.ADAPTIVE_BANNER.key else AdFormat.BANNER.key,
+                                    adEventTrackers = nextAd.adEventTrackers,
                                 )
 
                                 delay(timeToVerifyAdSizeJobMillis)
@@ -769,7 +770,7 @@ class BannerController(
                                         ?.bannerSize
                                         ?.height ?: 0
 
-                                ChartboostMediationNetworking.trackAdaptiveBannerSize(
+                                MetricsManager.trackAdaptiveBannerSize(
                                     loadId = nextAd.loadId,
                                     BannerSizeBody(
                                         auctionId = nextAd.bids.auctionId,
@@ -789,6 +790,7 @@ class BannerController(
                                                 height = requestedHeight,
                                             ),
                                     ),
+                                    adEventTrackers = nextAd.adEventTrackers,
                                 )
                             }
 
@@ -857,15 +859,20 @@ class BannerController(
         partnerName: String,
         auctionId: String,
         loadId: String,
+        adEventTrackers: Map<TrackingEvent, List<ServerEventTracker>>,
     ) {
-        val metrics = Metrics(partnerName, Endpoints.Event.SHOW)
+        val metrics = Metrics(partnerName, TrackingEvent.SHOW)
         val showMetricsDataSet: MutableSet<Metrics> = HashSet()
         metrics.auctionId = auctionId
         metrics.start = startTime
         metrics.end = System.currentTimeMillis()
         metrics.isSuccess = true
         showMetricsDataSet.add(metrics)
-        MetricsManager.postMetricsData(showMetricsDataSet, loadId)
+        MetricsManager.postMetricsData(
+            data = showMetricsDataSet,
+            loadId = loadId,
+            adEventTrackers = adEventTrackers,
+        )
     }
 
     /**

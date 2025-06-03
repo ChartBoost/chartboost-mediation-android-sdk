@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -10,8 +10,6 @@ package com.chartboost.chartboostmediationsdk.ad
 import android.content.Context
 import com.chartboost.chartboostmediationsdk.ChartboostMediationSdk
 import com.chartboost.chartboostmediationsdk.domain.*
-import com.chartboost.chartboostmediationsdk.network.ChartboostMediationNetworking
-import com.chartboost.chartboostmediationsdk.network.Endpoints
 import com.chartboost.chartboostmediationsdk.utils.LogController
 import com.chartboost.core.ChartboostCore
 import kotlinx.coroutines.*
@@ -97,13 +95,14 @@ class ChartboostMediationFullscreenAdQueue(
                                     ?.partnerAd
                                     ?.request
                                     ?.partnerId,
-                            event = Endpoints.Event.EXPIRATION,
+                            event = TrackingEvent.EXPIRATION,
                         ).apply {
                             auctionId = ad.cachedAd?.bids?.auctionId
                             // As expiration events are not technically errors.
                             isSuccess = true
                         },
                     ),
+                    adEventTrackers = ad.cachedAd?.adEventTrackers ?: emptyMap(),
                 )
 
                 // Log that an ad has expired.
@@ -294,23 +293,21 @@ class ChartboostMediationFullscreenAdQueue(
         // New queue identifiers are created on every queue start.
         queueId = "${ChartboostCore.analyticsEnvironment.appSessionIdentifier}${System.currentTimeMillis()}"
 
-        CoroutineScope(IO).launch {
-            ChartboostMediationNetworking.makeQueueRequest(
-                isRunning = isRunning,
-                placement = placement,
-                queueCapacity = queueCapacity,
-                actualMaxQueueSize = maxQueueSize,
-                queueDepth = numberOfAdsReady,
-                queueId = queueId,
-                adType =
-                    fullscreenAdsQueued
-                        .firstOrNull()
-                        ?.cachedAd
-                        ?.partnerAd
-                        ?.request
-                        ?.format ?: "",
-            )
-        }
+        MetricsManager.trackQueueEvent(
+            event = TrackingEvent.START_QUEUE,
+            placement = placement,
+            queueCapacity = queueCapacity,
+            actualMaxQueueSize = maxQueueSize,
+            queueDepth = numberOfAdsReady,
+            queueId = queueId,
+            adType =
+                fullscreenAdsQueued
+                    .firstOrNull()
+                    ?.cachedAd
+                    ?.partnerAd
+                    ?.request
+                    ?.format ?: "",
+        )
 
         // Start a fetch ad job.
         startAdFetchJob()
@@ -339,7 +336,7 @@ class ChartboostMediationFullscreenAdQueue(
         fetchAdJob?.apply {
             invokeOnCompletion {
                 if (!isRunning) {
-                    sendEndQueueRequest(adType)
+                    trackEndQueueRequest(adType)
                 }
             }
         } ?: run {
@@ -349,7 +346,7 @@ class ChartboostMediationFullscreenAdQueue(
              * Only send the request when a queue is running.
              */
             if (isRunning) {
-                sendEndQueueRequest(adType)
+                trackEndQueueRequest(adType)
             }
         }
         isRunning = false
@@ -496,15 +493,13 @@ class ChartboostMediationFullscreenAdQueue(
     /**
      * Send an end_queue request.
      */
-    private fun sendEndQueueRequest(adType: String?) =
-        CoroutineScope(IO).launch {
-            ChartboostMediationNetworking.makeQueueRequest(
-                false,
-                placement = placement,
-                queueCapacity = queueCapacity,
-                queueDepth = numberOfAdsReady,
-                queueId = queueId,
-                adType = adType ?: "",
-            )
-        }
+    private fun trackEndQueueRequest(adType: String?) =
+        MetricsManager.trackQueueEvent(
+            event = TrackingEvent.END_QUEUE,
+            placement = placement,
+            queueCapacity = queueCapacity,
+            queueDepth = numberOfAdsReady,
+            queueId = queueId,
+            adType = adType ?: "",
+        )
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -7,6 +7,7 @@
 
 package com.chartboost.chartboostmediationsdk.domain
 
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -44,6 +45,9 @@ class Bids(
 
     val activeBid: Bid?
         get() = bids.getOrNull(activeBidIndex.get())
+
+    val adEventTrackers: Map<TrackingEvent, List<ServerEventTracker>> =
+        EventTrackersUtil.compileEventTrackers(bidsResponse.bidsExt?.eventTrackers ?: JsonObject(emptyMap()))
 
     val rewardedCallbackData = bidsResponse.bidsExt?.rewardedCallbackData
 

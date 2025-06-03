@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -9,7 +9,7 @@ package com.chartboost.chartboostmediationsdk.domain
 
 import android.content.Context
 import com.chartboost.chartboostmediationsdk.controllers.banners.VisibilityTracker
-import com.chartboost.chartboostmediationsdk.network.Endpoints.Event
+import com.chartboost.chartboostmediationsdk.network.Endpoints.DEFAULT_INITIALIZATION_EVENT_URL
 import com.chartboost.chartboostmediationsdk.utils.LogController
 import kotlinx.serialization.json.*
 import java.util.*
@@ -62,11 +62,16 @@ object AppConfigStorage {
         get() = appConfig.logLevel
 
     /**
-     * A list of metrics events for which to collect data.
+     * A map of event_trackers for which to collect data.
      */
-    var metricsEvents: EnumSet<Event> = EnumSet.allOf(Event::class.java)
+    var globalEventTrackers: Map<TrackingEvent, List<ServerEventTracker>> = emptyMap()
         private set
-        get() = appConfig.metricsEvents
+
+    /**
+     * A map of default event_trackers - used in case of missing init data.
+     */
+    private val defaultEventTrackers: Map<TrackingEvent, List<ServerEventTracker>> =
+        mapOf(TrackingEvent.INITIALIZATION to listOf(ServerEventTracker(DEFAULT_INITIALIZATION_EVENT_URL)))
 
     /**
      * Load timeout for partner banner ad requests.
@@ -212,7 +217,10 @@ object AppConfigStorage {
     fun getEnableRateLimiting(context: Context): Boolean {
         val preferences =
             context.getSharedPreferences("CHARTBOOST_MEDIATION_EXPERIMENTAL", Context.MODE_PRIVATE)
-        return preferences.getBoolean("com.chartboost.chartboost_mediation.enable_rate_limiting", true)
+        return preferences.getBoolean(
+            "com.chartboost.chartboost_mediation.enable_rate_limiting",
+            true,
+        )
     }
 
     fun setEnableRateLimiting(
@@ -224,7 +232,10 @@ object AppConfigStorage {
             context.getSharedPreferences("CHARTBOOST_MEDIATION_EXPERIMENTAL", Context.MODE_PRIVATE)
         preferences
             ?.edit()
-            ?.putBoolean("com.chartboost.chartboost_mediation.enable_rate_limiting", enableRateLimiting)
+            ?.putBoolean(
+                "com.chartboost.chartboost_mediation.enable_rate_limiting",
+                enableRateLimiting,
+            )
             ?.apply()
     }
 
@@ -234,18 +245,14 @@ object AppConfigStorage {
      * @param response The app config String.
      */
     fun updateFields(appConfig: AppConfig) {
-        this@AppConfigStorage.appConfig =
-            appConfig.copy(
-                metricsEvents = (
-                    getReportableMetricsEvents(
-                        EnumSet.allOf(Event::class.java),
-                        appConfig.metricsEvents,
-                    )
-                ),
-            )
-        // TODO make metrics events a separate enum set field in this class
+        this@AppConfigStorage.appConfig = appConfig
+
+        appConfig.eventTrackers.jsonObject.let {
+            globalEventTrackers = compileEventTrackersWithFallback(it)
+        }
+
         appConfig.credentials.jsonObject.let {
-            partners = compilePartners(it)
+            partners = PartnerUtil.compilePartners(it)
         }
 
         appConfig.placements?.forEach {
@@ -255,34 +262,36 @@ object AppConfigStorage {
     }
 
     /**
-     * Get an EnumSet of the metrics events that should be sent to the server.
-     *
-     * @param fullSet The full set of measurable metrics events.
-     * @param serverSet The set of metrics events whose data should be sent to the server.
-     *
-     * @return An EnumSet of the metrics events that should be sent to the server.
+     * Compile event trackers from the server config JSON, with fallback for INITIALIZATION.
      */
-    private fun getReportableMetricsEvents(
-        fullSet: EnumSet<Event>,
-        serverSet: Set<Event>,
-    ): EnumSet<Event> =
-        if (serverSet.isEmpty()) {
-            fullSet
-        } else {
-            EnumSet.noneOf(Event::class.java).apply {
-                serverSet.forEach { add(it) }
+    private fun compileEventTrackersWithFallback(eventTrackersJson: JsonObject): Map<TrackingEvent, List<ServerEventTracker>> {
+        val map = EventTrackersUtil.compileEventTrackers(eventTrackersJson).toMutableMap()
+
+        if (shouldAddDefaultInitializationTracker(eventTrackersJson, map)) {
+            defaultEventTrackers[TrackingEvent.INITIALIZATION]?.let {
+                map[TrackingEvent.INITIALIZATION] = it
             }
         }
 
+        return map
+    }
+
     /**
-     * Compile a list of partners from the app config.
-     *
-     * @return A List of [Partner] objects.
+     * Determine if there is a need to add default initialization tracker
      */
-    private fun compilePartners(credentials: JsonObject): Set<Partner> =
-        mutableSetOf<Partner>().apply {
-            credentials.keys.forEach { partnerId ->
-                add(Partner(partnerId, credentials.getValue(partnerId).jsonObject))
-            }
+    private fun shouldAddDefaultInitializationTracker(
+        eventTrackersJson: JsonObject,
+        alreadyMappedTrackers: Map<TrackingEvent, List<ServerEventTracker>>,
+    ): Boolean {
+        val initializationJsonObject = eventTrackersJson[TrackingEvent.INITIALIZATION.serverName]
+        val initializationMappedTrackers = alreadyMappedTrackers[TrackingEvent.INITIALIZATION]
+        return when {
+            initializationJsonObject == null -> true
+            initializationJsonObject !is JsonArray -> true
+            initializationJsonObject.jsonArray.isEmpty() -> false // that's how to switch off tracking for an event
+            initializationMappedTrackers == null -> true
+            initializationMappedTrackers.all { it.url.isBlank() } -> true
+            else -> false // in this case, there is at least one tracker with non blank url
         }
+    }
 }

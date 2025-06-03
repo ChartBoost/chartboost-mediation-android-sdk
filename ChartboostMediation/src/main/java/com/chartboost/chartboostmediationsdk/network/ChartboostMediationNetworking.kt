@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -124,6 +124,7 @@ internal object ChartboostMediationNetworking {
     }
 
     suspend fun trackChartboostImpression(
+        url: String,
         bids: Bids,
         loadId: String,
         adType: String,
@@ -133,7 +134,7 @@ internal object ChartboostMediationNetworking {
         return safeApiCall {
             ImpressionRequestBody(bids).let {
                 api.trackChartboostImpression(
-                    url = Endpoints.Event.HELIUM_IMPRESSION.endpoint,
+                    url = url,
                     headers =
                         ChartboostMediationAdLifecycleHeaderMap(
                             loadId = loadId,
@@ -148,6 +149,7 @@ internal object ChartboostMediationNetworking {
     }
 
     suspend fun trackPartnerImpression(
+        url: String,
         appSetId: String,
         auctionID: String?,
         loadId: String,
@@ -156,7 +158,7 @@ internal object ChartboostMediationNetworking {
         safeApiCall {
             PartnerImpressionRequestBody(auctionID).let {
                 api.trackPartnerImpression(
-                    url = Endpoints.Event.PARTNER_IMPRESSION.endpoint,
+                    url = url,
                     headers =
                         ChartboostMediationAdLifecycleHeaderMap(
                             loadId = loadId,
@@ -170,6 +172,7 @@ internal object ChartboostMediationNetworking {
         }
 
     suspend fun trackClick(
+        url: String,
         auctionId: String,
         loadId: String,
         adType: String,
@@ -179,7 +182,7 @@ internal object ChartboostMediationNetworking {
         return safeApiCall {
             SimpleTrackingRequestBody(auctionId).let {
                 api.trackClick(
-                    url = Endpoints.Event.CLICK.endpoint,
+                    url = url,
                     headers =
                         ChartboostMediationAdLifecycleHeaderMap(
                             loadId = loadId,
@@ -194,6 +197,7 @@ internal object ChartboostMediationNetworking {
     }
 
     suspend fun trackReward(
+        url: String,
         auctionId: String,
         loadId: String,
         adType: String,
@@ -203,7 +207,7 @@ internal object ChartboostMediationNetworking {
         return safeApiCall {
             SimpleTrackingRequestBody(auctionId).let {
                 api.trackReward(
-                    url = Endpoints.Event.REWARD.endpoint,
+                    url = url,
                     headers =
                         ChartboostMediationAdLifecycleHeaderMap(
                             loadId = loadId,
@@ -218,7 +222,7 @@ internal object ChartboostMediationNetworking {
     }
 
     suspend fun trackEvent(
-        event: Endpoints.Event,
+        url: String,
         loadId: String?,
         queueId: String?,
         metricsRequestBody: MetricsRequestBody,
@@ -227,7 +231,7 @@ internal object ChartboostMediationNetworking {
 
         return safeApiCall {
             api.trackEvent(
-                url = event.endpoint,
+                url = url,
                 headers =
                     ChartboostMediationAdLifecycleHeaderMap(
                         loadId = loadId,
@@ -242,6 +246,7 @@ internal object ChartboostMediationNetworking {
     }
 
     suspend fun trackAdaptiveBannerSize(
+        url: String,
         loadId: String?,
         bannerSizeBody: BannerSizeBody,
     ): ChartboostMediationNetworkingResult<Unit?> {
@@ -249,7 +254,7 @@ internal object ChartboostMediationNetworking {
 
         return safeApiCall {
             api.trackAdaptiveBannerSize(
-                url = Endpoints.Event.BANNER_SIZE.endpoint,
+                url = url,
                 headers =
                     ChartboostMediationAdLifecycleHeaderMap(
                         loadId = loadId,
@@ -263,7 +268,8 @@ internal object ChartboostMediationNetworking {
         }
     }
 
-    suspend fun logAuctionWinner(
+    suspend fun trackAuctionWinner(
+        url: String,
         bids: Bids,
         loadId: String,
         adType: String,
@@ -273,7 +279,7 @@ internal object ChartboostMediationNetworking {
         return safeApiCall {
             AuctionWinnerRequestBody(bids).let {
                 api.logAuctionWinner(
-                    url = Endpoints.Event.WINNER.endpoint,
+                    url = url,
                     headers =
                         ChartboostMediationAdLifecycleHeaderMap(
                             loadId = loadId,
@@ -374,8 +380,8 @@ internal object ChartboostMediationNetworking {
         }
     }
 
-    suspend fun makeQueueRequest(
-        isRunning: Boolean,
+    suspend fun trackQueueEvent(
+        url: String,
         placement: String,
         queueCapacity: Int,
         actualMaxQueueSize: Int? = null,
@@ -394,11 +400,7 @@ internal object ChartboostMediationNetworking {
                 queueId = queueId,
             ).let {
                 api.trackQueueRequest(
-                    url =
-                        when (isRunning) {
-                            true -> Endpoints.Event.START_QUEUE.endpoint
-                            false -> Endpoints.Event.END_QUEUE.endpoint
-                        },
+                    url = url,
                     headers =
                         ChartboostQueueRequestMediationHeaderMap(
                             queueId = queueId,

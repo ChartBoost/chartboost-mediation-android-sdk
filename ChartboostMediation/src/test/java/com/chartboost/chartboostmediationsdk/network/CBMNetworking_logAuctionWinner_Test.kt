@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -42,7 +42,8 @@ fun ChartboostMediationNetworkingTest.`verify log auction winner request success
             )
 
         val response =
-            ChartboostMediationNetworking.logAuctionWinner(
+            ChartboostMediationNetworking.trackAuctionWinner(
+                mockUrl,
                 bids,
                 ChartboostMediationNetworkingTest.LOAD_ID,
                 AdFormat.BANNER.key,
@@ -50,7 +51,6 @@ fun ChartboostMediationNetworkingTest.`verify log auction winner request success
 
         val request = mockWebServer.takeRequest()
 
-        val expectedUrl = Endpoints.Event.WINNER.endpoint
         val expectedRequestJson =
             NetworkTestJsonObjects.LOG_AUCTION_WINNER_REQUEST.minifiedJsonString.format(
                 ChartboostMediationNetworkingTest.AUCTION_ID,
@@ -58,7 +58,7 @@ fun ChartboostMediationNetworkingTest.`verify log auction winner request success
 
         val actualUrl = request.requestUrl.toString()
 
-        Assert.assertEquals(expectedUrl, actualUrl)
+        Assert.assertEquals(mockUrl, actualUrl)
         Assert.assertEquals(
             ChartboostMediationNetworkingTest.SESSION_ID,
             request.getHeader(ChartboostMediationNetworking.SESSION_ID_HEADER_KEY).toString(),

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -12,11 +12,10 @@ import android.content.Context
 import android.util.Size
 import com.chartboost.chartboostmediationsdk.ad.ChartboostMediationBannerAdView.ChartboostMediationBannerSize.Companion.asSize
 import com.chartboost.chartboostmediationsdk.domain.*
-import com.chartboost.chartboostmediationsdk.network.Endpoints.Event.EXPIRATION
-import com.chartboost.chartboostmediationsdk.network.Endpoints.Event.INITIALIZATION
-import com.chartboost.chartboostmediationsdk.network.Endpoints.Event.LOAD
-import com.chartboost.chartboostmediationsdk.network.Endpoints.Event.PREBID
-import com.chartboost.chartboostmediationsdk.network.Endpoints.Event.SHOW
+import com.chartboost.chartboostmediationsdk.domain.TrackingEvent.INITIALIZATION
+import com.chartboost.chartboostmediationsdk.domain.TrackingEvent.LOAD
+import com.chartboost.chartboostmediationsdk.domain.TrackingEvent.PREBID
+import com.chartboost.chartboostmediationsdk.domain.TrackingEvent.SHOW
 import com.chartboost.chartboostmediationsdk.utils.LogController
 import com.chartboost.core.ChartboostCore
 import com.chartboost.core.consent.ConsentKey
@@ -385,7 +384,7 @@ class PartnerController {
                     }
                 }
 
-                MetricsManager.postMetricsData(metricsDataSet, request.loadId)
+                MetricsManager.postMetricsData(data = metricsDataSet, loadId = request.loadId)
             }
         bidJob.join()
         return bidTokens
@@ -560,6 +559,7 @@ class PartnerController {
         partnerAd: PartnerAd?,
         auctionIdentifier: String,
         loadId: String,
+        adEventTrackers: Map<TrackingEvent, List<ServerEventTracker>>,
     ): PartnerShowResult {
         var internalAdShowResult =
             PartnerShowResult(
@@ -585,6 +585,7 @@ class PartnerController {
                 chartboostMediationErrorMessage = ChartboostMediationError.OtherError.InvalidArgument.message,
                 loadId = loadId,
                 partnerPlacement = partnerAd?.request?.partnerPlacement,
+                adEventTrackers = adEventTrackers,
             )
 
             internalAdShowResult.metrics.first().chartboostMediationError =
@@ -607,6 +608,7 @@ class PartnerController {
                             error.message
                                 ?: ChartboostMediationError.ShowError.Exception.message,
                         partnerPlacement = partnerAd.request.partnerPlacement,
+                        adEventTrackers = adEventTrackers,
                     )
 
                     internalAdShowResult =
@@ -659,7 +661,7 @@ class PartnerController {
                         metrics = metricsDataSet,
                     )
 
-                MetricsManager.postMetricsData(metricsDataSet, loadId)
+                MetricsManager.postMetricsData(data = metricsDataSet, loadId = loadId, adEventTrackers = adEventTrackers)
             }
         partnerShowJob.join()
         return internalAdShowResult
@@ -884,17 +886,6 @@ class PartnerController {
 
             override fun onPartnerAdExpired(partnerAd: PartnerAd) {
                 adInteractionListener.onExpired(partnerAd)
-
-                MetricsManager.postMetricsData(
-                    setOf(
-                        Metrics(
-                            partnerAd.request.partnerId,
-                            EXPIRATION,
-                        ).apply {
-                            this.auctionId = auctionId
-                        },
-                    ),
-                )
             }
         }
 

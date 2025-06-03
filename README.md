@@ -52,7 +52,7 @@ repositories {
 
 dependencies {
     implementation("com.chartboost:chartboost-core-sdk:1.0.0")
-    implementation("com.chartboost:chartboost-mediation-sdk:5.2.0")
+    implementation("com.chartboost:chartboost-mediation-sdk:5.3.0")
 }
 ```
 

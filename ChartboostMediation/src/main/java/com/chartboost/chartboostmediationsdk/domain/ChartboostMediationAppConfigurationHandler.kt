@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Chartboost, Inc.
+ * Copyright 2024-2025 Chartboost, Inc.
  *
  * Use of this source code is governed by an MIT-style
  * license that can be found in the LICENSE file.
@@ -14,7 +14,6 @@ import com.chartboost.chartboostmediationsdk.controllers.PartnerController
 import com.chartboost.chartboostmediationsdk.domain.EventResult.SdkInitializationResult.InitResult1B
 import com.chartboost.chartboostmediationsdk.domain.MetricsManager.postMetricsData
 import com.chartboost.chartboostmediationsdk.domain.MetricsManager.postMetricsDataForFailedEvent
-import com.chartboost.chartboostmediationsdk.network.Endpoints
 import com.chartboost.chartboostmediationsdk.utils.LogController
 import com.chartboost.core.ChartboostCore
 import com.chartboost.core.consent.ConsentKey
@@ -56,7 +55,7 @@ class ChartboostMediationAppConfigurationHandler(
                     setOf(
                         Metrics(
                             null,
-                            Endpoints.Event.INITIALIZATION,
+                            TrackingEvent.INITIALIZATION,
                         ),
                     ),
                     eventResult =
@@ -90,7 +89,7 @@ class ChartboostMediationAppConfigurationHandler(
             val mediationError = ChartboostMediationError.InitializationError.InvalidAppConfig
             postMetricsDataForFailedEvent(
                 partner = null,
-                event = Endpoints.Event.INITIALIZATION,
+                event = TrackingEvent.INITIALIZATION,
                 auctionIdentifier = null,
                 chartboostMediationError = mediationError,
                 chartboostMediationErrorMessage = mediationError.message,
