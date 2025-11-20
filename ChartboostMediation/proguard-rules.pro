@@ -22,17 +22,15 @@
 -printmapping build/outputs/mapping/release/mapping.txt
 
 -renamesourcefileattribute SourceFile
--keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,EnclosingMethod
-
--optimizations !code/allocation/variable
-
+-keepattributes Signature,Exceptions,InnerClasses,Deprecated,SourceFile,LineNumberTable,EnclosingMethod,RuntimeVisibleAnnotations,RuntimeInvisibleAnnotations,RuntimeVisibleParameterAnnotations,AnnotationDefault,KotlinMetadata
 -keepattributes *Annotation*
+-optimizations !code/allocation/variable
 
 -keep public interface androidx.annotation.* { *; }
 
 -keep class com.chartboost.chartboostmediationsdk.domain.Ad$AdType { *; }
 -keep class com.chartboost.chartboostmediationsdk.domain.Ad$State { *; }
--keep class com.chartboost.chartboostmediationsdk.ad.ChartboostMediationBannerAd$ChartboostMediationBannerSize { *; }
+-keep class com.chartboost.chartboostmediationsdk.ad.ChartboostMediationBannerAdView$ChartboostMediationBannerSize { *; }
 
 -keep public class com.chartboost.chartboostmediationsdk.ChartboostMediationSdk {
     public <methods>;
@@ -41,7 +39,6 @@
 -keep public class com.chartboost.chartboostmediationsdk.Ilrd { *; }
 -keep public interface com.chartboost.chartboostmediationsdk.ChartboostMediationIlrdObserver { *; }
 -keep public class com.chartboost.chartboostmediationsdk.ChartboostMediationImpressionData { *; }
--keep public class com.chartboost.chartboostmediationsdk.PartnerConsents { *; }
 
 -keep public class com.chartboost.chartboostmediationsdk.domain.Keywords { *; }
 
@@ -67,11 +64,6 @@
     public <methods>;
 }
 
--keep public interface com.chartboost.chartboostmediationsdk.ChartboostMediationSdk$ChartboostMediationSdkListener {
-    public <methods>;
-    public <fields>;
-}
-
 -keep public class com.chartboost.chartboostmediationsdk.domain.AdIdentifier { *; }
 
 -keep class com.chartboost.chartboostmediationsdk.domain.AppConfig { *; }
@@ -85,6 +77,8 @@
 -keep public class com.chartboost.chartboostmediationsdk.utils.LogController {
     public *;
 }
+
+-keep interface com.chartboost.chartboostmediationsdk.network.ChartboostMediationApi { *; }
 
 # This is to keep Kotlin metadata which is useful for properties when obfuscated
 -keep class kotlin.Metadata { *; }
@@ -119,3 +113,16 @@
 # Keep necessary Retrofit2 classes
 -keep class retrofit2.** { *; }
 -keep class retrofit2.converter.** { *; }
+
+# Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
+ -keep,allowobfuscation,allowshrinking interface retrofit2.Call
+ -keep,allowobfuscation,allowshrinking class retrofit2.Response
+
+ # With R8 full mode generic signatures are stripped for classes that are not
+ # kept. Suspend functions are wrapped in continuations where the type argument
+ # is used.
+ -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
+
+-keep class com.chartboost.chartboostmediationsdk.network.ChartboostMediationNetworking {
+    private <fields>;
+}

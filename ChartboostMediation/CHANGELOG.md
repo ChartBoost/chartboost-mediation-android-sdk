@@ -2,6 +2,13 @@ Android Change Log
 ==================
 Check for the latest Chartboost Mediation SDK at the Chartboost Mediation website.
 
+### Version 5.4.0 *(2025-11-20)*
+Improvements:
+- Updated ProGuard rules.
+
+- Bug Fixes:
+- Fixed a bug on Amazon devices when clearAd() was called.
+
 ### Version 5.3.0 *(2025-06-03)*
 - Bug fixes and improvements.
 

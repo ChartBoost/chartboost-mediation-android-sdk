@@ -51,7 +51,9 @@ object AppConfigStorage {
                 } ?: LogController.e(
                     "Failed to build placements to ad formats map. Placements list is null.",
                 )
-                field = this
+                if (this.isNotEmpty()) {
+                    field = this
+                }
             }
 
     /**
@@ -235,8 +237,7 @@ object AppConfigStorage {
             ?.putBoolean(
                 "com.chartboost.chartboost_mediation.enable_rate_limiting",
                 enableRateLimiting,
-            )
-            ?.apply()
+            )?.apply()
     }
 
     /**
