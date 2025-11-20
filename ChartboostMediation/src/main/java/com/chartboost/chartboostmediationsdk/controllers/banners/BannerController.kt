@@ -24,16 +24,41 @@ import com.chartboost.chartboostmediationsdk.ad.ChartboostMediationBannerAdView
 import com.chartboost.chartboostmediationsdk.ad.ChartboostMediationBannerAdView.ChartboostMediationBannerSize.Companion.STANDARD
 import com.chartboost.chartboostmediationsdk.ad.ChartboostMediationBannerAdView.ChartboostMediationBannerSize.Companion.asSize
 import com.chartboost.chartboostmediationsdk.controllers.AdController
-import com.chartboost.chartboostmediationsdk.domain.*
+import com.chartboost.chartboostmediationsdk.domain.AdFormat
+import com.chartboost.chartboostmediationsdk.domain.AdIdentifier
+import com.chartboost.chartboostmediationsdk.domain.AdInteractionListener
+import com.chartboost.chartboostmediationsdk.domain.AdLoadParams
+import com.chartboost.chartboostmediationsdk.domain.AppConfigStorage
+import com.chartboost.chartboostmediationsdk.domain.CachedAd
+import com.chartboost.chartboostmediationsdk.domain.ChartboostMediationAdException
+import com.chartboost.chartboostmediationsdk.domain.ChartboostMediationError
+import com.chartboost.chartboostmediationsdk.domain.Metrics
+import com.chartboost.chartboostmediationsdk.domain.MetricsManager
+import com.chartboost.chartboostmediationsdk.domain.PartnerAd
 import com.chartboost.chartboostmediationsdk.domain.PartnerAdUtils.getCreativeSizeFromPartnerAdDetails
+import com.chartboost.chartboostmediationsdk.domain.PlacementStorage
+import com.chartboost.chartboostmediationsdk.domain.ServerEventTracker
+import com.chartboost.chartboostmediationsdk.domain.TrackingEvent
 import com.chartboost.chartboostmediationsdk.network.model.BannerAdDimensions
 import com.chartboost.chartboostmediationsdk.network.model.BannerSizeBody
 import com.chartboost.chartboostmediationsdk.network.model.MetricsRequestBody
-import com.chartboost.chartboostmediationsdk.utils.*
+import com.chartboost.chartboostmediationsdk.utils.ChartboostMediationJson
+import com.chartboost.chartboostmediationsdk.utils.Dips
+import com.chartboost.chartboostmediationsdk.utils.FullscreenAdShowingState
+import com.chartboost.chartboostmediationsdk.utils.LogController
+import com.chartboost.chartboostmediationsdk.utils.toJSONObject
 import com.chartboost.core.ChartboostCore
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.internal.writeJson
 import kotlinx.serialization.json.jsonObject
@@ -414,6 +439,7 @@ class BannerController(
         invalidateAd(nextAd)
         currentlyShowingAd = null
         nextAd = null
+        cachedRequest = null
         chartboostMediationBannerAdViewRef.get()?.removeAllViews()
         fullscreenAdShowingState?.unsubscribe(fullscreenAdShowingStateObserver)
     }
@@ -427,22 +453,23 @@ class BannerController(
             val metricsSet = mutableSetOf<Metrics>()
             var loadResult: Result<CachedAd>? = null
 
-            CoroutineScope(Main).launch(
-                CoroutineExceptionHandler { _, error ->
-                    loadResult = Result.failure(error)
-                },
-            ) {
-                loadResult = adController?.load(context, adLoadParams, metricsSet)
-                    ?: Result.failure(
-                        ChartboostMediationAdException(
-                            if (AppConfigStorage.shouldDisableSdk) {
-                                ChartboostMediationError.LoadError.Disabled
-                            } else {
-                                ChartboostMediationError.LoadError.ChartboostMediationNotInitialized
-                            },
-                        ),
-                    )
-            }.also { it.join() }
+            CoroutineScope(Main)
+                .launch(
+                    CoroutineExceptionHandler { _, error ->
+                        loadResult = Result.failure(error)
+                    },
+                ) {
+                    loadResult = adController?.load(context, adLoadParams, metricsSet)
+                        ?: Result.failure(
+                            ChartboostMediationAdException(
+                                if (AppConfigStorage.shouldDisableSdk) {
+                                    ChartboostMediationError.LoadError.Disabled
+                                } else {
+                                    ChartboostMediationError.LoadError.ChartboostMediationNotInitialized
+                                },
+                            ),
+                        )
+                }.also { it.join() }
 
             return Pair(metricsSet, loadResult)
         }
@@ -469,9 +496,8 @@ class BannerController(
                     // This is a placeholder set for load metrics for banner that nothing else is using.
                     // Feel free to utilize this when the public banner API should also return load metrics.
 
-                    fetchAdJob = null
-
                     if (!isActive) {
+                        fetchAdJob = null
                         return@async createAdLoadResult(
                             loadId,
                             createPayloadJson(),
@@ -643,7 +669,8 @@ class BannerController(
 
         val bannerSize = chartboostMediationBannerAd.getSize()
         val density: Double =
-            chartboostMediationBannerAd.context.resources.displayMetrics.density.toDouble()
+            chartboostMediationBannerAd.context.resources.displayMetrics.density
+                .toDouble()
         val layoutParams =
             when {
                 bannerSize?.isAdaptive == true -> {
@@ -947,8 +974,8 @@ class BannerController(
         bannerSize,
     )
 
-    private fun getError(loadResult: Result<CachedAd>?): ChartboostMediationError? {
-        return when (loadResult) {
+    private fun getError(loadResult: Result<CachedAd>?): ChartboostMediationError? =
+        when (loadResult) {
             null -> ChartboostMediationError.LoadError.ChartboostMediationNotInitialized
 
             else ->
@@ -960,24 +987,22 @@ class BannerController(
                     }
                 })
         }
-    }
 
-    private fun getCachedAd(loadResult: Result<CachedAd>?): CachedAd {
-        return loadResult?.getOrNull() ?: throw ChartboostMediationAdException(
+    private fun getCachedAd(loadResult: Result<CachedAd>?): CachedAd =
+        loadResult?.getOrNull() ?: throw ChartboostMediationAdException(
             ChartboostMediationError.LoadError.ChartboostMediationNotInitialized,
         )
-    }
 
-    private fun generateLoadId(): String {
-        return "${ChartboostCore.analyticsEnvironment.appSessionIdentifier}${System.currentTimeMillis()}"
-    }
+    private fun generateLoadId(): String = "${ChartboostCore.analyticsEnvironment.appSessionIdentifier}${System.currentTimeMillis()}"
 
     @OptIn(InternalSerializationApi::class)
     private fun createPayloadJson(metricsSet: MutableSet<Metrics> = mutableSetOf()): JSONObject {
         val metricsRequestBody = MetricsManager.buildMetricsDataRequestBody(metricsSet)
-        return ChartboostMediationJson.writeJson(
-            metricsRequestBody,
-            MetricsRequestBody.serializer(),
-        ).jsonObject.toJSONObject()
+        return ChartboostMediationJson
+            .writeJson(
+                metricsRequestBody,
+                MetricsRequestBody.serializer(),
+            ).jsonObject
+            .toJSONObject()
     }
 }

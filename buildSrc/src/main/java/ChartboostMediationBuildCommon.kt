@@ -7,11 +7,11 @@
 
 object ChartboostMediationSdkInfo {
     const val chartboostMediationName = "Chartboost Mediation SDK"
-    var chartboostMediationSdkVersion = "5.3.0"
+    var chartboostMediationSdkVersion = "5.4.0"
 }
 
 object ChartboostMediationAndroidSupport {
-    const val chartboostMediationAndroidApiVersion = 34
+    const val chartboostMediationAndroidApiVersion = 35
     const val chartboostMediationMinimumAndroidApiVersion = 21
 }
 

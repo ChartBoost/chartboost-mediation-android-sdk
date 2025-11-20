@@ -51,8 +51,8 @@ repositories {
 }
 
 dependencies {
-    implementation("com.chartboost:chartboost-core-sdk:1.0.0")
-    implementation("com.chartboost:chartboost-mediation-sdk:5.3.0")
+    implementation("com.chartboost:chartboost-core-sdk:1.1.0")
+    implementation("com.chartboost:chartboost-mediation-sdk:5.4.0")
 }
 ```
 
@@ -62,7 +62,7 @@ dependencies {
 implementation("androidx.lifecycle:lifecycle-common:2.6.2")
 implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
-implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.10")
+implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.21")
 implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.21")
 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
