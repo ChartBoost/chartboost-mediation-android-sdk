@@ -1,0 +1,15 @@
+.idea/
+*.iml
+.DS_Store
+.gradle/
+.kotlin/
+build/
+local.properties
+
+# never commit signing keys or secrets
+*.jks
+*.keystore
+keystore.properties
+secrets.properties
+
+.claude/

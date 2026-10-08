@@ -2,6 +2,44 @@ Android Change Log
 ==================
 Check for the latest Chartboost Mediation SDK at the Chartboost Mediation website.
 
+### Version 5.4.0 *(2025-11-20)*
+Improvements:
+- Updated ProGuard rules.
+
+- Bug Fixes:
+- Fixed a bug on Amazon devices when clearAd() was called.
+
+### Version 5.3.0 *(2025-06-03)*
+- Bug fixes and improvements.
+
+### Version 5.2.0 *(2024-11-21)*
+Improvements:
+- Subsequent banner load failures will report specific error codes caught from partner adapters instead of the generic CM_300 (Unknown) error code.
+
+### Version 5.1.0 *(2024-10-03)*
+Chartboost Mediation SDKs that have reached their end-of-life will now be disabled. See [SDK Deprecation Policy](https://docs.chartboost.com/en/mediation/integrate/android/sdk-deprecation-policy/) documentation.
+
+Improvements:
+- Added support for GPP Sections String (`IABGPP_GppSID`). This is read from `SharedPreferences` and is passed in the auction request.
+
+### Version 5.0.0 *(2024-08-01)*
+Improvements:
+- Completed rebranding all APIs from Helium to Chartboost Mediation.
+- Initialization of Chartboost Mediation now utilizes Chartboost Core SDK. Please review the [Initialize Mediation](https://docs.chartboost.com/en/mediation/integrate/android/initialize-mediation/) and [Core SDK](https://docs.chartboost.com/en/mediation/integrate/core/android/) documentation.
+- Privacy and consent signals are now set through Chartboost Core SDK.
+- Banners are now named `ChartboostMediationBannerAdView` and optionally use coroutines to load.
+- Fullscreen ads are now loaded from `ChartboostMediationFullscreenAd`. See [Load Ads](https://docs.chartboost.com/en/mediation/integrate/android/load-ads/) documentation.
+
+Review our [Migration from Mediation 4.x to 5.x](https://docs.chartboost.com/en/mediation/integrate/android/migration-from-4x-to-5x/) documentation for more information.
+
+### Version 4.9.1 *(2024-05-23)*
+Bug Fixes:
+- Eliminated a "ConcurrentModificationException" that could occur when setting GDPR.
+
+### Version 4.9.0 *(2024-03-21)*
+Improvements:
+- Added support for ad queueing, a new feature that builds upon the existing fullscreen ad experience that allows publishers to queue up multiple fullscreen ads and show them in succession.
+
 ### Version 4.8.0 *(2024-02-08)*
 The following ad networks have been deprecated:
 - AdColony
